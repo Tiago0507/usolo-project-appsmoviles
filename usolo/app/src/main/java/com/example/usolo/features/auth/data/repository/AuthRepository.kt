@@ -1,0 +1,26 @@
+package com.example.usolo.features.auth.data.repository
+
+import android.util.Log
+import com.example.authclass10.config.RetrofitConfig
+import com.example.usolo.features.auth.data.dto.LoginData
+import com.example.usolo.features.auth.data.sources.AuthService
+import com.example.usolo.features.auth.data.sources.local.LocalDataSourceProvider
+import kotlinx.coroutines.flow.firstOrNull
+import retrofit2.Retrofit
+
+class AuthRepository(
+    val authService: AuthService = RetrofitConfig.directusRetrofit.create(AuthService::class.java)
+) {
+
+    suspend fun login(loginData: LoginData) {
+        val response = authService.login(loginData)
+        LocalDataSourceProvider.get().save("accesstoken", response.data.access_token)
+        Log.e(">>>", response.data.access_token)
+    }
+
+    suspend fun getAccessToken(): String? {
+        var token = LocalDataSourceProvider.get().load("accesstoken").firstOrNull()
+        Log.e(">>>", token.toString())
+        return token
+    }
+}
