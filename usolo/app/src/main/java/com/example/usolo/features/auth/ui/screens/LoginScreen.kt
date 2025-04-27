@@ -22,6 +22,17 @@ import com.example.usolo.features.auth.ui.viewmodel.AuthViewModel
 @Composable
 fun LoginScreen(viewModel: AuthViewModel = viewModel(), loginController: NavController) {
 
+    val authState by viewModel.authState.collectAsState()
+
+    LaunchedEffect(authState.state) {
+        if (authState.state == AUTH_STATE) {
+            loginController.navigate("menu") {
+                popUpTo(0) { inclusive = true }
+                launchSingleTop = true
+            }
+        }
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -69,15 +80,6 @@ fun LoginScreen(viewModel: AuthViewModel = viewModel(), loginController: NavCont
             fontSize = 14.sp,
             modifier = Modifier.padding(top = 8.dp, bottom = 24.dp)
         )
-
-        val authState by viewModel.authState.collectAsState()
-
-        if (authState.state == AUTH_STATE) {
-            loginController.navigate("home") {
-                popUpTo(0) { inclusive = true }
-                launchSingleTop = true
-            }
-        }
 
         Button(
             onClick = {
