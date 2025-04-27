@@ -20,6 +20,7 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.core.DataStore
 import com.example.usolo.features.auth.data.sources.local.LocalDataSourceProvider
 import androidx.datastore.preferences.preferencesDataStore
+import com.example.usolo.features.menu.ui.screens.MainMenu
 
 
 val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "AppVariables")
@@ -61,6 +62,9 @@ fun App(){
         }
         composable("signup"){
             SignUpScreen(loginController = loginController)
+        }
+        composable("menu"){
+            MainMenu(loginController = loginController)
         }
 
 

@@ -57,7 +57,8 @@ fun LandingScreen(loginController: NavController) {
             }
 
             Button(
-                onClick = { loginController.navigate("login") },
+               // onClick = { loginController.navigate("login") },
+                onClick = { loginController.navigate("menu") },
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(20.dp),
                 colors = ButtonDefaults.buttonColors(Color.White)
