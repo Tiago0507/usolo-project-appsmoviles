@@ -1,10 +1,15 @@
 package com.example.usolo
 
+import SettingsScreen
 import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -20,6 +25,7 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.core.DataStore
 import com.example.usolo.features.auth.data.sources.local.LocalDataSourceProvider
 import androidx.datastore.preferences.preferencesDataStore
+import com.example.usolo.features.menu.ui.screens.MainMenu
 
 
 val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "AppVariables")
@@ -49,20 +55,46 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun App(){
+fun App() {
     val loginController = rememberNavController()
-    NavHost(navController = loginController, startDestination = "landing"){
 
-        composable("landing"){
+    NavHost(navController = loginController, startDestination = "landing") {
+        composable(
+            "landing",
+            enterTransition = { slideInVertically(initialOffsetY = { 1000 }) }, // Entrada desde abajo
+            exitTransition = { slideOutVertically(targetOffsetY = { -1000 }) } // Salida hacia arriba
+        ) {
             LandingScreen(loginController = loginController)
         }
-        composable("login"){
+        composable(
+            "login",
+            enterTransition = { fadeIn() }, // Desvanecimiento para la entrada
+            exitTransition = { fadeOut() } // Desvanecimiento para la salida
+        ) {
             LoginScreen(loginController = loginController)
         }
-        composable("signup"){
+        composable(
+            "signup",
+            enterTransition = { slideInVertically(initialOffsetY = { 1000 }) }, // Entrada desde abajo
+            exitTransition = { slideOutVertically(targetOffsetY = { -1000 }) } // Salida hacia arriba
+        ) {
             SignUpScreen(loginController = loginController)
         }
+        composable(
+            "menu",
+            enterTransition = { slideInVertically(initialOffsetY = { 1000 }) }, // Entrada desde abajo
+            exitTransition = { fadeOut() } // Salida desvanecida para la pantalla anterior
+        ) {
+            MainMenu(loginController = loginController)
+        }
 
+        composable(
+            "settings",
+            enterTransition = { slideInVertically(initialOffsetY = { 1000 }) }, // Entrada desde abajo
+            exitTransition = { fadeOut() } // Salida desvanecida para la pantalla anterior
+        ) {
+            SettingsScreen(loginController = loginController)
+        }
 
     }
 }

@@ -1,5 +1,6 @@
 package com.example.usolo.features.auth.ui.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -18,10 +19,12 @@ class AuthViewModel(
 
     fun login(email:String, password:String) {
         viewModelScope.launch(Dispatchers.IO) {
-            authRepository.login(LoginData(
-                email, password
-            ))
-            authState.value = AuthState(state = AUTH_STATE)
+            val result = authRepository.login(LoginData(email, password))
+            if (result.isSuccess) {
+                authState.value = AuthState(state = AUTH_STATE)
+            } else {
+                authState.value = AuthState(state = ERROR_AUTH_STATE, errorMessage = result.exceptionOrNull()?.message)
+            }
         }
     }
 
@@ -37,12 +40,23 @@ class AuthViewModel(
             }
         }
     }
+
+    fun logout() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val success = authRepository.logout()
+            if (success) {
+                authState.value = AuthState(state = NO_AUTH_STATE)
+            }
+        }
+    }
 }
 
 data class AuthState(
     var state: String = IDLE_AUTH_STATE,
+    var errorMessage: String? = null
 )
 
 var AUTH_STATE = "AUTH"
 var NO_AUTH_STATE = "NO_AUTH"
 var IDLE_AUTH_STATE = "IDLE_AUTH"
+var ERROR_AUTH_STATE = "ERROR_AUTH"
