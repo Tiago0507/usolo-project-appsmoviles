@@ -37,6 +37,15 @@ class AuthViewModel(
             }
         }
     }
+
+    fun logout() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val success = authRepository.logout()
+            if (success) {
+                authState.value = AuthState(state = NO_AUTH_STATE)
+            }
+        }
+    }
 }
 
 data class AuthState(

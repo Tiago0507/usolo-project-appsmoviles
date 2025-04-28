@@ -12,8 +12,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.example.usolo.R
+import com.example.usolo.features.auth.ui.viewmodel.AuthViewModel
+
 @Composable
 fun SettingsScreen(loginController: NavHostController) {
     val gradientColors = listOf(
@@ -76,7 +79,7 @@ fun OptionItem(iconResId: Int, title: String) {
 }
 
 @Composable
-fun LogoutButton(loginController: NavHostController) {
+fun LogoutButton(loginController: NavHostController, viewModel: AuthViewModel = viewModel()) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -86,6 +89,7 @@ fun LogoutButton(loginController: NavHostController) {
                 shape = RoundedCornerShape(100.dp)
             )
             .clickable {
+                viewModel.logout()
                 loginController.navigate("landing") {
                     popUpTo("settings") { inclusive = true }
                     popUpTo("menu") { inclusive = true }

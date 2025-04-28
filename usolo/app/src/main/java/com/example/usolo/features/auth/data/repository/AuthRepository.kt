@@ -3,6 +3,7 @@ package com.example.usolo.features.auth.data.repository
 import android.util.Log
 import com.example.authclass10.config.RetrofitConfig
 import com.example.usolo.features.auth.data.dto.LoginData
+import com.example.usolo.features.auth.data.dto.LogoutRequest
 import com.example.usolo.features.auth.data.sources.AuthService
 import com.example.usolo.features.auth.data.sources.local.LocalDataSourceProvider
 import kotlinx.coroutines.flow.firstOrNull
@@ -22,5 +23,19 @@ class AuthRepository(
         var token = LocalDataSourceProvider.get().load("accesstoken").firstOrNull()
         Log.e(">>>", token.toString())
         return token
+    }
+
+    suspend fun logout(refreshToken: String? = null): Boolean {
+        return try {
+            val response = if (refreshToken != null) {
+                authService.logout(LogoutRequest(refreshToken))
+            } else {
+                authService.logout()
+            }
+            response.isSuccessful
+        } catch (e: Exception) {
+            e.printStackTrace()
+            false
+        }
     }
 }
