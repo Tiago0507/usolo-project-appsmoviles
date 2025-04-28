@@ -1,5 +1,6 @@
 package com.example.usolo.features.screens
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.material3.Text
@@ -14,7 +15,9 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.clickable
+import androidx.compose.ui.res.painterResource
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.usolo.R
 import com.example.usolo.features.auth.ui.viewmodel.AUTH_STATE
 import com.example.usolo.features.auth.ui.viewmodel.AuthViewModel
 import com.example.usolo.features.auth.ui.viewmodel.ERROR_AUTH_STATE
@@ -46,7 +49,12 @@ fun LoginScreen(viewModel: AuthViewModel = viewModel(), loginController: NavCont
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text("Usolo", style = MaterialTheme.typography.headlineLarge, color = Color(0xFFFF5722))
+        Image(
+            painter = painterResource(id = R.drawable.ic_orangeusolo), // Asegúrate de tener la imagen en tus recursos
+            contentDescription = "Usolo logo",
+            modifier = Modifier.size(250.dp) // Ajusta el tamaño de la imagen si es necesario
+        )
+
 
         Row(modifier = Modifier.padding(top = 16.dp)) {
             Text("Iniciar sesión", fontWeight = FontWeight.Bold, color = Color(0xFFFF5722))
