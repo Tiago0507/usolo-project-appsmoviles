@@ -17,6 +17,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.usolo.features.auth.ui.viewmodel.AUTH_STATE
 import com.example.usolo.features.auth.ui.viewmodel.AuthViewModel
+import com.example.usolo.features.auth.ui.viewmodel.FakeAuthViewModel
 import com.example.usolo.features.auth.ui.viewmodel.IDLE_AUTH_STATE
 import com.example.usolo.features.auth.ui.viewmodel.NO_AUTH_STATE
 import com.example.usolo.features.menu.ui.components.TopBar
@@ -39,7 +40,7 @@ fun MainMenu(loginController: NavController, viewModel: AuthViewModel = viewMode
 
     when (authState.state) {
         NO_AUTH_STATE -> {
-            // Si no hay sesión, redirigimos a login
+
             loginController.navigate("login") {
                 popUpTo(0) { inclusive = true }
                 launchSingleTop = true
@@ -47,19 +48,16 @@ fun MainMenu(loginController: NavController, viewModel: AuthViewModel = viewMode
         }
 
         IDLE_AUTH_STATE -> {
-            // Mientras se valida la sesión, muestra un loading
+
             Box(modifier = Modifier.fillMaxSize()) {
                 CircularProgressIndicator()
             }
         }
 
         AUTH_STATE -> {
-            val navController = rememberNavController()
-            Scaffold(
 
-                topBar = {
-                    TopBar()
-                },
+            Scaffold(
+                topBar = { TopBar(loginController = loginController)},
                 bottomBar = { BottomNavigationBar() }
             ) { innerPadding ->
                 Column(
@@ -78,3 +76,5 @@ fun MainMenu(loginController: NavController, viewModel: AuthViewModel = viewMode
         }
     }
 }
+
+

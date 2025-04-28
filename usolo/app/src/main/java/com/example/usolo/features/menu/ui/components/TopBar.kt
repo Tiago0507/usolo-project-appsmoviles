@@ -14,13 +14,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-
+import androidx.compose.ui.zIndex // Importar zIndex
+import androidx.navigation.NavController
 
 @Composable
-fun TopBar() {
+fun TopBar(loginController: NavController) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -32,19 +32,22 @@ fun TopBar() {
                     )
                 )
             )
-
             .statusBarsPadding()
             .padding(20.dp)
+            .zIndex(0f)
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            IconButton(onClick = { /*…*/ }) {
+
+            IconButton(onClick = {
+                loginController.navigate("settings")
+            },) {
                 Icon(Icons.Default.Menu, contentDescription = "Menu", tint = Color.White)
             }
-            IconButton(onClick = { /*…*/ }) {
+            IconButton(onClick = { /* Acción para el carrito de compras */ }) {
                 Icon(Icons.Default.ShoppingCart, contentDescription = "Cart", tint = Color.White)
             }
         }
@@ -69,4 +72,3 @@ fun TopBar() {
         Spacer(modifier = Modifier.height(8.dp))
     }
 }
-

@@ -1,5 +1,6 @@
 package com.example.usolo
 
+import SettingsScreen
 import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -86,6 +87,15 @@ fun App() {
         ) {
             MainMenu(loginController = loginController)
         }
+
+        composable(
+            "settings",
+            enterTransition = { slideInVertically(initialOffsetY = { 1000 }) }, // Entrada desde abajo
+            exitTransition = { fadeOut() } // Salida desvanecida para la pantalla anterior
+        ) {
+            SettingsScreen(loginController = loginController)
+        }
+
     }
 }
 
