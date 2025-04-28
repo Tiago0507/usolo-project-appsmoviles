@@ -17,12 +17,16 @@ import androidx.compose.foundation.clickable
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.usolo.features.auth.ui.viewmodel.AUTH_STATE
 import com.example.usolo.features.auth.ui.viewmodel.AuthViewModel
+import com.example.usolo.features.auth.ui.viewmodel.ERROR_AUTH_STATE
 
 
 @Composable
 fun LoginScreen(viewModel: AuthViewModel = viewModel(), loginController: NavController) {
 
     val authState by viewModel.authState.collectAsState()
+    var email by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
+    var errorMessage by remember { mutableStateOf<String?>(null) }
 
     LaunchedEffect(authState.state) {
         if (authState.state == AUTH_STATE) {
@@ -30,6 +34,8 @@ fun LoginScreen(viewModel: AuthViewModel = viewModel(), loginController: NavCont
                 popUpTo(0) { inclusive = true }
                 launchSingleTop = true
             }
+        } else if (authState.state == ERROR_AUTH_STATE) {
+            errorMessage = authState.errorMessage
         }
     }
 
@@ -56,9 +62,6 @@ fun LoginScreen(viewModel: AuthViewModel = viewModel(), loginController: NavCont
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        var email by remember { mutableStateOf("") }
-        var password by remember { mutableStateOf("") }
-
         OutlinedTextField(
             value = email,
             onValueChange = { email = it },
@@ -73,6 +76,14 @@ fun LoginScreen(viewModel: AuthViewModel = viewModel(), loginController: NavCont
             visualTransformation = PasswordVisualTransformation(),
             modifier = Modifier.fillMaxWidth()
         )
+
+        errorMessage?.let { message ->
+            Text(
+                text = message,
+                color = Color.Red,
+                modifier = Modifier.padding(top = 8.dp)
+            )
+        }
 
         Text(
             "¿Olvidó su contraseña?",
