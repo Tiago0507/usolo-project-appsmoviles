@@ -20,6 +20,9 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.core.DataStore
 import com.example.usolo.features.auth.data.sources.local.LocalDataSourceProvider
 import androidx.datastore.preferences.preferencesDataStore
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.usolo.features.registration.ui.screens.EmailSignUpScreen
+import com.example.usolo.features.registration.ui.viewmodel.SignUpViewModel
 
 
 val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "AppVariables")
@@ -51,6 +54,8 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 @Composable
 fun App(){
     val loginController = rememberNavController()
+    val signUpViewModel: SignUpViewModel = viewModel()
+
     NavHost(navController = loginController, startDestination = "landing"){
 
         composable("landing"){
@@ -61,6 +66,9 @@ fun App(){
         }
         composable("signup"){
             SignUpScreen(loginController = loginController)
+        }
+        composable("email_signup"){
+            EmailSignUpScreen(navController = loginController, viewModel = signUpViewModel )
         }
 
 
