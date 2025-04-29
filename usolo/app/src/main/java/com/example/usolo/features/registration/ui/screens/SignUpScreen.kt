@@ -1,5 +1,7 @@
 package com.example.usolo.features.registration.ui.screens
 
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -18,22 +20,28 @@ import com.example.usolo.R
 import androidx.compose.ui.text.font.FontWeight
 
 
-
-
 @Composable
 fun SignUpScreen(loginController: NavController) {
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(24.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center // Centro verticalmente
     ) {
-        Text("Usolo", style = MaterialTheme.typography.headlineLarge, color = Color(0xFFFF5722))
+        Image(
+            painter = painterResource(id = R.drawable.ic_orangeusolo), // Asegúrate de tener la imagen en tus recursos
+            contentDescription = "Usolo logo",
+            modifier = Modifier.size(200.dp) // Ajusta el tamaño de la imagen si es necesario
+        )
 
-        Row(modifier = Modifier.padding(top = 16.dp)) {
+        Row(modifier = Modifier.padding(top = 16.dp) .clickable {loginController.navigate("login") }) {
+
             Text("Iniciar sesión", color = Color.Gray)
+
+
             Spacer(modifier = Modifier.width(16.dp))
-            Text("Registrarse", fontWeight = FontWeight.Bold, color = Color(0xFFFF5722))
+            Text("Registrarse", fontWeight = FontWeight.Bold, color = Color(0xFFFF5722) )
         }
 
         Spacer(modifier = Modifier.height(32.dp))
@@ -51,7 +59,6 @@ fun SignUpScreen(loginController: NavController) {
 
         Spacer(modifier = Modifier.height(12.dp))
 
-        // Botón Facebook
         Button(
             onClick = { /* sin funcionalidad */ },
             colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF1877F2)),
@@ -65,7 +72,6 @@ fun SignUpScreen(loginController: NavController) {
 
         Spacer(modifier = Modifier.height(12.dp))
 
-        // Botón Google
         Button(
             onClick = { /* sin funcionalidad */ },
             colors = ButtonDefaults.buttonColors(containerColor = Color.White),
@@ -79,7 +85,6 @@ fun SignUpScreen(loginController: NavController) {
 
         Spacer(modifier = Modifier.height(12.dp))
 
-        // Botón Apple
         Button(
             onClick = { /* sin funcionalidad */ },
             colors = ButtonDefaults.buttonColors(containerColor = Color.White),
