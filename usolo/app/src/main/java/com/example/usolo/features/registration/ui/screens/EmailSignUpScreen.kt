@@ -267,6 +267,8 @@ fun EmailSignUpScreen(
                         viewModel.signUp(firstName, email, password, address)
                     }
                 }
+
+                navController.navigate("login")
             },
             colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFF5722)),
             modifier = Modifier

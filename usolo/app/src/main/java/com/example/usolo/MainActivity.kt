@@ -62,8 +62,6 @@ fun App() {
     val loginController = rememberNavController()
     val signUpViewModel: SignUpViewModel = viewModel()
 
-    NavHost(navController = loginController, startDestination = "landing"){
-
     NavHost(navController = loginController, startDestination = "landing") {
         composable(
             "landing",
@@ -96,7 +94,6 @@ fun App() {
         ) {
             MainMenu(loginController = loginController)
         }
-
         composable(
             "settings",
             enterTransition = { slideInVertically(initialOffsetY = { 1000 }) }, // Entrada desde abajo
@@ -106,8 +103,8 @@ fun App() {
         }
 
     }
-    }
 }
+
 
 
 
