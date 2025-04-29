@@ -25,6 +25,9 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.core.DataStore
 import com.example.usolo.features.auth.data.sources.local.LocalDataSourceProvider
 import androidx.datastore.preferences.preferencesDataStore
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.usolo.features.registration.ui.screens.EmailSignUpScreen
+import com.example.usolo.features.registration.ui.viewmodel.SignUpViewModel
 import com.example.usolo.features.menu.ui.screens.MainMenu
 
 
@@ -57,6 +60,7 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 @Composable
 fun App() {
     val loginController = rememberNavController()
+    val signUpViewModel: SignUpViewModel = viewModel()
 
     NavHost(navController = loginController, startDestination = "landing") {
         composable(
@@ -80,6 +84,9 @@ fun App() {
         ) {
             SignUpScreen(loginController = loginController)
         }
+        composable("email_signup"){
+            EmailSignUpScreen(navController = loginController, viewModel = signUpViewModel )
+        }
         composable(
             "menu",
             enterTransition = { slideInVertically(initialOffsetY = { 1000 }) }, // Entrada desde abajo
@@ -87,7 +94,6 @@ fun App() {
         ) {
             MainMenu(loginController = loginController)
         }
-
         composable(
             "settings",
             enterTransition = { slideInVertically(initialOffsetY = { 1000 }) }, // Entrada desde abajo
@@ -98,6 +104,8 @@ fun App() {
 
     }
 }
+
+
 
 
 @Preview(showBackground = true)

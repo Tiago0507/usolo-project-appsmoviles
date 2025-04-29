@@ -47,7 +47,7 @@ fun SignUpScreen(loginController: NavController) {
         Spacer(modifier = Modifier.height(32.dp))
 
         Button(
-            onClick = { /* Continuar con correo */ },
+            onClick = { loginController.navigate("email_signup") },
             colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFF5722)),
             modifier = Modifier
                 .fillMaxWidth()
