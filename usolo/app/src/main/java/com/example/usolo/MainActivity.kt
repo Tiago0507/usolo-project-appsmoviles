@@ -106,7 +106,9 @@ fun App() {
         }
 
     }
+    }
 }
+
 
 
 @Preview(showBackground = true)
