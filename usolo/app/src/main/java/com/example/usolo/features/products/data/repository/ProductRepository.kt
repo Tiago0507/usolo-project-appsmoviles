@@ -9,8 +9,9 @@ class ProductRepository {
 
     private val apiService = RetrofitConfig.directusRetrofit.create(ProductApi::class.java)
 
-    suspend fun updateProduct(updateDto: ProductUpdateDto) : Result<ProductData>{
+    suspend fun updateProduct(itemId:Int, updateDto: ProductUpdateDto) : Result<ProductData>{
         return try{
+
             val productUpdate = ProductUpdateDto(
                 title = updateDto.title,
                 description = updateDto.description,
@@ -20,11 +21,11 @@ class ProductRepository {
                 photoUrl = updateDto.photoUrl
             )
 
-            val productResponse = apiService.updateProduct(productUpdate)
+            val productResponse = apiService.updateProduct(productUpdate,itemId)
             if(!productResponse.isSuccessful){
                 return Result.failure(
                     java.lang.Exception(
-                        "Error al crear usuario: ${
+                        "Error al actualizar el producto: ${
                             productResponse.errorBody()?.string()
                         }"
                     )
@@ -48,5 +49,9 @@ class ProductRepository {
         }catch (e: Exception){
             Result.failure(e)
         }
+    }
+
+    suspend fun deleteProduct(itemId:Int) {
+        apiService.deleteProduct(itemId)
     }
 }
