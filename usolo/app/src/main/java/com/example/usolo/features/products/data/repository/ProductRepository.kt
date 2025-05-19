@@ -9,19 +9,20 @@ class ProductRepository {
 
     private val apiService = RetrofitConfig.directusRetrofit.create(ProductApi::class.java)
 
-    suspend fun updateProduct(itemId:Int, updateDto: ProductUpdateDto) : Result<ProductData>{
+    suspend fun updateProduct(itemId:Int, updateDto: ProductUpdateDto, token: String) : Result<ProductData>{
         return try{
 
             val productUpdate = ProductUpdateDto(
                 title = updateDto.title,
                 description = updateDto.description,
-                pricePerDay = updateDto.pricePerDay,
-                category = updateDto.category,
-                status = updateDto.status,
-                photoUrl = updateDto.photoUrl
+                price_per_day = updateDto.price_per_day,
+                category_id = updateDto.category_id,
+                status_id = updateDto.status_id,
+                photo = updateDto.photo
             )
 
-            val productResponse = apiService.updateProduct(productUpdate,itemId)
+            val bearerToken = "Bearer $token"
+            val productResponse = apiService.updateProduct(productUpdate,itemId,bearerToken)
             if(!productResponse.isSuccessful){
                 return Result.failure(
                     java.lang.Exception(
@@ -32,17 +33,19 @@ class ProductRepository {
                 )
             }
 
-            val product = productResponse.body()?: return Result.failure(Exception("Respuesta del prodcuto vacia"))
+            val productContainer = productResponse.body()?: return Result.failure(Exception("Respuesta del prodcuto vacia"))
+            val product = productContainer.data
 
 
             Result.success(
                 ProductData(
                     title = product.title,
                     description = product.description,
-                    pricePerDay = product.pricePerDay,
-                    category = product.category,
-                    status = product.status,
-                    photoUrl = product.photoUrl,
+                    price_per_day = product.price_per_day,
+                    category_id = product.category_id,
+                    status_id = product.status_id,
+                    photo = product.photo,
+                    profile_id = product.profile_id,
                     availability = product.availability
                 )
             )
@@ -51,7 +54,8 @@ class ProductRepository {
         }
     }
 
-    suspend fun deleteProduct(itemId:Int) {
-        apiService.deleteProduct(itemId)
+    suspend fun deleteProduct(itemId:Int,token: String) {
+        val bearerToken = "Bearer $token"
+        apiService.deleteProduct(itemId, bearerToken)
     }
 }

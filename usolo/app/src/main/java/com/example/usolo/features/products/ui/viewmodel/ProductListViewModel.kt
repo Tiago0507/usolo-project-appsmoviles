@@ -1,19 +1,16 @@
-package com.example.usolo.features.menu.ui.viewmodel
+package com.example.usolo.features.products.ui.viewmodel
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.usolo.R
-import com.example.usolo.features.menu.data.model.Product
 import com.example.usolo.features.menu.data.repository.ListProductRepository
 import com.example.usolo.features.products.data.dto.ProductData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class ProductListViewModel(
-    val productsList: ListProductRepository = ListProductRepository()
+    private val productsList: ListProductRepository = ListProductRepository()
 ) : ViewModel() {
 
     private val _products = mutableStateListOf<ProductData>()
@@ -33,7 +30,7 @@ class ProductListViewModel(
 
     private fun showProducts() {
         viewModelScope.launch(Dispatchers.IO) {
-            val result = productsList.getProducts()
+            val result = productsList.getProductsByProfileId(1)
             Log.e("Products: ", result.toString())
 
 
@@ -42,10 +39,11 @@ class ProductListViewModel(
                     ProductData(
                         title = productData.title ?: "",
                         description = productData.description ?: "",
-                        pricePerDay = productData.pricePerDay ?: 0.0,
-                        category = productData.category ?: "",
-                        status = productData.status ?: "",
-                        photoUrl = productData.photoUrl ?: "",
+                        price_per_day = productData.price_per_day ?: 0.0,
+                        category_id = productData.category_id ?: 0,
+                        status_id = productData.status_id ?: 0,
+                        photo = productData.photo ?: "",
+                        profile_id = productData.profile_id?:0,
                         availability = productData.availability ?: true
                     )
                 }

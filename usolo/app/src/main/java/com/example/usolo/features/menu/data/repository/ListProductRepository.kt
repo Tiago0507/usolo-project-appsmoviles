@@ -2,9 +2,7 @@ package com.example.usolo.features.menu.data.repository
 
 import android.util.Log
 import com.example.authclass10.config.RetrofitConfig
-import com.example.usolo.features.menu.data.model.ProductData
-import com.example.usolo.features.menu.data.model.ProductContainer
-import com.example.usolo.features.menu.data.model.ProductListContainer
+import com.example.usolo.features.products.data.dto.ProductData
 import com.example.usolo.features.products.data.sources.ProductApi
 
 class ListProductRepository {
@@ -38,9 +36,9 @@ class ListProductRepository {
         }
     }
 
-    suspend fun getProduct(itemId: Int): Result<ProductData> {
+    suspend fun getProductsByProfileId(profileId: Int): Result<List<ProductData>> {
         return try {
-            val productResponse = apiService.getProduct(itemId)
+            val productResponse = apiService.getProductsByProfileId(profileId)
             if (!productResponse.isSuccessful) {
                 return Result.failure(
                     Exception(

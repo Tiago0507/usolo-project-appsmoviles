@@ -8,6 +8,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.material3.Text
@@ -29,6 +30,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.usolo.features.registration.ui.screens.EmailSignUpScreen
 import com.example.usolo.features.registration.ui.viewmodel.SignUpViewModel
 import com.example.usolo.features.menu.ui.screens.MainMenu
+import com.example.usolo.features.products.ui.screens.EditProductScreen
+import com.example.usolo.features.products.ui.screens.ViewProductsScreen
 
 
 val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "AppVariables")
@@ -48,14 +51,6 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
 
 @Composable
 fun App() {
@@ -101,11 +96,23 @@ fun App() {
         ) {
             SettingsScreen(loginController = loginController)
         }
+        composable(
+            "products",
+            enterTransition = { slideInHorizontally(initialOffsetX = { 1000 })},
+            exitTransition = { fadeOut() }
+        ){
+            ViewProductsScreen(navController = loginController)
+        }
+        composable(
+            "editProducts",
+            enterTransition = { slideInHorizontally(initialOffsetX = { 1000 })},
+            exitTransition = { fadeOut() }
+        ){
+
+        }
 
     }
 }
-
-
 
 
 @Preview(showBackground = true)

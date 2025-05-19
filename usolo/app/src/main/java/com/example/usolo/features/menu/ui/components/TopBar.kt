@@ -1,4 +1,4 @@
-package com.example.usolo.features.menu.ui.components
+  package com.example.usolo.features.menu.ui.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -47,7 +47,9 @@ fun TopBar(loginController: NavController) {
             },) {
                 Icon(Icons.Default.Menu, contentDescription = "Menu", tint = Color.White)
             }
-            IconButton(onClick = { /* Acción para el carrito de compras */ }) {
+            IconButton(onClick = {
+                loginController.navigate("products")
+            }) {
                 Icon(Icons.Default.ShoppingCart, contentDescription = "Cart", tint = Color.White)
             }
         }
