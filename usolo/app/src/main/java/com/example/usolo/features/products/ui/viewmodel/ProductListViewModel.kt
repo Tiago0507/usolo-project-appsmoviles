@@ -20,14 +20,6 @@ class ProductListViewModel(
         showProducts()
     }
 
-    private fun loadMockProducts() {
-        _products.addAll(
-            listOf(
-
-            )
-        )
-    }
-
     private fun showProducts() {
         viewModelScope.launch(Dispatchers.IO) {
             val result = productsList.getProductsByProfileId(1)

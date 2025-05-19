@@ -5,6 +5,7 @@ import com.example.usolo.features.auth.data.dto.LoginResponse
 import com.example.usolo.features.auth.data.dto.LogoutRequest
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.GET
 import retrofit2.http.POST
 
 interface AuthService {
@@ -16,4 +17,5 @@ interface AuthService {
 
     @POST("/auth/logout")
     suspend fun logout(): Response<Void>
+
 }

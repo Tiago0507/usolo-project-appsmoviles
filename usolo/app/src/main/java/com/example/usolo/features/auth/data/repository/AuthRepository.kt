@@ -4,6 +4,7 @@ import android.util.Log
 import com.example.authclass10.config.RetrofitConfig
 import com.example.usolo.features.auth.data.dto.LoginData
 import com.example.usolo.features.auth.data.dto.LogoutRequest
+import com.example.usolo.features.auth.data.dto.UserData
 import com.example.usolo.features.auth.data.sources.AuthService
 import com.example.usolo.features.auth.data.sources.local.LocalDataSourceProvider
 import kotlinx.coroutines.flow.firstOrNull
@@ -19,6 +20,8 @@ class AuthRepository(
         return try {
             val response = authService.login(loginData)
             LocalDataSourceProvider.get().save("accesstoken", response.data.access_token)
+
+
             Log.e(">>>", response.data.access_token)
             Result.success(Unit)
         } catch (e: HttpException) {
@@ -47,5 +50,9 @@ class AuthRepository(
             e.printStackTrace()
             false
         }
+    }
+
+    suspend fun getCurrentUser(): UserData {
+        return authService.getMe("Bearer $token")
     }
 }
