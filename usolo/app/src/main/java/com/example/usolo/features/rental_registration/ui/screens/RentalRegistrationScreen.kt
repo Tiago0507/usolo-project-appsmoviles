@@ -1,4 +1,4 @@
-package com.example.usolo.features.landlord.ui.screens
+package com.example.usolo.features.rental_registration.ui.screens
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -18,11 +18,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.usolo.features.landlord.data.dto.ItemDTO
-import com.example.usolo.features.landlord.ui.components.AddProductCard
-import com.example.usolo.features.landlord.ui.components.BaseProductCard
-import com.example.usolo.features.landlord.ui.components.RentalProductCard
-import com.example.usolo.features.landlord.ui.components.TopBarSimple
+import com.example.usolo.features.rental_registration.data.dto.RentalItemDTO
+import com.example.usolo.features.rental_registration.ui.components.AddProductCard
+import com.example.usolo.features.rental_registration.ui.components.BaseProductCard
+import com.example.usolo.features.rental_registration.ui.components.RentalProductCard
+import com.example.usolo.features.rental_registration.ui.components.TopBarSimple
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
 
@@ -30,8 +30,8 @@ import androidx.navigation.compose.rememberNavController
 @Composable
 fun RentalRegistrationScreen(
     navController: NavController,
-    publishedProducts: List<ItemDTO>,
-    rentedProducts: List<ItemDTO>,
+    publishedProducts: List<RentalItemDTO>,
+    rentedProducts: List<RentalItemDTO>,
     onCreateProductClick: () -> Unit,
     onCreateRentalClick: () -> Unit
 ) {
@@ -61,7 +61,7 @@ fun RentalRegistrationScreen(
                 }
 
                 items(publishedProducts) { product ->
-                    BaseProductCard(itemDTO = product)
+                    BaseProductCard(rentalItemDTO = product)
                 }
             }
 
@@ -86,7 +86,7 @@ fun RentalRegistrationScreen(
                 }
 
                 items(rentedProducts) { product ->
-                    BaseProductCard(itemDTO = product)
+                    BaseProductCard(rentalItemDTO = product)
                 }
             }
 
@@ -99,12 +99,12 @@ fun RentalRegistrationScreen(
 @Composable
 fun RentalRegistrationScreenPreview() {
     val sampleProducts = listOf(
-        ItemDTO(
+        RentalItemDTO(
             title = "Silla Gamer",
             pricePerDay = "$30.000 por día",
             imageRes = com.example.usolo.R.drawable.silla_gamer
         ),
-        ItemDTO(
+        RentalItemDTO(
             title = "Cámara GoPro",
             pricePerDay = "$25.000 por día",
             imageRes = com.example.usolo.R.drawable.silla_gamer

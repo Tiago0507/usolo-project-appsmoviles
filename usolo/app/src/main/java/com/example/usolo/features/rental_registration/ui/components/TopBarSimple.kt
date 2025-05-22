@@ -1,4 +1,4 @@
-package com.example.usolo.features.landlord.ui.components
+package com.example.usolo.features.rental_registration.ui.components
 
 import androidx.compose.material3.Icon
 import androidx.compose.foundation.background

@@ -1,4 +1,4 @@
-package com.example.usolo.features.landlord.ui.components
+package com.example.usolo.features.rental_registration.ui.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
@@ -18,12 +18,12 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.example.usolo.features.landlord.data.dto.ItemDTO
+import com.example.usolo.features.rental_registration.data.dto.RentalItemDTO
 
 import com.example.usolo.features.menu.ui.components.UserProfileSection
 
 @Composable
-fun BaseProductCard(itemDTO: ItemDTO) {
+fun BaseProductCard(rentalItemDTO: RentalItemDTO) {
     Card(
         modifier = Modifier
             .width(200.dp)
@@ -37,10 +37,10 @@ fun BaseProductCard(itemDTO: ItemDTO) {
                 .fillMaxSize()
                 .padding(8.dp)
         ) {
-            itemDTO.imageRes?.let { painterResource(id = it) }?.let {
+            rentalItemDTO.imageRes?.let { painterResource(id = it) }?.let {
                 Image(
                     painter = it,
-                    contentDescription = itemDTO.title,
+                    contentDescription = rentalItemDTO.title,
                     modifier = Modifier
                         .height(120.dp)
                         .fillMaxWidth(),
@@ -50,12 +50,12 @@ fun BaseProductCard(itemDTO: ItemDTO) {
             Spacer(modifier = Modifier.height(8.dp))
 
             Text(
-                text = itemDTO.title,
+                text = rentalItemDTO.title,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.padding(horizontal = 4.dp)
             )
             Text(
-                text = itemDTO.pricePerDay.toString(),
+                text = rentalItemDTO.pricePerDay.toString(),
                 modifier = Modifier.padding(horizontal = 4.dp)
             )
             Spacer(modifier = Modifier.height(8.dp))
