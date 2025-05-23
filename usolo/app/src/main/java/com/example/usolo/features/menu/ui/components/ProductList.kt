@@ -1,13 +1,19 @@
 package com.example.usolo.features.menu.ui.components
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
+import androidx.compose.material3.*
+import com.example.usolo.R
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
@@ -15,31 +21,95 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import com.example.usolo.features.menu.data.model.Product
+import com.example.usolo.features.menu.data.model.ProductData
+import com.example.usolo.features.menu.data.model.ProductWithUser
 import com.example.usolo.features.menu.ui.viewmodel.ProductListViewModel
 
 @Composable
-fun ProductList(viewModel: ProductListViewModel = viewModel()) {
+fun ProductList(navController: NavController, viewModel: ProductListViewModel = viewModel()) {
     val products = viewModel.products
+    val isLoading = viewModel.isLoading
+    val error = viewModel.error
 
-    LazyRow(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp),
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-        items(products) { product ->
-            ProductCard(product = product)
+    Column {
+        when {
+            error != null -> {
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp),
+                    colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.errorContainer
+                    )
+                ) {
+                    Column(
+                        modifier = Modifier.padding(16.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Text(
+                            text = "Error al cargar productos",
+                            style = MaterialTheme.typography.titleMedium,
+                            color = MaterialTheme.colorScheme.onErrorContainer
+                        )
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Text(
+                            text = error,
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onErrorContainer
+                        )
+                        Spacer(modifier = Modifier.height(16.dp))
+                        Button(
+                            onClick = { viewModel.retryLoading() }
+                        ) {
+                            Text("Reintentar")
+                        }
+                    }
+                }
+            }
+
+            products.isEmpty() -> {
+
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(200.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = "No hay productos disponibles",
+                        style = MaterialTheme.typography.bodyLarge,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+            }
+
+            else -> {
+                LazyRow(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    items(products) { product ->
+                        ProductCard(product = product){
+                            navController.navigate("detail/${product.product.id}")
+                        }
+                    }
+                }
+            }
         }
     }
 }
 
 @Composable
-fun ProductCard(product: Product) {
+fun ProductCard(product: ProductWithUser, onClick: () -> Unit) {
     Card(
         modifier = Modifier
             .width(200.dp)
-            .height(300.dp),
+            .height(300.dp)
+            .clickable { onClick() },
         colors = CardDefaults.cardColors(
             containerColor = Color.White
         )
@@ -49,9 +119,10 @@ fun ProductCard(product: Product) {
                 .fillMaxSize()
                 .padding(8.dp)
         ) {
+            // usar Coil para cargar desde URL
             Image(
-                painter = painterResource(id = product.imageRes),
-                contentDescription = product.name,
+                painter = painterResource(id = R.drawable.silla_gamer),
+                contentDescription = product.product.description,
                 modifier = Modifier
                     .height(120.dp)
                     .fillMaxWidth(),
@@ -60,17 +131,19 @@ fun ProductCard(product: Product) {
             Spacer(modifier = Modifier.height(8.dp))
 
             Text(
-                text = product.name,
+                text = product.product.title,
                 fontWeight = FontWeight.Bold,
+                color = Color.Black,
                 modifier = Modifier.padding(horizontal = 4.dp)
             )
             Text(
-                text = product.pricePerDay,
+                text = "$${product.product.price_per_day} por día",
+                color = Color.Black,
                 modifier = Modifier.padding(horizontal = 4.dp)
             )
             Spacer(modifier = Modifier.height(8.dp))
 
-            UserProfileSection()
+            UserProfileSection(product.userName,product.userPhoto)
         }
     }
 }

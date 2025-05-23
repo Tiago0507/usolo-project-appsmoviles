@@ -1,10 +1,13 @@
 package com.example.usolo.features.menu.ui.screens
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
@@ -12,28 +15,44 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.usolo.features.menu.data.model.ProductWithUser
 import androidx.compose.material3.*
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import com.example.usolo.features.menu.data.model.ReviewData
+import com.example.usolo.features.menu.ui.viewmodel.ProductDetailViewModel
 
 @Composable
 fun ProductDetailScreen(
-    product: ProductWithUser,
-    viewModel: ProductDetailViewModel = hiltViewModel(),
+    itemId: String,
+    navController: NavController,
+    viewModel: ProductDetailViewModel = ProductDetailViewModel(),
     onRentClick: () -> Unit
 ) {
+    val product by viewModel.product.collectAsState()
     val status by viewModel.status.collectAsState()
     val reviews by viewModel.reviews.collectAsState()
 
-    LaunchedEffect(Unit) {
-        viewModel.loadStatus(product.product.status_id)
-        viewModel.loadReviews(product.product.id)
+    LaunchedEffect(itemId) {
+        viewModel.loadItemDetails(itemId)
     }
 
-    Column(modifier = Modifier
-        .fillMaxSize()
-        .verticalScroll(rememberScrollState())
-        .padding(16.dp)
+    if (product == null) {
+        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+            CircularProgressIndicator()
+        }
+        return
+    }
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState())
+            .padding(16.dp)
     ) {
         // Sección del producto
         Row(
@@ -42,12 +61,14 @@ fun ProductDetailScreen(
             modifier = Modifier.fillMaxWidth()
         ) {
             Column(modifier = Modifier.weight(1f)) {
-                Text(product.product.title, fontWeight = FontWeight.Bold, fontSize = 20.sp)
-                Text("Alquiler: ${product.product.start_date} - ${product.product.end_date}")
+                Text(product!!.title, fontWeight = FontWeight.Bold, fontSize = 20.sp)
                 Text("Estado: ${status?.name ?: "Cargando..."}")
-                Text("$${product.product.price_per_day}/día")
+                Text("$${product!!.price_per_day}/día")
             }
-            Button(onClick = onRentClick, colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFF5722))) {
+            Button(
+                onClick = onRentClick,
+                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFF5722))
+            ) {
                 Text("Alquilar")
             }
         }
@@ -68,10 +89,64 @@ fun ProductDetailScreen(
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        // Escribir reseña
-        Text("Escribir una reseña", fontWeight = FontWeight.Bold, fontSize = 16.sp)
-        ReviewForm(onSubmit = { rating, opinion ->
-            viewModel.submitReview(product.product.id, rating, opinion)
-        })
+        // Aquí podrías habilitar el formulario de reseña si lo deseas
     }
 }
+
+@Composable
+fun ReviewItem(review: ReviewData) {
+    Column(modifier = Modifier.padding(vertical = 8.dp)) {
+        //Text(review.userName, fontWeight = FontWeight.Bold)
+        Row {
+            repeat(review.rating) { Icon(Icons.Default.Star, contentDescription = null, tint = Color.Yellow) }
+        }
+        Text(review.comment)
+    }
+}
+
+
+
+/*
+@Composable
+fun ReviewForm(onSubmit: (Int, String) -> Unit) {
+    var rating by remember { mutableStateOf(0) }
+    var opinion by remember { mutableStateOf("") }
+
+    Column {
+        Text("Tu valoración")
+        Row {
+            for (i in 1..5) {
+                Icon(
+                    imageVector = Icons.Default.Star,
+                    contentDescription = "Star $i",
+                    tint = if (i <= rating) Color.Yellow else Color.Gray,
+                    modifier = Modifier
+                        .clickable { rating = i }
+                        .padding(4.dp)
+                )
+            }
+        }
+
+        Text("Tu opinión")
+        OutlinedTextField(
+            value = opinion,
+            onValueChange = { opinion = it },
+            placeholder = { Text("Escribe una reseña para el producto") },
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        Button(
+            onClick = { onSubmit(rating, opinion) },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 8.dp),
+            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFF5722))
+        ) {
+            Text("Enviar reseña")
+        }
+    }
+}
+*/
+
+
+
