@@ -1,5 +1,6 @@
 package com.example.usolo.features.menu.ui.components
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.material3.*
@@ -91,10 +92,11 @@ fun ProductList(navController: NavController, viewModel: ProductListViewModel = 
                         .fillMaxWidth()
                         .padding(horizontal = 16.dp),
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    items(products) { product ->
+                ) {                    items(products) { product ->
                         ProductCard(product = product){
-                            navController.navigate("detail/${product.product.id}")
+                            val productId = product.product.id.toString()
+                            Log.e("ProductList", "Navegando a producto con ID: $productId")
+                            navController.navigate("detail/$productId")
                         }
                     }
                 }

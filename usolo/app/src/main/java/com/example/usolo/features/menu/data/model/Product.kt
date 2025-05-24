@@ -14,7 +14,7 @@ data class ProductContainer(
 )
 
 data class ProductData(
-    val id: Number,
+    val id: String,
     val title: String,
     val description: String,
     val price_per_day: Number,

@@ -1,5 +1,6 @@
 package com.example.usolo.features.menu.ui.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.usolo.features.menu.data.model.ProductData
@@ -27,8 +28,8 @@ class ProductDetailViewModel : ViewModel() {
 
     private val _loading = MutableStateFlow(false)
     val loading: StateFlow<Boolean> = _loading.asStateFlow()
-
     fun loadItemDetails(itemId: String) {
+        Log.d("ProductDetailVM", "Iniciando loadItemDetails con ID: $itemId")
         viewModelScope.launch {
             _loading.value = true
 
@@ -36,18 +37,22 @@ class ProductDetailViewModel : ViewModel() {
             val productResult = repository.getProduct(itemId)
             if (productResult.isSuccess) {
                 val product = productResult.getOrNull()
+                Log.d("ProductDetailVM", "Producto obtenido con éxito: $product")
                 _product.value = product
-
-                // Ahora con el producto, podemos buscar status y reviews
-                product?.let {
-                    _status.value = repository.getItemStatus(it.status_id)
+                    Log.d("ProductDetailVM", "Cargando status para el producto")
+                if (product != null) {
+                    _status.value = repository.getItemStatus(product.status_id)
                 }
+
+            } else {
+                Log.e("ProductDetailVM", "Error al obtener producto: ${productResult.exceptionOrNull()?.message}")
             }
 
             // Reseñas no dependen del producto, solo del ID
             _reviews.value = repository.getItemReviews(itemId)
 
             _loading.value = false
+            Log.d("ProductDetailVM", "Finalizada carga de detalles, producto: ${_product.value}")
         }
     }
 }

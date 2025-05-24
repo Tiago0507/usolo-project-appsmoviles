@@ -70,7 +70,7 @@ fun MainMenu(loginController: NavController, viewModel: AuthViewModel = viewMode
                     Spacer(modifier = Modifier.height(26.dp))
                     CategoryRow()
                     Spacer(modifier = Modifier.height(16.dp))
-                    ProductFlowNavigator()
+                    ProductList(navController = loginController)
                     Spacer(modifier = Modifier.height(16.dp))
                     // UserProfileSection()
                 }
@@ -79,20 +79,7 @@ fun MainMenu(loginController: NavController, viewModel: AuthViewModel = viewMode
     }
 }
 
-@Composable
-fun ProductFlowNavigator() {
-    val productNavController = rememberNavController()
 
-    NavHost(navController = productNavController, startDestination = "list") {
-        composable("list") {
-            ProductList(navController = productNavController)
-        }
-        composable("detail/{productId}") { backStackEntry ->
-            val productId = backStackEntry.arguments?.getString("id") ?: return@composable
-            ProductDetailScreen(itemId = productId, navController = productNavController, onRentClick = { /* Mostrar snackbar, navegar, etc */ })
-        }
-    }
-}
 
 
 

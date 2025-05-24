@@ -1,5 +1,6 @@
 package com.example.usolo.features.menu.ui.screens
 
+import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.fillMaxSize
@@ -30,22 +31,46 @@ import com.example.usolo.features.menu.ui.viewmodel.ProductDetailViewModel
 fun ProductDetailScreen(
     itemId: String,
     navController: NavController,
-    viewModel: ProductDetailViewModel = ProductDetailViewModel(),
     onRentClick: () -> Unit
 ) {
+    // Crear el ViewModel usando la función de composición correctamente
+    val viewModel: ProductDetailViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
+    
     val product by viewModel.product.collectAsState()
     val status by viewModel.status.collectAsState()
-    val reviews by viewModel.reviews.collectAsState()
-
+    val reviews by viewModel.reviews.collectAsState()    
+    
+    // Estado de carga
+    val isLoading by viewModel.loading.collectAsState()
+    
+    // Identificador único para diagnóstico
+    val instanceId = remember { System.currentTimeMillis().toString() }
+    
+    Log.d("ProductDetail", "[$instanceId] Pantalla renderizada con itemId: '$itemId', viewModel: $viewModel")
+    
     LaunchedEffect(itemId) {
+        Log.d("ProductDetail", "[$instanceId] LaunchedEffect ejecutado para ID: '$itemId'")
         viewModel.loadItemDetails(itemId)
     }
-
-    if (product == null) {
+    
+    Log.d("ProductDetail", "[$instanceId] Estado actual - producto: ${product != null}, isLoading: $isLoading")
+    
+    if (product == null) {        
+        Log.d("ProductDetail", "[$instanceId] El producto es nulo para ID: '$itemId', isLoading=$isLoading")
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
             CircularProgressIndicator()
+            
+            // Mostrar un mensaje mientras se carga
+            if (isLoading) {
+                Text(
+                    text = "Cargando producto...",
+                    modifier = Modifier.padding(top = 16.dp)
+                )
+            }
         }
         return
+    } else {
+        Log.d("ProductDetail", "[$instanceId] Mostrando producto: ${product?.title}")
     }
 
     Column(
