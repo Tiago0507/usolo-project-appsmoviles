@@ -42,7 +42,7 @@ VALUES
 INSERT INTO item (title, description, price_per_day, location, availability, photo, profile_id, category_id, status_id) VALUES 
 ('Taladro Bosch', 'Taladro eléctrico profesional', 20.00, 'Bogotá', true, 'taladro.jpg',
   (SELECT id FROM user_profile WHERE user_id = (SELECT id FROM directus_users WHERE first_name = 'Carlos Cuesta')),
-  (SELECT id FROM category WHERE name = 'Herramientas'),
+  (SELECT id FROM category WHERE name = 'HerramienStas'),
   (SELECT id FROM item_status WHERE name = 'Disponible')),
 ('Bicicleta MTB', 'Bicicleta de montaña en buen estado', 30.00, 'Medellín', true, 'bici.jpg',
   (SELECT id FROM user_profile WHERE user_id = (SELECT id FROM directus_users WHERE first_name = 'Sandra Lozano')),

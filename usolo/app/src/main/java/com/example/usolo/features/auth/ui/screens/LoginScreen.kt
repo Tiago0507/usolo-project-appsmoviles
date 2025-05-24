@@ -74,7 +74,14 @@ fun LoginScreen(viewModel: AuthViewModel = viewModel(), loginController: NavCont
             value = email,
             onValueChange = { email = it },
             label = { Text("Correo electrónico") },
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedBorderColor = Color(0xFFFF5722),
+                focusedLabelColor = Color(0xFFFF5722),
+                cursorColor = Color(0xFFFF5722),
+                focusedTextColor = Color(0xFF000000),
+                unfocusedTextColor = Color(0xFF000000)
+            )
         )
 
         OutlinedTextField(
@@ -82,7 +89,14 @@ fun LoginScreen(viewModel: AuthViewModel = viewModel(), loginController: NavCont
             onValueChange = { password = it },
             label = { Text("Contraseña") },
             visualTransformation = PasswordVisualTransformation(),
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedBorderColor = Color(0xFFFF5722),
+                focusedLabelColor = Color(0xFFFF5722),
+                cursorColor = Color(0xFFFF5722),
+                focusedTextColor = Color(0xFF000000),
+                unfocusedTextColor = Color(0xFF000000)
+            )
         )
 
         errorMessage?.let { message ->

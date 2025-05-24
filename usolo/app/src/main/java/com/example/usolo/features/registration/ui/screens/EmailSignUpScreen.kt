@@ -142,8 +142,7 @@ fun EmailSignUpScreen(
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        // Formulario de registro
-        // Campo de nombre
+
         OutlinedTextField(
             value = firstName,
             onValueChange = { firstName = it },

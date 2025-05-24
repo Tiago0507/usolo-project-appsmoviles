@@ -9,12 +9,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.usolo.features.menu.ui.viewmodel.UserProfileViewModel
+import androidx.compose.material3.*
+import androidx.compose.ui.graphics.Color
+import com.example.usolo.R
 
 @Composable
-fun UserProfileSection(viewModel: UserProfileViewModel = viewModel()) {
-    val user = viewModel.user
-
+fun UserProfileSection(userName: String, userPhoto: String?) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -22,14 +22,13 @@ fun UserProfileSection(viewModel: UserProfileViewModel = viewModel()) {
         verticalAlignment = Alignment.CenterVertically
     ) {
         Image(
-            painter = painterResource(id = user.profileImageRes),
+            painter = painterResource(id = R.drawable.user_profile),
             contentDescription = "Perfil de Usuario",
             modifier = Modifier.size(48.dp)
         )
         Spacer(modifier = Modifier.width(8.dp))
         Column {
-            Text(text = user.name)
-            Text(text = user.title)
+            Text(text = userName,color = Color.Black,)
         }
     }
 }

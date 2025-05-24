@@ -14,6 +14,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.usolo.features.auth.ui.viewmodel.AUTH_STATE
 import com.example.usolo.features.auth.ui.viewmodel.AuthViewModel
@@ -68,7 +70,7 @@ fun MainMenu(loginController: NavController, viewModel: AuthViewModel = viewMode
                     Spacer(modifier = Modifier.height(26.dp))
                     CategoryRow()
                     Spacer(modifier = Modifier.height(16.dp))
-                    ProductList()
+                    ProductList(navController = loginController)
                     Spacer(modifier = Modifier.height(16.dp))
                     // UserProfileSection()
                 }
@@ -76,5 +78,8 @@ fun MainMenu(loginController: NavController, viewModel: AuthViewModel = viewMode
         }
     }
 }
+
+
+
 
 

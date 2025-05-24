@@ -74,7 +74,9 @@ fun CategoryItem(category: String, icon: Int) {
                     fontSize = 12.sp,
                     modifier = Modifier
                         .padding(top = 8.dp)
-                        .align(Alignment.CenterHorizontally)
+                        .align(Alignment.CenterHorizontally),
+                    color = Color.Black
+
                 )
             }
         }

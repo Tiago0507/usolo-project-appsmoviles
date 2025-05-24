@@ -29,6 +29,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.usolo.features.registration.ui.screens.EmailSignUpScreen
 import com.example.usolo.features.registration.ui.viewmodel.SignUpViewModel
 import com.example.usolo.features.menu.ui.screens.MainMenu
+import com.example.usolo.features.menu.ui.screens.ProductDetailScreen
 
 
 val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "AppVariables")
@@ -93,13 +94,25 @@ fun App() {
             exitTransition = { fadeOut() } // Salida desvanecida para la pantalla anterior
         ) {
             MainMenu(loginController = loginController)
-        }
+        }        
         composable(
             "settings",
             enterTransition = { slideInVertically(initialOffsetY = { 1000 }) }, // Entrada desde abajo
             exitTransition = { fadeOut() } // Salida desvanecida para la pantalla anterior
         ) {
             SettingsScreen(loginController = loginController)
+        }
+        composable(
+            "detail/{productId}",
+            enterTransition = { slideInVertically(initialOffsetY = { 1000 }) },
+            exitTransition = { fadeOut() }
+        ) { backStackEntry ->
+            val productId = backStackEntry.arguments?.getString("productId") ?: ""
+            ProductDetailScreen(
+                itemId = productId,
+                navController = loginController,
+                onRentClick = { /* Mostrar snackbar, navegar, etc */ }
+            )
         }
 
     }
