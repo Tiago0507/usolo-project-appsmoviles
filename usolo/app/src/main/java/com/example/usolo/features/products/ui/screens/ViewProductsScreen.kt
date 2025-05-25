@@ -60,7 +60,7 @@ fun ViewProductsScreen(navController: NavController, viewModel: AuthViewModel = 
                         .verticalScroll(rememberScrollState())
                 ) {
                     Spacer(modifier = Modifier.height(16.dp))
-                    ProductListOwned()
+                    ProductListOwned(navController = navController)
                     Spacer(modifier = Modifier.height(16.dp))
                 }
             }

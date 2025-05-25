@@ -18,11 +18,12 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
 import com.example.usolo.features.products.data.dto.ProductData
 
 @Composable
-fun ProductListOwned(viewModel: com.example.usolo.features.products.ui.viewmodel.ProductListViewModel = viewModel()) {
+fun ProductListOwned(viewModel: com.example.usolo.features.products.ui.viewmodel.ProductListViewModel = viewModel(),navController: NavController) {
     val products = viewModel.products
 
     LazyRow(
@@ -38,11 +39,12 @@ fun ProductListOwned(viewModel: com.example.usolo.features.products.ui.viewmodel
         }
         items(products) { product ->
             ProductCard(product = product) {
-                // TODO: Acción
+                navController.navigate("edit_product/${product.id}")
             }
         }
     }
 }
+
 
 @Composable
 fun ProductCard(product: ProductData, onClick: () -> Unit) {

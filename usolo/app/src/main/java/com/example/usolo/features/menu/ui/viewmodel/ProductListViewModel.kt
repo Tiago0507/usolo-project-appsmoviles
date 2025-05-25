@@ -40,6 +40,7 @@ class ProductListViewModel(
             result.onSuccess { productDataList ->
                 val uiProducts = productDataList.map { productData ->
                     ProductData(
+                        id = productData.id,
                         title = productData.title ?: "",
                         description = productData.description ?: "",
                         price_per_day = productData.price_per_day ?: 0.0,

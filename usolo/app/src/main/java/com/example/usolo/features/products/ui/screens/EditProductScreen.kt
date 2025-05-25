@@ -1,87 +1,157 @@
 package com.example.usolo.features.products.ui.screens
 
+
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.usolo.features.products.ui.components.EditTextField
-import com.example.usolo.features.products.ui.components.ProductImageCard
-import com.example.usolo.features.products.ui.components.StateDropdown
+import androidx.navigation.NavController
+import com.example.usolo.features.auth.ui.viewmodel.AuthViewModel
+import com.example.usolo.features.products.data.dto.ProductUpdateDto
+import com.example.usolo.features.products.ui.components.ActionButtons
+import com.example.usolo.features.products.ui.components.ProductInputFields
+import com.example.usolo.features.products.ui.components.ProductPreviewCard
+import com.example.usolo.features.products.ui.components.StatusDropdown
+import com.example.usolo.features.products.ui.components.TopBarSection
 import com.example.usolo.features.products.ui.viewmodel.EditProductViewModel
+
 
 
 @Composable
 fun EditProductScreen(
-    productId: String,
-    productName: String,
-    imageUrl: String,
-    viewModel: EditProductViewModel = viewModel()
+    navController: NavController,
+    viewModel: EditProductViewModel = viewModel(),
+    productId: Int,
+    authViewModel: AuthViewModel = viewModel()
 ) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp)
-    ) {
-        Text("Editar producto", color = Color(0xFFFF5722), fontWeight = FontWeight.Bold)
+    val authState by authViewModel.authState.collectAsState()
+    val uiState by viewModel.uiState.collectAsState()
+    val selectedProduct by viewModel.selectedProduct.collectAsState()
+    val statusOptions by viewModel.statuses.collectAsState()
 
-        Spacer(modifier = Modifier.height(16.dp))
+    var newName by remember { mutableStateOf("") }
+    var newPrice by remember { mutableStateOf("") }
+    var newCategory by remember { mutableStateOf("") }
+    var newStatus by remember { mutableStateOf("En buen estado") }
 
-        Text("Producto a editar", fontWeight = FontWeight.SemiBold)
+    LaunchedEffect(Unit) {
+        viewModel.loadStatuses()
+        viewModel.loadProductById(productId)
+        authViewModel.getAuthStatus()
+    }
 
-        Spacer(modifier = Modifier.height(8.dp))
+    LaunchedEffect(selectedProduct) {
+        selectedProduct?.let {
+            newName = it.title
+            newPrice = it.price_per_day.toString()
+            newCategory = it.category_id.toString()
+            newStatus = viewModel.getStatusNameById(it.status_id)
+        }
+    }
 
-        ProductImageCard(productName = productName, imageUrl = imageUrl)
+    when (authState.state) {
+        com.example.usolo.features.auth.ui.viewmodel.NO_AUTH_STATE -> {
+            LaunchedEffect(Unit) {
+                navController.navigate("login") {
+                    popUpTo(0) { inclusive = true }
+                    launchSingleTop = true
+                }
+            }
+        }
 
-        Spacer(modifier = Modifier.height(24.dp))
+        com.example.usolo.features.auth.ui.viewmodel.IDLE_AUTH_STATE -> {
+            androidx.compose.foundation.layout.Box(modifier = Modifier.fillMaxSize()) {
+                androidx.compose.material3.CircularProgressIndicator()
+            }
+        }
 
-        EditTextField(
-            label = "Nuevo nombre",
-            placeholder = "Ingrese el nuevo nombre del producto",
-            onValueChange = viewModel::onNameChange
-        )
+        com.example.usolo.features.auth.ui.viewmodel.AUTH_STATE -> {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(24.dp)
+            ) {
+                TopBarSection { navController.popBackStack() }
 
-        Spacer(modifier = Modifier.height(12.dp))
+                Spacer(modifier = Modifier.height(24.dp))
 
-        EditTextField(
-            label = "Nuevo precio",
-            placeholder = "Ingrese el nuevo precio del producto",
-            onValueChange = viewModel::onPriceChange
-        )
+                selectedProduct?.let { product ->
+                    ProductPreviewCard(product = product)
 
-        Spacer(modifier = Modifier.height(12.dp))
+                    Spacer(modifier = Modifier.height(24.dp))
 
-        EditTextField(
-            label = "Nueva categoría",
-            placeholder = "Ingrese la nueva categoría del producto",
-            onValueChange = viewModel::onCategoryChange
-        )
+                    ProductInputFields(
+                        newName = newName,
+                        onNameChange = { newName = it },
+                        newPrice = newPrice,
+                        onPriceChange = { newPrice = it },
+                        newCategory = newCategory,
+                        onCategoryChange = { newCategory = it }
+                    )
 
-        Spacer(modifier = Modifier.height(12.dp))
+                    Spacer(modifier = Modifier.height(12.dp))
 
-        StateDropdown(
-            selectedState = viewModel.state,
-            onStateSelected = viewModel::onStateChange
-        )
+                    StatusDropdown(
+                        selectedStatus = newStatus,
+                        onStatusChange = { newStatus = it },
+                        options = statusOptions.map { it.name }
+                    )
 
-        Spacer(modifier = Modifier.height(24.dp))
+                    Spacer(modifier = Modifier.height(24.dp))
 
-        Button(
-            onClick = {
-                viewModel.saveProductChanges(productId)
-            },
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text("Guardar cambios")
+                    ActionButtons(
+                        onSave = {
+                            if (newName.isNotBlank() && newPrice.toDoubleOrNull() != null) {
+                                viewModel.updateProduct(
+                                    product.id,
+                                    ProductUpdateDto(
+                                        title = newName,
+                                        description = product.description,
+                                        price_per_day = newPrice.toDouble(),
+                                        category_id = product.category_id,
+                                        status_id = viewModel.getStatusIdByName(newStatus),
+                                        photo = product.photo
+                                    )
+                                )
+                            }
+                        },
+                        onDelete = {
+                            viewModel.deleteProduct(product.id)
+                        }
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(12.dp))
+
+                when (uiState) {
+                    is EditProductViewModel.EditProductState.Loading -> LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
+                    is EditProductViewModel.EditProductState.Success -> Text("¡Producto actualizado con éxito!", color = Color(0xFF4CAF50))
+                    is EditProductViewModel.EditProductState.Error -> Text((uiState as EditProductViewModel.EditProductState.Error).message, color = Color.Red)
+                    is EditProductViewModel.EditProductState.Deleted -> LaunchedEffect(Unit) {
+                        navController.popBackStack()
+                    }
+                    else -> {}
+                }
+            }
         }
     }
 }
+
+
+
+

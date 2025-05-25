@@ -14,6 +14,7 @@ data class ProductUpdateDto (
 )
 
 data class ProductData(
+    val id: Int,
     val title:String,
     val description:String,
     val price_per_day:Number,
@@ -22,4 +23,9 @@ data class ProductData(
     val profile_id:Int,
     val photo:String,
     val availability:Boolean
+)
+
+data class ItemStatus(
+    val id: Int,
+    val name: String
 )

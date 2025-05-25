@@ -104,11 +104,14 @@ fun App() {
             ViewProductsScreen(navController = loginController)
         }
         composable(
-            "editProducts",
+            "edit_product/{productId}",
             enterTransition = { slideInHorizontally(initialOffsetX = { 1000 })},
             exitTransition = { fadeOut() }
-        ){
-
+        ){ backStackEntry ->
+            val productId = backStackEntry.arguments?.getString("productId")?.toIntOrNull()
+            if (productId != null) {
+                EditProductScreen(loginController, productId = productId)
+            }
         }
 
     }
