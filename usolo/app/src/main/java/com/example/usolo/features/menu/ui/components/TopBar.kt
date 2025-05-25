@@ -47,7 +47,7 @@ fun TopBar(loginController: NavController) {
             },) {
                 Icon(Icons.Default.Menu, contentDescription = "Menu", tint = Color.White)
             }
-            IconButton(onClick = { /* Acción para el carrito de compras */ }) {
+            IconButton(onClick = { loginController.navigate("PublishProduct")}) {
                 Icon(Icons.Default.ShoppingCart, contentDescription = "Cart", tint = Color.White)
             }
         }

@@ -8,6 +8,14 @@ android {
     namespace = "com.example.usolo"
     compileSdk = 35
 
+    packaging {
+        resources {
+            excludes += "/META-INF/INDEX.LIST"
+            excludes += "/META-INF/DEPENDENCIES"
+            excludes += "/META-INF/io.netty.versions.properties"
+        }
+    }
+
     defaultConfig {
         applicationId = "com.example.usolo"
         minSdk = 28
@@ -40,21 +48,20 @@ android {
 }
 
 dependencies {
-
+    implementation("io.coil-kt:coil-compose:2.4.0")
     implementation("androidx.datastore:datastore-preferences:1.1.4");
     implementation("androidx.navigation:navigation-compose:2.7.7")
-    implementation("io.coil-kt.coil3:coil-compose:3.0.4")
     implementation("com.google.code.gson:gson:2.12.1")
     implementation(libs.androidx.datastore.core.android)
     implementation(libs.androidx.datastore.preferences.core.android)
     implementation(libs.androidx.espresso.core)
     implementation(libs.androidx.runtime.livedata)
+    implementation(libs.firebase.appdistribution.gradle)
     val retrofitVersion = "2.9.0"
     implementation("com.squareup.retrofit2:retrofit:$retrofitVersion")
     implementation("com.squareup.retrofit2:converter-gson:$retrofitVersion")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
-    implementation("io.coil-kt.coil3:coil-network-okhttp:3.0.4")
     implementation ("androidx.compose.material:material-icons-extended:1.6.4")
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
