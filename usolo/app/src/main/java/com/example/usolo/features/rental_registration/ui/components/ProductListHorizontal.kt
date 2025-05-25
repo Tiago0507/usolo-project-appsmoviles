@@ -1,63 +1,79 @@
 package com.example.usolo.features.rental_registration.ui.components
 
+import BaseProductCard
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.unit.dp
 import com.example.usolo.features.menu.data.model.Product
 import com.example.usolo.features.menu.ui.components.ProductCard
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Text
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.usolo.features.rental_registration.domain.model.RentalItem
 import android.R as AndroidR
 
 @Composable
 fun ProductListHorizontal(
-    products: List<Product>,
-    onAddProductClick: () -> Unit
+    publishedItems: List<RentalItem>,
+    rentedItems: List<RentalItem>,
+    onCreateProductClick: () -> Unit,
+    onCreateRentalClick: () -> Unit
 ) {
-    LazyRow(
-        contentPadding = PaddingValues(horizontal = 16.dp),
-        horizontalArrangement = Arrangement.spacedBy(12.dp)
-    ) {
-        // Primero: el card de agregar producto
-        item {
-            AddProductCard(onClick = onAddProductClick)
+    Column {
+        // Sección: Mis artículos publicados
+        Text(
+            text = "Mis artículos publicados",
+            modifier = Modifier.padding(start = 16.dp, bottom = 8.dp),
+            color = Color(0xFFFF5722),
+            fontWeight = FontWeight.Bold
+        )
+
+        LazyRow(
+            contentPadding = PaddingValues(horizontal = 16.dp),
+            horizontalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            item {
+                AddProductCard(onClick = onCreateProductClick)
+            }
+
+            items(publishedItems) { product ->
+                BaseProductCard(rentalItem = product)
+            }
         }
 
-        // Luego: los cards de productos reales
-        items(products) { product ->
-            ProductCard(product = product)
-        }
-    }
+        Spacer(modifier = Modifier.height(24.dp))
 
-    LazyRow(
-        contentPadding = PaddingValues(horizontal = 16.dp),
-        horizontalArrangement = Arrangement.spacedBy(12.dp)
-    ) {
-        // Primero: el card de alquilar producto
-        item {
-            RentalProductCard(onClick = onAddProductClick)
+        // Sección: Mis alquileres
+        Text(
+            text = "Mis alquileres",
+            modifier = Modifier.padding(start = 16.dp, bottom = 8.dp),
+            color = Color(0xFFFFA25B),
+            fontWeight = FontWeight.Bold
+        )
+
+        LazyRow(
+            contentPadding = PaddingValues(horizontal = 16.dp),
+            horizontalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            item {
+                RentalProductCard(onClick = onCreateRentalClick)
+            }
+
+            items(rentedItems) { product ->
+                BaseProductCard(rentalItem = product)
+            }
         }
 
-        // Luego: los cards de productos reales
-        items(products) { product ->
-            ProductCard(product = product)
-        }
+        Spacer(modifier = Modifier.height(32.dp))
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun ProductListHorizontalPreview() {
-    val sampleProducts = listOf(
-        Product("Silla", "$5/día", AndroidR.drawable.ic_menu_gallery),
-        Product("Mesa", "$10/día", AndroidR.drawable.ic_menu_gallery),
-        Product("Parlante", "$8/día", AndroidR.drawable.ic_menu_gallery)
-    )
-
-    ProductListHorizontal(
-        products = sampleProducts,
-        onAddProductClick = {}
-    )
-}

@@ -37,11 +37,11 @@ import androidx.compose.ui.unit.dp
 fun RentalProductCard(onClick: () -> Unit) {
     Card(
         modifier = Modifier
-            .width(200.dp)
-            .height(300.dp)
+            .width(180.dp)
+            .height(260.dp)
             .border(
                 width = 1.dp,
-                brush = SolidColor(Color(0xFFFF5722)), // Naranja
+                brush = SolidColor(Color(0xFFFFA25B)),
                 shape = RoundedCornerShape(8.dp)
             ),
         colors = CardDefaults.cardColors(
@@ -75,7 +75,7 @@ fun RentalProductCard(onClick: () -> Unit) {
                 modifier = Modifier
                     .size(64.dp)
                     .clip(CircleShape)
-                    .background(Color(0xFFFFA25B)), // Naranja más claro
+                    .background(Color(0xFFFFA25B)),
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
@@ -90,7 +90,7 @@ fun RentalProductCard(onClick: () -> Unit) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(48.dp)
-                    .background(Color(0xFFFFA25B)), // Naranja más claro
+                    .background(Color(0xFFFFA25B)),
                 contentAlignment = Alignment.Center
             ) {
                 Text(
@@ -101,10 +101,4 @@ fun RentalProductCard(onClick: () -> Unit) {
             }
         }
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun RentalProductCardPreview() {
-    RentalProductCard(onClick = {})
 }

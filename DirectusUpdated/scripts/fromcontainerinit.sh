@@ -1,10 +1,10 @@
 #!/bin/bash
 
 # Nombre del contenedor
-CONTAINER_NAME="directus-db-1"
+CONTAINER_NAME="directusupdated-db-1"
 
 # Ruta al archivo SQL
-SQL_FILE="./data.sql"
+SQL_FILE="./schema.sql"
 
 # Nombre de la base de datos y usuario
 DB_NAME="directus"

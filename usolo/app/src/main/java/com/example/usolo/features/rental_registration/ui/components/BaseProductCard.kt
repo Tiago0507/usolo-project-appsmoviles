@@ -1,6 +1,6 @@
-package com.example.usolo.features.rental_registration.ui.components
-
-import androidx.compose.foundation.Image
+import android.util.Log
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -8,59 +8,98 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.example.usolo.features.rental_registration.data.dto.RentalItemDTO
-
+import androidx.compose.ui.unit.sp
+import coil3.compose.AsyncImage
 import com.example.usolo.features.menu.ui.components.UserProfileSection
+import com.example.usolo.features.rental_registration.domain.model.RentalItem
+import com.example.usolo.features.rental_registration.utils.toDirectusImageUrl
 
 @Composable
-fun BaseProductCard(rentalItemDTO: RentalItemDTO) {
+fun BaseProductCard(
+    rentalItem: RentalItem,
+    onClick: (() -> Unit)? = null
+) {
     Card(
         modifier = Modifier
-            .width(200.dp)
-            .height(300.dp),
+            .width(180.dp)  // Reducido para mejor proporción
+            .height(260.dp), // Ajustado para mejor distribución
+        shape = RoundedCornerShape(16.dp), // Bordes más redondeados como el modelo
+        elevation = CardDefaults.cardElevation(8.dp), // Sombra más pronunciada
         colors = CardDefaults.cardColors(
             containerColor = Color.White
-        )
+        ),
+        onClick = { onClick?.invoke() }
     ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(8.dp)
+                .padding(0.dp), // Sin padding general para maximizar espacio
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Top
         ) {
-            rentalItemDTO.imageRes?.let { painterResource(id = it) }?.let {
-                Image(
-                    painter = it,
-                    contentDescription = rentalItemDTO.title,
+            // Contenedor de imagen con fondo redondeado
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(140.dp) // Más espacio para la imagen
+                    .padding(12.dp) // Padding solo alrededor de la imagen
+            ) {
+                val imageUrl = rentalItem.photo.toDirectusImageUrl()
+                Log.d(">>> IMAGE URL", "URL generada: $imageUrl")
+                AsyncImage(
+                    model = imageUrl,
+                    contentDescription = rentalItem.title,
                     modifier = Modifier
-                        .height(120.dp)
-                        .fillMaxWidth(),
+                        .fillMaxSize()
+                        .clip(RoundedCornerShape(12.dp)), // Bordes redondeados en la imagen
                     contentScale = ContentScale.Crop
                 )
             }
-            Spacer(modifier = Modifier.height(8.dp))
 
-            Text(
-                text = rentalItemDTO.title,
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier.padding(horizontal = 4.dp)
-            )
-            Text(
-                text = rentalItemDTO.pricePerDay.toString(),
-                modifier = Modifier.padding(horizontal = 4.dp)
-            )
-            Spacer(modifier = Modifier.height(8.dp))
+            // Contenedor del texto con padding específico
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp, vertical = 8.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(
+                    text = rentalItem.title,
+                    fontWeight = FontWeight.SemiBold,
+                    fontSize = 16.sp, // Tamaño específico
+                    color = Color.Black,
+                    textAlign = TextAlign.Center,
+                    maxLines = 2, // Máximo 2 líneas para el título
+                    modifier = Modifier.fillMaxWidth()
+                )
 
-            UserProfileSection()
+                Spacer(modifier = Modifier.height(8.dp))
+
+                Text(
+                    text = "$${rentalItem.pricePerDay} por día",
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 18.sp, // Tamaño más grande para el precio
+                    color = Color.Black,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
+
+            // Spacer para empujar el contenido hacia arriba
+            Spacer(modifier = Modifier.weight(1f))
         }
     }
 }

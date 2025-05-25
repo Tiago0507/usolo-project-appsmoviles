@@ -57,7 +57,12 @@ fun MainMenu(loginController: NavController, viewModel: AuthViewModel = viewMode
         AUTH_STATE -> {
 
             Scaffold(
-                topBar = { TopBar(loginController = loginController)},
+                topBar = {
+                    TopBar(
+                        loginController = loginController,
+                        onCartClick = { loginController.navigate("rental_registration") }
+                    )
+                },
                 bottomBar = { BottomNavigationBar() }
             ) { innerPadding ->
                 Column(

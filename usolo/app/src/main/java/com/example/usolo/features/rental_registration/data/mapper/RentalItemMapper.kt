@@ -7,18 +7,29 @@ fun RentalItemDTO.toDomain(): RentalItem {
     return RentalItem(
         id = id,
         title = title,
-        imageUrl = imageUrl,
+        description = description,
         pricePerDay = pricePerDay,
-        availability = availability
+        location = location,
+        availability = availability,
+        photo = photo,
+        profileId = profileId,
+        categoryId = categoryId,
+        statusId = statusId
     )
 }
+
 
 fun RentalItem.toDto(): RentalItemDTO {
     return RentalItemDTO(
         id = id,
         title = title,
-        imageUrl = imageUrl,
+        description = description,
         pricePerDay = pricePerDay,
-        availability = availability
+        location = location,
+        availability = availability,
+        photo = photo,
+        profileId = profileId,
+        categoryId = categoryId,
+        statusId = statusId
     )
 }

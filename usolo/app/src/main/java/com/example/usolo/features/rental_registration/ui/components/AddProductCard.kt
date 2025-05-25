@@ -31,17 +31,16 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.ui.tooling.preview.Preview
 
 @Composable
 fun AddProductCard(onClick: () -> Unit) {
     Card(
         modifier = Modifier
-            .width(200.dp)
-            .height(300.dp)
+            .width(180.dp)
+            .height(260.dp)
             .border(
                 width = 1.dp,
-                brush = SolidColor(Color(0xFFFF5722)), // Naranja
+                brush = SolidColor(Color(0xFFFF5722)),
                 shape = RoundedCornerShape(8.dp)
             ),
         colors = CardDefaults.cardColors(
@@ -75,7 +74,7 @@ fun AddProductCard(onClick: () -> Unit) {
                 modifier = Modifier
                     .size(64.dp)
                     .clip(CircleShape)
-                    .background(Color(0xFFFF5722)), // Naranja
+                    .background(Color(0xFFFF5722)),
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
@@ -90,7 +89,7 @@ fun AddProductCard(onClick: () -> Unit) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(48.dp)
-                    .background(Color(0xFFFF5722)), // Naranja
+                    .background(Color(0xFFFF5722)),
                 contentAlignment = Alignment.Center
             ) {
                 Text(
@@ -104,8 +103,3 @@ fun AddProductCard(onClick: () -> Unit) {
 }
 
 
-@Preview(showBackground = true)
-@Composable
-fun AddProductCardPreview() {
-    AddProductCard(onClick = {})
-}
