@@ -40,10 +40,12 @@ import com.example.usolo.features.auth.ui.viewmodel.AuthViewModel
 import com.example.usolo.features.registration.ui.screens.EmailSignUpScreen
 import com.example.usolo.features.registration.ui.viewmodel.SignUpViewModel
 import com.example.usolo.features.menu.ui.screens.MainMenu
+
 import com.example.usolo.features.rental_registration.ui.screens.RentalRegistrationScreen
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import com.example.usolo.features.postobject.ui.screens.PublicObjet
 
 
 val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "AppVariables")
@@ -133,6 +135,7 @@ fun App() {
         ) {
             SettingsScreen(loginController = loginController)
         }
+
         composable("rental_registration") {
             val localDataStore = LocalDataSourceProvider.get()
             val profileIdFlow = localDataStore.getProfileId()
@@ -161,6 +164,13 @@ fun App() {
                 )
             }
 
+
+        composable(
+            "PublishProduct",
+            enterTransition = { slideInVertically(initialOffsetY = { 1000 }) }, // Entrada desde abajo
+            exitTransition = { fadeOut() } // Salida desvanecida para la pantalla anterior
+        ) {
+            PublicObjet(loginController = loginController)
         }
     }
 }

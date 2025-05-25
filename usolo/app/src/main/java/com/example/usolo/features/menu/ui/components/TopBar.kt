@@ -48,6 +48,8 @@ fun TopBar(loginController: NavController, onCartClick: () -> Unit) {
                 Icon(Icons.Default.Menu, contentDescription = "Menu", tint = Color.White)
             }
             IconButton(onClick = onCartClick) {
+            IconButton(onClick = { loginController.navigate("PublishProduct")}) {
+
                 Icon(Icons.Default.ShoppingCart, contentDescription = "Cart", tint = Color.White)
             }
         }
