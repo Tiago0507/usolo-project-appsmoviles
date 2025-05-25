@@ -11,8 +11,6 @@ import com.example.usolo.features.registration.data.dto.UserResponseDTO
 import com.example.usolo.features.registration.data.dto.ProfileCreateDTO
 import com.example.usolo.features.registration.data.dto.ProfileResponseDTO
 import com.example.usolo.features.registration.data.dto.UserCreateDTO
-import com.example.usolo.features.registration.data.dto.SignUpRequestDTO
-import com.example.usolo.features.registration.data.dto.UserWithProfileDTO
 
 
 
@@ -25,12 +23,6 @@ interface SignUpApi{
     @POST("items/user_profile")
     suspend fun createProfile(
         @Body profile: ProfileCreateDTO): Response<DirectusResponse<ProfileResponseDTO>>
-
-
-    @GET("users/me")
-    suspend fun getCurrentUser(
-        @Header("Authorization") token: String
-    ): Response<UserResponseDTO>
 
     @GET("items/user_profile")
     suspend fun getUserProfile(

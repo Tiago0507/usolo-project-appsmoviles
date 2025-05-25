@@ -1,19 +1,18 @@
-package com.example.usolo.features.menu.ui.viewmodel
+package com.example.usolo.features.products.ui.viewmodel
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.usolo.R
-import com.example.usolo.features.menu.data.model.Product
+import com.example.usolo.features.auth.data.sources.local.LocalDataSourceProvider
 import com.example.usolo.features.menu.data.repository.ListProductRepository
 import com.example.usolo.features.products.data.dto.ProductData
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 
 class ProductListViewModel(
-    val productsList: ListProductRepository = ListProductRepository()
+    private val productsList: ListProductRepository = ListProductRepository()
 ) : ViewModel() {
 
     private val _products = mutableStateListOf<ProductData>()
@@ -23,18 +22,15 @@ class ProductListViewModel(
         showProducts()
     }
 
-    private fun loadMockProducts() {
-        _products.addAll(
-            listOf(
-
-            )
-        )
-    }
-
     private fun showProducts() {
         viewModelScope.launch(Dispatchers.IO) {
-            val result = productsList.getProducts()
-            Log.e("Products: ", result.toString())
+            val userProfileId = LocalDataSourceProvider.get().load("user_profile").firstOrNull()
+            if (userProfileId == null) {
+                Log.e("ProductListViewModel", "No user_profile found in local data store")
+                return@launch
+            }
+            val userId = userProfileId.toInt()
+            val result = productsList.getProductsByProfileId(userId)
 
 
             result.onSuccess { productDataList ->
@@ -45,9 +41,9 @@ class ProductListViewModel(
                         description = productData.description ?: "",
                         price_per_day = productData.price_per_day ?: 0.0,
                         category_id = productData.category_id ?: 0,
-                        status_id = productData.status_id ?: 0,
+                        status_id = productData.status_id ?: 1,
                         photo = productData.photo ?: "",
-                        profile_id = productData.profile_id?: 0,
+                        profile_id = productData.profile_id?:0,
                         availability = productData.availability ?: true
                     )
                 }
@@ -57,7 +53,7 @@ class ProductListViewModel(
             }
 
             result.onFailure {
-                // Manejar error (podrías emitir un evento o cambiar un estado de error)
+                Log.e("ProductListViewModel", "Error fetching products: ${it.message}")
             }
         }
     }
