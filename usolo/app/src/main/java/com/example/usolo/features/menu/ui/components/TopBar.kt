@@ -20,7 +20,7 @@ import androidx.compose.ui.zIndex // Importar zIndex
 import androidx.navigation.NavController
 
 @Composable
-fun TopBar(loginController: NavController) {
+fun TopBar(loginController: NavController, onCartClick: () -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -47,7 +47,9 @@ fun TopBar(loginController: NavController) {
             },) {
                 Icon(Icons.Default.Menu, contentDescription = "Menu", tint = Color.White)
             }
+            IconButton(onClick = onCartClick) {
             IconButton(onClick = { loginController.navigate("PublishProduct")}) {
+
                 Icon(Icons.Default.ShoppingCart, contentDescription = "Cart", tint = Color.White)
             }
         }

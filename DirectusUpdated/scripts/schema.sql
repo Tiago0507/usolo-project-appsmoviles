@@ -56,13 +56,14 @@ CREATE TABLE ITEM (
     price_per_day DECIMAL(10, 2),
     location VARCHAR(255),
     availability BOOLEAN DEFAULT TRUE,
-    photo TEXT,
+    photo UUID,
     profile_id INT,
     category_id INT,
     status_id INT,
     FOREIGN KEY (profile_id) REFERENCES USER_PROFILE(id),
     FOREIGN KEY (category_id) REFERENCES CATEGORY(id),
-    FOREIGN KEY (status_id) REFERENCES ITEM_STATUS(id)
+    FOREIGN KEY (status_id) REFERENCES ITEM_STATUS(id),
+    CONSTRAINT fk_photo FOREIGN KEY (photo) REFERENCES directus_files(id)
 );
 
 -- Tabla REVIEW
