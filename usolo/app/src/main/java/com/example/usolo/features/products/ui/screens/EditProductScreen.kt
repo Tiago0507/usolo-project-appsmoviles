@@ -24,6 +24,7 @@ import androidx.navigation.NavController
 import com.example.usolo.features.auth.ui.viewmodel.AuthViewModel
 import com.example.usolo.features.products.data.dto.ProductUpdateDto
 import com.example.usolo.features.products.ui.components.ActionButtons
+import com.example.usolo.features.products.ui.components.CategoryDropdown
 import com.example.usolo.features.products.ui.components.ProductInputFields
 import com.example.usolo.features.products.ui.components.ProductPreviewCard
 import com.example.usolo.features.products.ui.components.StatusDropdown
@@ -43,6 +44,7 @@ fun EditProductScreen(
     val uiState by viewModel.uiState.collectAsState()
     val selectedProduct by viewModel.selectedProduct.collectAsState()
     val statusOptions by viewModel.statuses.collectAsState()
+    val categoryOptions by viewModel.categories.collectAsState()
 
     var newName by remember { mutableStateOf("") }
     var newPrice by remember { mutableStateOf("") }
@@ -51,6 +53,7 @@ fun EditProductScreen(
 
     LaunchedEffect(Unit) {
         viewModel.loadStatuses()
+        viewModel.loadCategories()
         viewModel.loadProductById(productId)
         authViewModel.getAuthStatus()
     }
@@ -100,8 +103,12 @@ fun EditProductScreen(
                         onNameChange = { newName = it },
                         newPrice = newPrice,
                         onPriceChange = { newPrice = it },
-                        newCategory = newCategory,
-                        onCategoryChange = { newCategory = it }
+                    )
+
+                    CategoryDropdown(
+                        selectedCategory = newCategory,
+                        onCategoryChange = { newCategory = it },
+                        options = categoryOptions.map { it.name }
                     )
 
                     Spacer(modifier = Modifier.height(12.dp))
@@ -123,7 +130,7 @@ fun EditProductScreen(
                                         title = newName,
                                         description = product.description,
                                         price_per_day = newPrice.toDouble(),
-                                        category_id = product.category_id,
+                                        category_id = viewModel.getCategoryIdByName(newCategory),
                                         status_id = viewModel.getStatusIdByName(newStatus),
                                         photo = product.photo
                                     )

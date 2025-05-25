@@ -17,8 +17,6 @@ fun ProductInputFields(
     onNameChange: (String) -> Unit,
     newPrice: String,
     onPriceChange: (String) -> Unit,
-    newCategory: String,
-    onCategoryChange: (String) -> Unit
 ) {
     OutlinedTextField(
         value = newName,
@@ -38,12 +36,4 @@ fun ProductInputFields(
         modifier = Modifier.fillMaxWidth()
     )
     Spacer(modifier = Modifier.height(12.dp))
-
-    OutlinedTextField(
-        value = newCategory,
-        onValueChange = onCategoryChange,
-        label = { Text("Nueva categoría") },
-        placeholder = { Text("Ingrese la nueva categoría del producto") },
-        modifier = Modifier.fillMaxWidth()
-    )
 }

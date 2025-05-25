@@ -1,7 +1,9 @@
 package com.example.usolo.features.products.data.repository
 
+import android.util.Log
 import com.example.authclass10.config.RetrofitConfig
 import com.example.usolo.features.auth.data.sources.local.LocalDataSourceProvider
+import com.example.usolo.features.products.data.dto.Category
 import com.example.usolo.features.products.data.dto.ItemStatus
 import com.example.usolo.features.products.data.dto.ProductData
 import com.example.usolo.features.products.data.dto.ProductUpdateDto
@@ -63,13 +65,24 @@ class ProductRepository {
     suspend fun deleteProduct(itemId:Int) {
         val token = LocalDataSourceProvider.get().load("accesstoken").first()
         val bearerToken = "Bearer $token"
-        apiService.deleteProduct(itemId, bearerToken)
+        val response = apiService.deleteProduct(itemId, bearerToken)
+        if (!response.isSuccessful) {
+            throw Exception("Error al eliminar producto: ${response.errorBody()?.string()}")
+        }
     }
 
     suspend fun getItemStatuses(): List<ItemStatus> {
         val token = LocalDataSourceProvider.get().load("accesstoken").first()
         val bearerToken = "Bearer $token"
-        return apiService.getItemStatuses(bearerToken)
+        val response = apiService.getItemStatuses(bearerToken)
+        return response.data
+    }
+
+    suspend fun getCategories(): List<Category> {
+        val token = LocalDataSourceProvider.get().load("accesstoken").first()
+        val bearerToken = "Bearer $token"
+        val response = apiService.getCategories(bearerToken)
+        return response.data
     }
 
     suspend fun getProduct(itemId: Int): ProductData{

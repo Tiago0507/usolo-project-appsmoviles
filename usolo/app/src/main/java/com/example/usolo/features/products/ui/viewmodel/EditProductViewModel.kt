@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.usolo.features.menu.data.repository.ListProductRepository
+import com.example.usolo.features.products.data.dto.Category
 import com.example.usolo.features.products.data.dto.ItemStatus
 import com.example.usolo.features.products.data.dto.ProductData
 import com.example.usolo.features.products.data.dto.ProductUpdateDto
@@ -22,12 +23,15 @@ class EditProductViewModel(
     val uiState = _uiState.asStateFlow()
     private val _statuses = MutableStateFlow<List<ItemStatus>>(emptyList())
     val statuses: StateFlow<List<ItemStatus>> = _statuses
+    private val _categories = MutableStateFlow<List<Category>>(emptyList())
+    val categories: StateFlow<List<Category>> = _categories
 
     val selectedProduct = MutableStateFlow<ProductData?>(null)
 
     fun loadProductById(id: Int){
         viewModelScope.launch {
-            val product = repository.getProduct(id) // suspend fun
+            val product = repository.getProduct(id) // suspend fun{
+            Log.e("ayudaaaa", product.id.toString())
             selectedProduct.value = product
         }
     }
@@ -57,7 +61,18 @@ class EditProductViewModel(
                 Log.e("list",statusList.toString())
                 _statuses.value = statusList
             } catch (e: Exception) {
-                // manejar error
+                Log.e("Error chistoso",e.toString())
+            }
+        }
+    }
+
+    fun loadCategories() {
+        viewModelScope.launch {
+            try {
+                val categoryList = repository.getCategories()
+                _categories.value = categoryList
+            } catch (e: Exception) {
+                Log.e("Error chistoso",e.toString())
             }
         }
     }
@@ -69,6 +84,11 @@ class EditProductViewModel(
     fun getStatusIdByName(name: String): Int {
         return statuses.value.find { it.name == name }?.id ?: 0
     }
+
+    fun getCategoryIdByName(name: String): Int {
+        return categories.value.find { it.name == name }?.id ?: 0
+    }
+
 
     sealed class EditProductState {
         object Idle : EditProductState()

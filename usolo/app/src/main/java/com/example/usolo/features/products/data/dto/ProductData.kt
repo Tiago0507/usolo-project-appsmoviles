@@ -25,7 +25,19 @@ data class ProductData(
     val availability:Boolean
 )
 
+data class StatusResponse(
+    val data: List<ItemStatus>
+)
+
 data class ItemStatus(
+    val id: Int,
+    val name: String
+)
+
+data class CategoryResponse(
+    val data: List<Category>
+)
+data class Category(
     val id: Int,
     val name: String
 )
