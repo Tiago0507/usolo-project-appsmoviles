@@ -1,6 +1,6 @@
 package com.example.usolo.features.rental_registration.data.repository.impl
 
-import com.example.authclass10.config.RetrofitConfig
+import com.example.usolo.config.RetrofitConfig
 import com.example.usolo.features.auth.data.sources.local.LocalDataSourceProvider
 import com.example.usolo.features.rental_registration.data.repository.RentalRegistrationRepository
 import com.example.usolo.features.rental_registration.data.sources.RentalRegistrationService

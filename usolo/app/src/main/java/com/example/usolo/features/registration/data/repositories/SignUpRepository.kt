@@ -1,13 +1,12 @@
 package com.example.usolo.features.registration.data.repositories
 
 import android.util.Log
-import com.example.authclass10.config.RetrofitConfig
+import com.example.usolo.config.RetrofitConfig
 import com.example.usolo.features.registration.data.dto.ProfileCreateDTO
 import com.example.usolo.features.registration.data.dto.SignUpRequestDTO
 import com.example.usolo.features.registration.data.dto.UserCreateDTO
 import com.example.usolo.features.registration.data.dto.UserWithProfileDTO
 import com.example.usolo.features.registration.data.sources.SignUpApi
-import retrofit2.Response
 import java.lang.Exception
 
 

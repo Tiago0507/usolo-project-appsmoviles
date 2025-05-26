@@ -3,7 +3,7 @@ package com.example.usolo.features.auth.data.repository
 import android.util.Log
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
-import com.example.authclass10.config.RetrofitConfig
+import com.example.usolo.config.RetrofitConfig
 import com.example.usolo.features.auth.data.dto.LoginData
 import com.example.usolo.features.auth.data.dto.LogoutRequest
 import com.example.usolo.features.auth.data.sources.AuthService
@@ -23,7 +23,7 @@ class AuthRepository(
 
             // Obtener ID de usuario autenticado
             val userResponse = authService.getMe("Bearer $accessToken")
-            val directusUserId = userResponse.data.id
+            val directusUserId = userResponse.data.id.toString() // Convertimos UUID a String
             LocalDataSourceProvider.get().save("directus_user_id", directusUserId)
 
             // Obtener profileId
@@ -44,6 +44,7 @@ class AuthRepository(
             Result.failure(Exception("Ocurrió un error inesperado"))
         }
     }
+
 
     private suspend fun getProfileId(directusUserId: String, token: String): String? {
         return try {

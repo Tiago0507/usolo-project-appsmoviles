@@ -8,12 +8,15 @@ import retrofit2.http.*
 interface ProductApi {
 
     @GET("items/item")
-    suspend fun getProducts(): Response<DirectusResponseProducts<ProductData>>
+    suspend fun getProducts(
+        @Header("Authorization") token: String
+    ): DirectusResponseProducts<ProductData>
 
     @GET("items/item")
     suspend fun getProductsByProfileId(
-        @Query("filter[profile_id][id][_eq]") profileId: Int
-    ): Response<DirectusResponseProducts<ProductData>>
+        @Query("filter[profile_id][_eq]") profileId: Int,
+        @Header("Authorization") token: String
+    ): DirectusResponseProducts<ProductData>
 
     @GET("items/item/{itemId}")
     suspend fun getProduct(

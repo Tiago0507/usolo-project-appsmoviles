@@ -1,7 +1,6 @@
 package com.example.usolo.features.products.data.repository
 
-import android.util.Log
-import com.example.authclass10.config.RetrofitConfig
+import com.example.usolo.config.RetrofitConfig
 import com.example.usolo.features.auth.data.sources.local.LocalDataSourceProvider
 import com.example.usolo.features.products.data.dto.*
 import com.example.usolo.features.products.data.sources.ProductApi

@@ -1,5 +1,6 @@
-package com.example.authclass10.config
+package com.example.usolo.config
 
+import com.example.usolo.features.menu.data.model.UUIDAdapter
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import okhttp3.OkHttpClient
@@ -9,12 +10,11 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 
 object RetrofitConfig {
 
-    // Configurar Moshi (de nueva-rama)
     private val moshi = Moshi.Builder()
+        .add(UUIDAdapter()) // 👈 Añade el adaptador
         .add(KotlinJsonAdapterFactory())
         .build()
 
-    // Configurar cliente HTTP con logging (de dev)
     private val loggingInterceptor = HttpLoggingInterceptor().apply {
         level = HttpLoggingInterceptor.Level.BODY
     }
@@ -23,7 +23,6 @@ object RetrofitConfig {
         .addInterceptor(loggingInterceptor)
         .build()
 
-    // Retrofit usando Moshi y el cliente configurado
     val directusRetrofit: Retrofit = Retrofit.Builder()
         .baseUrl("http://10.0.2.2:8055")
         .client(client)
