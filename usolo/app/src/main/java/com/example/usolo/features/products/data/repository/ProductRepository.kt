@@ -7,46 +7,39 @@ import com.example.usolo.features.products.data.sources.ProductApi
 
 class ProductRepository {
 
-    private val apiService = RetrofitConfig.directusRetrofit.create(ProductApi::class.java)
+    private val apiService =
+        RetrofitConfig.directusRetrofit.create(ProductApi::class.java)
 
-    suspend fun updateProduct(itemId:Int, updateDto: ProductUpdateDto) : Result<ProductData>{
-        return try{
-
-            val productUpdate = ProductUpdateDto(
-                title = updateDto.title,
-                description = updateDto.description,
-                pricePerDay = updateDto.pricePerDay,
-                category = updateDto.category,
-                status = updateDto.status,
-                photoUrl = updateDto.photoUrl
-            )
-
-            val productResponse = apiService.updateProduct(productUpdate,itemId)
-            if(!productResponse.isSuccessful){
-                return Result.failure(
-                    java.lang.Exception(
-                        "Error al actualizar el producto: ${
-                            productResponse.errorBody()?.string()
-                        }"
-                    )
-                )
+    suspend fun updateProduct(
+        itemId: Int,
+        updateDto: ProductUpdateDto
+    ): Result<ProductData> {
+        return try {
+            // Llamada al API con parámetros en el orden correcto
+            val resp = apiService.updateProduct(itemId, updateDto)
+            if (!resp.isSuccessful) {
+                return Result.failure(Exception("Error al actualizar: ${resp.errorBody()?.string()}"))
             }
 
-            val product = productResponse.body()?: return Result.failure(Exception("Respuesta del prodcuto vacia"))
+            // Aquí .body() es ProductResponse, así que sacamos .data
+            val wrapper = resp.body()
+                ?: return Result.failure(Exception("Respuesta vacía del servidor"))
 
+            val dto = wrapper.data
 
+            // Y devolvemos tu DTO original
             Result.success(
                 ProductData(
-                    title = product.title,
-                    description = product.description,
-                    pricePerDay = product.pricePerDay,
-                    category = product.category,
-                    status = product.status,
-                    photoUrl = product.photoUrl,
-                    availability = product.availability
+                    title        = dto.title,
+                    description  = dto.description,
+                    pricePerDay  = dto.pricePerDay,
+                    category     = dto.category,
+                    status       = dto.status,
+                    photoUrl     = dto.photoUrl,
+                    availability = dto.availability
                 )
             )
-        }catch (e: Exception){
+        } catch (e: Exception) {
             Result.failure(e)
         }
     }

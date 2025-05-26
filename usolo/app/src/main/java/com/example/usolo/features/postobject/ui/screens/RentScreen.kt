@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.usolo.features.auth.data.sources.local.LocalDataSourceProvider
 import com.example.usolo.features.postobject.data.model.RentProduct
 import com.example.usolo.features.postobject.ui.components.CategorySection
 import com.example.usolo.features.postobject.ui.components.ImageCarousel
@@ -20,9 +21,11 @@ import com.example.usolo.features.postobject.ui.components.InputSection
 import com.example.usolo.features.postobject.ui.components.PrimaryButton
 import com.example.usolo.features.postobject.ui.theme.BackgroundColor
 import com.example.usolo.features.postobject.ui.viewmodel.RentProductViewModel
+import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.runBlocking
 
 @Composable
-fun PublicObjet( loginController: NavController) {
+fun PublicObjet(loginController: NavController) {
     val context = LocalContext.current
     val resolver = context.contentResolver
     val viewModel = remember { RentProductViewModel() }
@@ -49,11 +52,11 @@ fun PublicObjet( loginController: NavController) {
             verticalArrangement = Arrangement.spacedBy(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Spacer(modifier = Modifier.height(8.dp)) // espacio inicial adicional
+            Spacer(modifier = Modifier.height(8.dp))
 
             Header(loginController = loginController)
 
-            Spacer(modifier = Modifier.height(5.dp)) // espacio inicial adicional
+            Spacer(modifier = Modifier.height(5.dp))
 
             InputSection(
                 title = "Título",
@@ -86,26 +89,48 @@ fun PublicObjet( loginController: NavController) {
 
             ImageCarousel(onImageSelected = { uri -> selectedImageUri = uri })
 
-            PrimaryButton("Publicar") { 
-                val producto = RentProduct(
+            PrimaryButton("Publicar") {
+                val profileId = runBlocking {
+                    LocalDataSourceProvider.get().getProfileId().firstOrNull()
+                }?.toIntOrNull() ?: 0
+
+                val priceValue = precio.toDoubleOrNull() ?: 0.0
+                val categoryId = obtenerCategoryIdDesdeNombre(selectedCategory)
+
+                viewModel.publishWithImage(
                     title = titulo,
                     description = descripcion,
-                    price_per_day = precio.toDoubleOrNull() ?: 0.0,
-                    category = selectedCategory
+                    price = priceValue,
+                    categoryId = categoryId,
+                    imageUri = selectedImageUri,
+                    profileId = profileId,
+                    resolver = resolver
                 )
+            }
+        }
 
-                viewModel.publishWithImage(producto, resolver, selectedImageUri)
-
-                publishState?.let {
-                    if (it.isSuccess) {
-                        loginController.popBackStack()
-                    } else {
-                        Log.e("PublicObjet", "Error: ${it.exceptionOrNull()?.message}")
+        LaunchedEffect(publishState) {
+            publishState?.let {
+                if (it.isSuccess) {
+                    loginController.navigate("rental_registration") {
+                        popUpTo("rental_registration") { inclusive = true }
                     }
+                } else {
+                    Log.e("PublicObjet", "Error: ${it.exceptionOrNull()?.message}")
                 }
-
-
             }
         }
     }
 }
+
+fun obtenerCategoryIdDesdeNombre(nombre: String): Int {
+    return when (nombre) {
+        "Hogar" -> 1
+        "Electrónica" -> 2
+        "Deportes" -> 3
+        "Moda" -> 4
+        "Otras" -> 5
+        else -> 0
+    }
+}
+

@@ -14,7 +14,7 @@ import retrofit2.http.Part
 
 interface DirectusApi {
 
-    @POST("items/Items_Published") // o "items/item" si ese es tu endpoint real
+    @POST("items/item")
     suspend fun createRentProduct(
         @Body product: RentProduct,
         @Header("Authorization") token: String

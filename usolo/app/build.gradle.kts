@@ -57,6 +57,7 @@ dependencies {
     implementation(libs.androidx.espresso.core)
     implementation(libs.androidx.runtime.livedata)
     implementation(libs.firebase.appdistribution.gradle)
+    implementation(libs.transport.api)
     val retrofitVersion = "2.9.0"
 
     implementation("com.squareup.retrofit2:retrofit:$retrofitVersion")

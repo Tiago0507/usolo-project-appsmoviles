@@ -22,7 +22,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import coil3.compose.AsyncImage
+import coil.compose.AsyncImage
 import com.example.usolo.features.menu.ui.components.UserProfileSection
 import com.example.usolo.features.rental_registration.domain.model.RentalItem
 import com.example.usolo.features.rental_registration.utils.toDirectusImageUrl

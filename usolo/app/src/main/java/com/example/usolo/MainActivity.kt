@@ -118,8 +118,8 @@ fun App() {
         ) {
             SignUpScreen(loginController = loginController)
         }
-        composable("email_signup"){
-            EmailSignUpScreen(navController = loginController, viewModel = signUpViewModel )
+        composable("email_signup") {
+            EmailSignUpScreen(navController = loginController, viewModel = signUpViewModel)
         }
         composable(
             "menu",
@@ -159,10 +159,11 @@ fun App() {
                 RentalRegistrationScreen(
                     navController = loginController,
                     userId = profileId!!,
-                    onCreateProductClick = { /*...*/ },
+                    onCreateProductClick = {loginController.navigate("PublishProduct")},
                     onCreateRentalClick = { /*...*/ }
                 )
             }
+        }
 
 
         composable(
@@ -172,16 +173,7 @@ fun App() {
         ) {
             PublicObjet(loginController = loginController)
         }
+
+
     }
-}
-
-
-
-
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    val loginController = rememberNavController()
-    SignUpScreen(loginController)
 }

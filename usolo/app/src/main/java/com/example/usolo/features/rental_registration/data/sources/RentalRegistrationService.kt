@@ -8,10 +8,12 @@ import retrofit2.http.Header
 import retrofit2.http.Query
 
 interface RentalRegistrationService {
+
     @GET("/items/item")
     suspend fun getMyPublishedItems(
         @Header("Authorization") token: String,
-        @Query("filter[profile_id][_eq]") userId: String
+        @Query("filter[profile_id][_eq]") userId: String,
+        @Query("fields") fields: String = "*"
     ): DirectusResponse<List<RentalItem>>
 
     @GET("/items/reservation")

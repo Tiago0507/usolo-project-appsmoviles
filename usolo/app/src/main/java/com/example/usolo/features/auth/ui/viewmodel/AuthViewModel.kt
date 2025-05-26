@@ -24,18 +24,24 @@ class AuthViewModel(
     fun login(email:String, password:String) {
         viewModelScope.launch(Dispatchers.IO) {
             authState.value = AuthState(state = LOADING_AUTH_STATE)
+
             val result = authRepository.login(LoginData(email, password))
+
             if (result.isSuccess) {
-                val userId = LocalDataSourceProvider.get().getProfileId().firstOrNull() ?: ""
+                val profileId = LocalDataSourceProvider.get().getProfileId().firstOrNull() ?: ""
                 authState.value = AuthState(
                     state = AUTH_STATE,
-                    userId = userId
+                    userId = profileId
                 )
             } else {
-                authState.value = AuthState(state = ERROR_AUTH_STATE, errorMessage = result.exceptionOrNull()?.message)
+                authState.value = AuthState(
+                    state = ERROR_AUTH_STATE,
+                    errorMessage = result.exceptionOrNull()?.message
+                )
             }
         }
     }
+
 
     fun getAuthStatus() {
         viewModelScope.launch (Dispatchers.IO){
@@ -68,6 +74,7 @@ data class AuthState(
     var errorMessage: String? = null,
     var userId: String? = null
 )
+
 
 var AUTH_STATE = "AUTH"
 var NO_AUTH_STATE = "NO_AUTH"

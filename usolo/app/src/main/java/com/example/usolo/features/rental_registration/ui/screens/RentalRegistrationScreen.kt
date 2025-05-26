@@ -21,8 +21,10 @@ fun RentalRegistrationScreen(
     onCreateProductClick: () -> Unit,
     onCreateRentalClick: () -> Unit,
     viewModel: RentalRegistrationViewModel = viewModel()
+
 ) {
     val uiState by viewModel.uiState.collectAsState()
+
 
     LaunchedEffect(userId) {
         if (userId.isEmpty()) {
