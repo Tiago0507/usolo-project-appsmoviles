@@ -18,14 +18,15 @@ class AuthRepository(
     suspend fun login(loginData: LoginData): Result<Unit> {
         return try {
             val response = authService.login(loginData)
-
             val accessToken = response.data.access_token
             LocalDataSourceProvider.get().save("accesstoken", accessToken)
 
+            // Obtener ID de usuario autenticado
             val userResponse = authService.getMe("Bearer $accessToken")
             val directusUserId = userResponse.data.id
             LocalDataSourceProvider.get().save("directus_user_id", directusUserId)
 
+            // Obtener profileId
             val profileId = getProfileId(directusUserId, accessToken)
             if (profileId != null) {
                 LocalDataSourceProvider.get().saveProfileId("profile_id", profileId)
@@ -54,9 +55,6 @@ class AuthRepository(
         }
     }
 
-
-
-
     suspend fun getAccessToken(): String? {
         val token = LocalDataSourceProvider.get().load("accesstoken").firstOrNull()
         Log.d("AUTH_REPO", "Token obtenido: ${token?.take(10) ?: "null"}...")
@@ -70,6 +68,7 @@ class AuthRepository(
             } else {
                 authService.logout()
             }
+
             LocalDataSourceProvider.get().clearUserData()
             LocalDataSourceProvider.get().dataStore.edit { prefs ->
                 prefs.remove(stringPreferencesKey("accesstoken"))

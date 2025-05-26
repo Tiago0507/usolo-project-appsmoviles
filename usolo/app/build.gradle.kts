@@ -49,6 +49,12 @@ android {
 
 dependencies {
     implementation("io.coil-kt:coil-compose:2.4.0")
+
+    implementation("io.coil-kt.coil3:coil-compose:3.0.4")
+    implementation("io.coil-kt.coil3:coil-network-okhttp:3.0.4")
+    implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
+    implementation("io.coil-kt:coil-compose:2.5.0")
+
     implementation("androidx.datastore:datastore-preferences:1.1.4");
     implementation("androidx.navigation:navigation-compose:2.7.7")
     implementation("com.google.code.gson:gson:2.12.1")

@@ -15,8 +15,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.usolo.features.menu.data.model.Product
+import coil.compose.rememberAsyncImagePainter
 import com.example.usolo.features.menu.ui.viewmodel.ProductListViewModel
+import com.example.usolo.features.products.data.dto.ProductData
 
 @Composable
 fun ProductList(viewModel: ProductListViewModel = viewModel()) {
@@ -35,7 +36,7 @@ fun ProductList(viewModel: ProductListViewModel = viewModel()) {
 }
 
 @Composable
-fun ProductCard(product: Product) {
+fun ProductCard(product: ProductData) {
     Card(
         modifier = Modifier
             .width(200.dp)
@@ -49,9 +50,11 @@ fun ProductCard(product: Product) {
                 .fillMaxSize()
                 .padding(8.dp)
         ) {
+            val imageUrl = product.photo ?: ""
+
             Image(
-                painter = painterResource(id = product.imageRes),
-                contentDescription = product.name,
+                painter = rememberAsyncImagePainter(model = imageUrl),
+                contentDescription = product.title,
                 modifier = Modifier
                     .height(120.dp)
                     .fillMaxWidth(),
@@ -60,12 +63,12 @@ fun ProductCard(product: Product) {
             Spacer(modifier = Modifier.height(8.dp))
 
             Text(
-                text = product.name,
+                text = product.title,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.padding(horizontal = 4.dp)
             )
             Text(
-                text = product.pricePerDay,
+                text = "$${product.price_per_day}",
                 modifier = Modifier.padding(horizontal = 4.dp)
             )
             Spacer(modifier = Modifier.height(8.dp))

@@ -16,7 +16,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.zIndex // Importar zIndex
+import androidx.compose.ui.zIndex
 import androidx.navigation.NavController
 
 @Composable
@@ -33,10 +33,9 @@ fun TopBar(
                     colors = listOf(Color(0xFFF83000), Color(0xFFFF6600))
                 )
             )
-            .zIndex(1f)        // por encima de contenido
+            .zIndex(1f)
             .padding(16.dp)
     ) {
-        // 1) Row con los iconos
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween
@@ -44,14 +43,16 @@ fun TopBar(
             IconButton(onClick = { loginController.navigate("settings") }) {
                 Icon(Icons.Default.Menu, contentDescription = "Menu", tint = Color.White)
             }
-            IconButton(onClick = {  loginController.navigate("rental_registration") }) {
+            IconButton(onClick = {
+                // Puedes controlar esto con una condición si lo necesitas
+                onCartClick()
+            }) {
                 Icon(Icons.Default.ShoppingCart, contentDescription = "Cart", tint = Color.White)
             }
         }
 
         Spacer(modifier = Modifier.height(12.dp))
 
-        // 2) Título (ocupa todo el ancho)
         Text(
             text = "Artículos sin complicaciones",
             color = Color.White,
@@ -62,7 +63,6 @@ fun TopBar(
 
         Spacer(modifier = Modifier.height(12.dp))
 
-        // 3) SearchBar, si usás un componente propio
         SearchBar(modifier = Modifier.fillMaxWidth())
     }
 }

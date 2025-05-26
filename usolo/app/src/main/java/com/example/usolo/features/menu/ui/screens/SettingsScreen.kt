@@ -10,6 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -108,7 +109,8 @@ fun LogoutButton(loginController: NavHostController, viewModel: AuthViewModel = 
         Text(
             text = "Cerrar sesión",
             color = Color(0xFFF83000),
-            fontSize = 18.sp
+            fontSize = 18.sp,
+            textAlign = TextAlign.Center
         )
     }
 }
