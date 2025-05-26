@@ -1,5 +1,6 @@
 package com.example.usolo.features.rental_registration.data.dto
 
+
 import com.squareup.moshi.Json
 
 data class RentalItemDTO(

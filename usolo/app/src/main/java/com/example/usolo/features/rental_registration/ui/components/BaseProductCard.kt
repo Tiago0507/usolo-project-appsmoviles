@@ -1,43 +1,39 @@
+package com.example.usolo.features.rental_registration.ui.components
+
 import android.util.Log
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.ImageLoader
 import coil.compose.AsyncImage
-import com.example.usolo.features.menu.ui.components.UserProfileSection
+import coil.request.ImageRequest
 import com.example.usolo.features.rental_registration.domain.model.RentalItem
 import com.example.usolo.features.rental_registration.utils.toDirectusImageUrl
 
 @Composable
 fun BaseProductCard(
     rentalItem: RentalItem,
+    token: String,
     onClick: (() -> Unit)? = null
 ) {
     Card(
         modifier = Modifier
-            .width(180.dp)  // Reducido para mejor proporción
-            .height(260.dp), // Ajustado para mejor distribución
-        shape = RoundedCornerShape(16.dp), // Bordes más redondeados como el modelo
-        elevation = CardDefaults.cardElevation(8.dp), // Sombra más pronunciada
+            .width(180.dp)
+            .height(260.dp),
+        shape = RoundedCornerShape(16.dp),
+        elevation = CardDefaults.cardElevation(8.dp),
         colors = CardDefaults.cardColors(
             containerColor = Color.White
         ),
@@ -46,30 +42,28 @@ fun BaseProductCard(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(0.dp), // Sin padding general para maximizar espacio
+                .padding(0.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Top
         ) {
-            // Contenedor de imagen con fondo redondeado
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(140.dp) // Más espacio para la imagen
-                    .padding(12.dp) // Padding solo alrededor de la imagen
+                    .height(140.dp)
+                    .padding(12.dp)
             ) {
                 val imageUrl = rentalItem.photo.toDirectusImageUrl()
                 Log.d(">>> IMAGE URL", "URL generada: $imageUrl")
-                AsyncImage(
-                    model = imageUrl,
-                    contentDescription = rentalItem.title,
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .clip(RoundedCornerShape(12.dp)), // Bordes redondeados en la imagen
-                    contentScale = ContentScale.Crop
-                )
+
+                if (!imageUrl.isNullOrEmpty()) {
+                    AuthenticatedImage(
+                        url = imageUrl,
+                        title = rentalItem.title,
+                        token = token
+                    )
+                }
             }
 
-            // Contenedor del texto con padding específico
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -79,10 +73,10 @@ fun BaseProductCard(
                 Text(
                     text = rentalItem.title,
                     fontWeight = FontWeight.SemiBold,
-                    fontSize = 16.sp, // Tamaño específico
+                    fontSize = 16.sp,
                     color = Color.Black,
                     textAlign = TextAlign.Center,
-                    maxLines = 2, // Máximo 2 líneas para el título
+                    maxLines = 2,
                     modifier = Modifier.fillMaxWidth()
                 )
 
@@ -91,15 +85,33 @@ fun BaseProductCard(
                 Text(
                     text = "$${rentalItem.pricePerDay} por día",
                     fontWeight = FontWeight.Bold,
-                    fontSize = 18.sp, // Tamaño más grande para el precio
+                    fontSize = 18.sp,
                     color = Color.Black,
                     textAlign = TextAlign.Center,
                     modifier = Modifier.fillMaxWidth()
                 )
             }
 
-            // Spacer para empujar el contenido hacia arriba
             Spacer(modifier = Modifier.weight(1f))
         }
     }
+}
+
+@Composable
+fun AuthenticatedImage(url: String, title: String, token: String) {
+    val context = LocalContext.current
+    val imageRequest = ImageRequest.Builder(context)
+        .data(url)
+        .addHeader("Authorization", "Bearer $token")
+        .crossfade(true)
+        .build()
+
+    AsyncImage(
+        model = imageRequest,
+        contentDescription = title,
+        modifier = Modifier
+            .fillMaxSize()
+            .clip(RoundedCornerShape(12.dp)),
+        contentScale = ContentScale.Crop
+    )
 }
