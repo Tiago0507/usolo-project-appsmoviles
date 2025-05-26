@@ -93,7 +93,33 @@ class ListProductRepository {
 
     suspend fun getProduct(itemId: String): Result<ProductData> {
         return try {
-            val productResponse = apiService.getProduct(itemId)
+            val productResponse = apiService.getProductsByProfileId(profileId)
+            if (!productResponse.isSuccessful) {
+                return Result.failure(
+                    Exception(
+                        "Error al obtener producto: ${
+                            productResponse.errorBody()?.string()
+                        }"
+                    )
+                )
+            }
+
+            val productContainer = productResponse.body() ?: return Result.failure(
+                Exception("Respuesta del producto vacía")
+            )
+
+            // Accedemos a .data que contiene el producto individual
+            val product = productContainer.data
+            Log.e(">>>", product.toString())
+
+            Result.success(product)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+    suspend fun getProductsByProfileId(profileId: Int): Result<List<ProductData>> {
+        return try {
+            val productResponse = apiService.getProductsByProfileId(profileId)
             if (!productResponse.isSuccessful) {
                 return Result.failure(
                     Exception(

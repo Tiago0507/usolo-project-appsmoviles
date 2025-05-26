@@ -26,7 +26,9 @@ import androidx.navigation.NavController
 import com.example.usolo.features.menu.data.model.Product
 import com.example.usolo.features.menu.data.model.ProductData
 import com.example.usolo.features.menu.data.model.ProductWithUser
+import coil.compose.rememberAsyncImagePainter
 import com.example.usolo.features.menu.ui.viewmodel.ProductListViewModel
+import com.example.usolo.features.products.data.dto.ProductData
 
 @Composable
 fun ProductList(navController: NavController, viewModel: ProductListViewModel = viewModel()) {
@@ -121,10 +123,11 @@ fun ProductCard(product: ProductWithUser, onClick: () -> Unit) {
                 .fillMaxSize()
                 .padding(8.dp)
         ) {
-            // usar Coil para cargar desde URL
+            val imageUrl = product.userPhoto ?: ""
+
             Image(
-                painter = painterResource(id = R.drawable.silla_gamer),
-                contentDescription = product.product.description,
+                painter = rememberAsyncImagePainter(model = imageUrl),
+                contentDescription = product.title,
                 modifier = Modifier
                     .height(120.dp)
                     .fillMaxWidth(),

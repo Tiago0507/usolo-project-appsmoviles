@@ -8,8 +8,6 @@ import com.example.usolo.features.auth.data.sources.AuthService
 import com.example.usolo.features.auth.data.sources.local.LocalDataSourceProvider
 import kotlinx.coroutines.flow.firstOrNull
 import retrofit2.HttpException
-import retrofit2.Retrofit
-import java.io.IOException
 
 class AuthRepository(
     val authService: AuthService = RetrofitConfig.directusRetrofit.create(AuthService::class.java)
@@ -17,9 +15,19 @@ class AuthRepository(
 
     suspend fun login(loginData: LoginData): Result<Unit> {
         return try {
+
             val response = authService.login(loginData)
-            LocalDataSourceProvider.get().save("accesstoken", response.data.access_token)
-            Log.e(">>>", response.data.access_token)
+            val accessToken = response.data.access_token
+
+            val userResponse = authService.getCurrentUser("Bearer $accessToken")
+            val userId = userResponse.data.id
+
+            val profileResponse = authService.getCurrentUserProfile(accessToken, userId)
+            val userProfileId = profileResponse.data.firstOrNull()?.id
+
+            LocalDataSourceProvider.get().save("accesstoken", accessToken)
+            LocalDataSourceProvider.get().save("user_profile", userProfileId.toString())
+
             Result.success(Unit)
         } catch (e: HttpException) {
             Result.failure(Exception("Correo o contraseña incorrectos"))
@@ -48,4 +56,6 @@ class AuthRepository(
             false
         }
     }
+
+
 }

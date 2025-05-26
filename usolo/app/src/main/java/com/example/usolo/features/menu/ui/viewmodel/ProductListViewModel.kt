@@ -1,6 +1,7 @@
 package com.example.usolo.features.menu.ui.viewmodel
 
 import android.util.Log
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -14,7 +15,9 @@ import com.example.usolo.features.menu.data.model.UserProfileData
 import com.example.usolo.features.menu.data.repository.ListProductRepository
 import kotlinx.coroutines.launch
 
-class ProductListViewModel : ViewModel() {
+class ProductListViewModel(
+    val productsList: ListProductRepository = ListProductRepository()
+) : ViewModel() {
 
     private val repository = ListProductRepository()
 
