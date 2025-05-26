@@ -61,6 +61,7 @@ fun MainMenu(loginController: NavController, viewModel: AuthViewModel = viewMode
                     TopBar(
                         loginController = loginController,
                         onCartClick = { loginController.navigate("rental_registration") }
+
                     )
                 },
                 bottomBar = { BottomNavigationBar() }

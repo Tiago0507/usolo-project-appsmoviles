@@ -8,6 +8,7 @@ import com.example.usolo.features.auth.data.dto.LoginData
 import com.example.usolo.features.auth.data.dto.LogoutRequest
 import com.example.usolo.features.auth.data.sources.AuthService
 import com.example.usolo.features.auth.data.sources.local.LocalDataSourceProvider
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 import retrofit2.HttpException
 
@@ -83,6 +84,18 @@ class AuthRepository(
             false
         }
     }
+
+    suspend fun getUserNameByProfileId(profileId: Int): String? {
+        return try {
+            val token = LocalDataSourceProvider.get().load("accesstoken").first()
+            val response = authService.getUserProfileWithUserName("Bearer $token", profileId)
+            response.data.firstOrNull()?.user_id?.first_name
+        } catch (e: Exception) {
+            null
+        }
+    }
+
+
 
     suspend fun debugAuthData() {
         try {

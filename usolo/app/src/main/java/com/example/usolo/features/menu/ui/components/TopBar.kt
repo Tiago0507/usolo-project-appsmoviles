@@ -54,13 +54,13 @@ fun TopBar(
         Spacer(modifier = Modifier.height(12.dp))
 
         Text(
+
             text = "Artículos sin complicaciones",
             color = Color.White,
             fontSize = 24.sp,
             fontWeight = FontWeight.Bold,
             modifier = Modifier.fillMaxWidth()
         )
-
         Spacer(modifier = Modifier.height(12.dp))
 
         SearchBar(modifier = Modifier.fillMaxWidth())
