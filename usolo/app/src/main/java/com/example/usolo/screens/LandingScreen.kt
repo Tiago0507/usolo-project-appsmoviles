@@ -1,4 +1,4 @@
-package com.example.usolo.features.screens
+package com.example.usolo.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background

@@ -1,12 +1,7 @@
 package com.example.usolo.features.products.ui.screens
 
 import CreateArticleCard
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
@@ -26,19 +21,20 @@ import com.example.usolo.features.auth.ui.viewmodel.NO_AUTH_STATE
 import com.example.usolo.features.products.ui.components.ProductListOwned
 import com.example.usolo.features.products.ui.components.TopBarProducts
 
-
 @Composable
-fun ViewProductsScreen(navController: NavController, viewModel: AuthViewModel = viewModel()){
-
+fun ViewProductsScreen(
+    navController: NavController,
+    viewModel: AuthViewModel = viewModel()
+) {
     val authState by viewModel.authState.collectAsState()
 
     LaunchedEffect(Unit) {
         viewModel.getAuthStatus()
     }
 
-    when(authState.state){
+    when (authState.state) {
         NO_AUTH_STATE -> {
-            navController.navigate("login"){
+            navController.navigate("login") {
                 popUpTo(0) { inclusive = true }
                 launchSingleTop = true
             }
@@ -46,13 +42,13 @@ fun ViewProductsScreen(navController: NavController, viewModel: AuthViewModel = 
 
         IDLE_AUTH_STATE -> {
             Box(modifier = Modifier.fillMaxSize()) {
-                CircularProgressIndicator()
+                CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
             }
         }
 
         AUTH_STATE -> {
             Scaffold(
-                topBar = { TopBarProducts(loginController = navController) },
+                topBar = { TopBarProducts(loginController = navController) }
             ) { innerPadding ->
                 Column(
                     modifier = Modifier
@@ -66,5 +62,4 @@ fun ViewProductsScreen(navController: NavController, viewModel: AuthViewModel = 
             }
         }
     }
-
 }
