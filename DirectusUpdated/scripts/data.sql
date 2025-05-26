@@ -42,30 +42,30 @@ VALUES
 INSERT INTO item (title, description, price_per_day, location, availability, photo, profile_id, category_id, status_id) VALUES 
 -- Productos de Carlos Cuesta
 -- ¡OJO!: Cambiar el id del atributo photo de todos los items dependiendo del que está en Directus
-('Taladro Bosch', 'Taladro eléctrico profesional con 3 años de garantía', 20.00, 'Bogotá', true, 'a2306314-4d76-4e15-85de-d7cdda416031',
+('Taladro Bosch', 'Taladro eléctrico profesional con 3 años de garantía', 20.00, 'Bogotá', true, 'd8d5a289-a36a-4507-84c7-4ccaf494af6f',
   (SELECT id FROM user_profile WHERE user_id = (SELECT id FROM directus_users WHERE first_name = 'Carlos Cuesta')),
   (SELECT id FROM category WHERE name = 'Herramientas'),
   (SELECT id FROM item_status WHERE name = 'Disponible')),
-('Silla Gamer', 'Silla ergonómica para gaming con soporte lumbar', 25.00, 'Bogotá', true, '511f4878-f9ec-44d1-b7a7-04d8581b6d6c',
+('Silla Gamer', 'Silla ergonómica para gaming con soporte lumbar', 25.00, 'Bogotá', true, 'f4929f28-92e9-4e50-98e3-b1754a5976c3',
   (SELECT id FROM user_profile WHERE user_id = (SELECT id FROM directus_users WHERE first_name = 'Carlos Cuesta')),
   (SELECT id FROM category WHERE name = 'Muebles'),
   (SELECT id FROM item_status WHERE name = 'Disponible')),
-('Impresora láser', 'Impresora HP LaserJet Pro MFP, multifuncional', 15.00, 'Bogotá', true, '7e88b8d3-e411-4297-b345-34e024a11466',
+('Impresora láser', 'Impresora HP LaserJet Pro MFP, multifuncional', 15.00, 'Bogotá', true, '08075b49-32cb-4ef1-8b2b-bf2992feae89',
   (SELECT id FROM user_profile WHERE user_id = (SELECT id FROM directus_users WHERE first_name = 'Carlos Cuesta')),
   (SELECT id FROM category WHERE name = 'Electrónica'),
   (SELECT id FROM item_status WHERE name = 'Disponible')),
 
 -- Productos de Sandra Lozano
 -- ¡OJO!: Cambiar el id del atributo photo de todos los items dependiendo del que está en Directus
-('Bicicleta MTB', 'Bicicleta de montaña marca Trek, modelo 2023', 30.00, 'Medellín', true, 'a1210d30-51ae-4096-911c-c5b841d7ec18',
+('Bicicleta MTB', 'Bicicleta de montaña marca Trek, modelo 2023', 30.00, 'Medellín', true, '522db6d7-037f-4f42-9477-06aa73f10578',
   (SELECT id FROM user_profile WHERE user_id = (SELECT id FROM directus_users WHERE first_name = 'Sandra Lozano')),
   (SELECT id FROM category WHERE name = 'Deportes'),
   (SELECT id FROM item_status WHERE name = 'Disponible')),
-('Mouse inalámbrico', 'Mouse Logitech MX Master 3, como nuevo', 10.00, 'Medellín', true, '651c8223-8991-4796-a2d2-82d8f4bde33e',
+('Mouse inalámbrico', 'Mouse Logitech MX Master 3, como nuevo', 10.00, 'Medellín', true, 'b153d4b7-efab-4f29-a938-bb7ecbbbf2d6',
   (SELECT id FROM user_profile WHERE user_id = (SELECT id FROM directus_users WHERE first_name = 'Sandra Lozano')),
   (SELECT id FROM category WHERE name = 'Electrónica'),
   (SELECT id FROM item_status WHERE name = 'Disponible')),
-('Televisor LG 55"', 'Smart TV 4K con Android TV integrado', 25.00, 'Medellín', true, '7a36c80a-8f91-43a9-8716-3a420a0bb020',
+('Televisor LG 55"', 'Smart TV 4K con Android TV integrado', 25.00, 'Medellín', true, '8ab32c4b-8b24-494f-b20f-23c4e8968a73',
   (SELECT id FROM user_profile WHERE user_id = (SELECT id FROM directus_users WHERE first_name = 'Sandra Lozano')),
   (SELECT id FROM category WHERE name = 'Electrónica'),
   (SELECT id FROM item_status WHERE name = 'Disponible'));
