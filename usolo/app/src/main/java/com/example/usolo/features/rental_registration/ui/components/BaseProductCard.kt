@@ -27,6 +27,7 @@ fun BaseProductCard(
     rentalItem: RentalItem,
     token: String,
     onClick: (() -> Unit)? = null
+
 ) {
     Card(
         modifier = Modifier

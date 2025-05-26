@@ -11,7 +11,7 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 object RetrofitConfig {
 
     private val moshi = Moshi.Builder()
-        .add(UUIDAdapter()) // 👈 Añade el adaptador
+        .add(UUIDAdapter()) //
         .add(KotlinJsonAdapterFactory())
         .build()
 

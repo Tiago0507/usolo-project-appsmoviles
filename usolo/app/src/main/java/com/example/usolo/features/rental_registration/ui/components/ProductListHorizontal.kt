@@ -11,20 +11,16 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.usolo.features.rental_registration.domain.model.RentalItem
 import com.example.usolo.features.auth.data.repository.AuthRepository
-
 @Composable
 fun ProductListHorizontal(
     publishedItems: List<RentalItem>,
     rentedItems: List<RentalItem>,
+    token: String,
     onCreateProductClick: () -> Unit,
-    onCreateRentalClick: () -> Unit
+    onCreateRentalClick: () -> Unit,
+    onProductClick: (Int) -> Unit
 ) {
-    val token by produceState(initialValue = "") {
-        value = AuthRepository().getAccessToken() ?: ""
-    }
-
     Column {
-        // Sección: Mis artículos publicados
         Text(
             text = "Mis artículos publicados",
             modifier = Modifier.padding(start = 16.dp, bottom = 8.dp),
@@ -41,13 +37,16 @@ fun ProductListHorizontal(
             }
 
             items(publishedItems) { product ->
-                BaseProductCard(rentalItem = product, token = token)
+                BaseProductCard(
+                    rentalItem = product,
+                    token = token,
+                    onClick = { onProductClick(product.id) }
+                )
             }
         }
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        // Sección: Mis alquileres
         Text(
             text = "Mis alquileres",
             modifier = Modifier.padding(start = 16.dp, bottom = 8.dp),
@@ -64,7 +63,11 @@ fun ProductListHorizontal(
             }
 
             items(rentedItems) { product ->
-                BaseProductCard(rentalItem = product, token = token)
+                BaseProductCard(
+                    rentalItem = product,
+                    token = token,
+                    onClick = { onProductClick(product.id) }
+                )
             }
         }
 

@@ -11,6 +11,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.example.usolo.features.auth.data.sources.local.LocalDataSourceProvider
 import com.example.usolo.features.rental_registration.ui.components.*
 import com.example.usolo.features.rental_registration.ui.viewmodel.RentalRegistrationViewModel
 
@@ -21,10 +22,12 @@ fun RentalRegistrationScreen(
     onCreateProductClick: () -> Unit,
     onCreateRentalClick: () -> Unit,
     viewModel: RentalRegistrationViewModel = viewModel()
-
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
+    // Token necesario para mostrar imágenes privadas
+    val tokenFlow = LocalDataSourceProvider.get().load("accesstoken")
+    val token by tokenFlow.collectAsState(initial = "")
 
     LaunchedEffect(userId) {
         if (userId.isEmpty()) {
@@ -35,7 +38,6 @@ fun RentalRegistrationScreen(
             viewModel.loadItems(userId)
         }
     }
-
 
     Scaffold(
         topBar = { TopBarSimple(navController) }
@@ -67,8 +69,12 @@ fun RentalRegistrationScreen(
                     ProductListHorizontal(
                         publishedItems = uiState.publishedItems,
                         rentedItems = uiState.rentedItems,
+                        token = token,
                         onCreateProductClick = onCreateProductClick,
-                        onCreateRentalClick = onCreateRentalClick
+                        onCreateRentalClick = onCreateRentalClick,
+                        onProductClick = { productId ->
+                            navController.navigate("edit_product/$productId")
+                        }
                     )
                 }
             }

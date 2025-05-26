@@ -1,6 +1,7 @@
 package com.example.usolo.features.products.ui.screens
 
 
+import ProductPreviewCard
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -26,7 +27,6 @@ import com.example.usolo.features.products.data.dto.ProductUpdateDto
 import com.example.usolo.features.products.ui.components.ActionButtons
 import com.example.usolo.features.products.ui.components.CategoryDropdown
 import com.example.usolo.features.products.ui.components.ProductInputFields
-import com.example.usolo.features.products.ui.components.ProductPreviewCard
 import com.example.usolo.features.products.ui.components.StatusDropdown
 import com.example.usolo.features.products.ui.components.TopBarSection
 import com.example.usolo.features.products.ui.viewmodel.EditProductViewModel

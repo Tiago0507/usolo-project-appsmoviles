@@ -9,7 +9,7 @@ data class DirectusResponseProducts<T>(
 data class ProductUpdateDto(
     val title: String,
     val description: String,
-    val price_per_day: Number,
+    val price_per_day: Double,
     val category_id: Int,
     val status_id: Int,
     val photo: String
@@ -20,7 +20,7 @@ data class ProductData(
     val id: Int,
     val title: String,
     val description: String,
-    val price_per_day: Number,
+    val price_per_day: Double,
     val category_id: Int,
     val status_id: Int,
     val profile_id: Int,
