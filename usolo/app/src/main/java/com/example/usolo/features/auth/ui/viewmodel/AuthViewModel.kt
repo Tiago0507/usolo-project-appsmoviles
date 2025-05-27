@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.usolo.features.auth.data.dto.LoginData
 
 import com.example.usolo.features.auth.data.repository.AuthRepository
+import com.example.usolo.features.auth.data.repository.AuthRepositoryImpl
 import com.example.usolo.features.auth.data.sources.local.LocalDataSourceProvider
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,7 +15,7 @@ import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 
 class AuthViewModel(
-    val authRepository: AuthRepository = AuthRepository()
+    private val authRepository: AuthRepository = AuthRepositoryImpl()
 ): ViewModel() {
 
     var authState: MutableStateFlow<AuthState> = MutableStateFlow<AuthState>(AuthState())

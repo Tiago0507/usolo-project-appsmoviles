@@ -1,6 +1,5 @@
 package com.example.usolo.features.menu.ui.screens
 
-
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer

@@ -14,7 +14,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.usolo.features.auth.data.sources.local.LocalDataSourceProvider
-import com.example.usolo.features.postobject.data.model.RentProduct
 import com.example.usolo.features.postobject.ui.components.CategorySection
 import com.example.usolo.features.postobject.ui.components.ImageCarousel
 import com.example.usolo.features.postobject.ui.components.InputSection

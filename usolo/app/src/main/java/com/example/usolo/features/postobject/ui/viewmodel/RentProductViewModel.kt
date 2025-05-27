@@ -5,8 +5,9 @@ import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.usolo.features.auth.data.repository.AuthRepository
-import com.example.usolo.features.postobject.data.model.RentProduct
-import com.example.usolo.features.postobject.data.model.remote.ApiClient
+import com.example.usolo.features.auth.data.repository.AuthRepositoryImpl
+import com.example.usolo.features.postobject.domain.model.RentProduct
+import com.example.usolo.features.postobject.domain.model.remote.ApiClient
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -19,7 +20,7 @@ class RentProductViewModel : ViewModel() {
     private val _publishState = MutableStateFlow<Result<Unit>?>(null)
     val publishState: StateFlow<Result<Unit>?> = _publishState
 
-    private val authRepository = AuthRepository()
+    private val authRepository = AuthRepositoryImpl()
 
     fun publishWithImage(
         title: String,

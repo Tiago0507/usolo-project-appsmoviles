@@ -1,5 +1,6 @@
-package com.example.usolo.features.postobject.data.model.remote
+package com.example.usolo.features.postobject.domain.model.remote
 
+import com.example.usolo.features.postobject.data.repository.sources.DirectusApi
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 

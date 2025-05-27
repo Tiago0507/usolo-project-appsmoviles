@@ -1,4 +1,4 @@
-package com.example.usolo.features.postobject.data.model.remote
+package com.example.usolo.features.postobject.domain.model.remote
 
 data class UploadResponse(
     val data: UploadedFile

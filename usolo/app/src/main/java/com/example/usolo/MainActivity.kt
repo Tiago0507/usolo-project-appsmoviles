@@ -31,6 +31,7 @@ import com.example.usolo.features.auth.data.sources.local.LocalDataSourceProvide
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.usolo.features.auth.data.repository.AuthRepository
+import com.example.usolo.features.auth.data.repository.AuthRepositoryImpl
 import com.example.usolo.features.auth.ui.viewmodel.AuthViewModel
 import com.example.usolo.features.registration.ui.screens.EmailSignUpScreen
 import com.example.usolo.features.registration.ui.viewmodel.SignUpViewModel
@@ -54,7 +55,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
 
         CoroutineScope(Dispatchers.IO).launch {
-            val authRepo = AuthRepository()
+            val authRepo = AuthRepositoryImpl()
             authRepo.debugAuthData()
         }
 
