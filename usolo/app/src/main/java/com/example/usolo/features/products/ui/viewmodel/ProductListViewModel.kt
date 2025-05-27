@@ -6,13 +6,14 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.viewModelScope
 import com.example.usolo.features.auth.data.sources.local.LocalDataSourceProvider
 import com.example.usolo.features.menu.data.repository.ListProductRepository
+import com.example.usolo.features.menu.data.repository.ListProductRepositoryImpl
 import com.example.usolo.features.products.data.dto.ProductData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 
 class ProductListViewModel(
-    private val productsList: ListProductRepository = ListProductRepository()
+    private val productsList: ListProductRepository = ListProductRepositoryImpl()
 ) : ViewModel() {
 
     private val _products = mutableStateListOf<ProductData>()
