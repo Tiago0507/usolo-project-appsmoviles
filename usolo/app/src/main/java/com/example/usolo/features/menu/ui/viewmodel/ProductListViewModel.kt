@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.usolo.features.auth.data.sources.local.LocalDataSourceProvider
 import com.example.usolo.features.menu.data.repository.ListProductRepository
 import com.example.usolo.features.menu.data.repository.UserRepository
 import com.example.usolo.features.products.data.dto.ProductData
@@ -30,14 +31,24 @@ class ProductListViewModel(
 
     private fun showProducts() {
         viewModelScope.launch(Dispatchers.IO) {
+            // Obtener tu propio profile ID
+            val userProfileId = LocalDataSourceProvider.get().load("user_profile").firstOrNull()?.toIntOrNull()
+
+            if (userProfileId == null) {
+                Log.e("ProductListViewModel", "No se encontró un profile_id válido")
+                return@launch
+            }
+
             val result = productsList.getProducts()
 
             result.onSuccess { productDataList ->
-                _products.clear()
-                _products.addAll(productDataList)
+                val filteredProducts = productDataList.filter { it.profile_id != userProfileId }
 
-                // Obtener nombres de usuario basados en profile_id
-                productDataList.forEach { product ->
+                _products.clear()
+                _products.addAll(filteredProducts)
+
+                // Obtener nombres de usuario para los productos restantes
+                filteredProducts.forEach { product ->
                     val profileId = product.profile_id
                     if (profileId != 0 && !_userNames.containsKey(profileId)) {
                         val nameResult = userRepository.getUserNameByProfileId(profileId)

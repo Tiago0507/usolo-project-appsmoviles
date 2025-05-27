@@ -31,6 +31,8 @@ class AuthRepository(
             val profileId = getProfileId(directusUserId, accessToken)
             if (profileId != null) {
                 LocalDataSourceProvider.get().saveProfileId("profile_id", profileId)
+                LocalDataSourceProvider.get().save("user_profile", profileId)
+
                 Log.d("AUTH_REPO", "Login exitoso - ProfileId: $profileId")
             } else {
                 Log.w("AUTH_REPO", "No se encontró profile para el usuario: $directusUserId")
