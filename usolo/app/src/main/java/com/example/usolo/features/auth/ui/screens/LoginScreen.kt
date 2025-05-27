@@ -1,5 +1,4 @@
-package com.example.usolo.features.screens
-
+package com.example.usolo.features.auth.ui.screens
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
@@ -16,6 +15,7 @@ import androidx.navigation.NavController
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.clickable
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.usolo.R
 import com.example.usolo.features.auth.ui.viewmodel.AUTH_STATE
@@ -113,5 +113,6 @@ fun LoginScreen(viewModel: AuthViewModel = viewModel(), loginController: NavCont
             Text("Iniciar sesión", color = Color.White)
         }
     }
+
 
 }

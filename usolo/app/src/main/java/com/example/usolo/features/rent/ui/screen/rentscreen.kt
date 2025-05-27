@@ -2,31 +2,30 @@ package com.example.usolo.features.rent.ui.screen
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.automirrored.filled.ArrowBackIos
-import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material.icons.automirrored.filled.ArrowRight
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-
-import com.example.usolo.features.rent.ui.viewmodel.NuevaPantallaViewModel
+import androidx.navigation.NavController
+import com.example.usolo.features.menu.ui.viewmodel.FakeAuthViewModel
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.usolo.features.rent.ui.viewmodel.RentViewModel
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RentPaymentScreen(
-    viewModel: NuevaPantallaViewModel = NuevaPantallaViewModel()
+    loginController:NavController,
+    viewModel: RentViewModel = viewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
@@ -45,13 +44,17 @@ fun RentPaymentScreen(
             )
         }
     ) { paddingValues ->
+        val scrollState = rememberScrollState()
+
         Column(
             modifier = Modifier
                 .padding(paddingValues)
                 .padding(24.dp)
+                .verticalScroll(scrollState)
                 .fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+
             Text(
                 text = "Información personal",
                 style = MaterialTheme.typography.titleMedium,
@@ -89,7 +92,7 @@ fun RentPaymentScreen(
             )
 
             OutlinedTextField(
-                value = uiState.nombre,
+                value = uiState.apellido,
                 onValueChange = viewModel::onNombreChange,
                 label = { Text("Apellido") },
                 modifier = Modifier.fillMaxWidth()
@@ -105,7 +108,7 @@ fun RentPaymentScreen(
             )
 
             OutlinedTextField(
-                value = uiState.nombre,
+                value = uiState.email,
                 onValueChange = viewModel::onNombreChange,
                 label = { Text("correo@ejemplo.com") },
                 modifier = Modifier.fillMaxWidth()
@@ -121,7 +124,7 @@ fun RentPaymentScreen(
             )
 
             OutlinedTextField(
-                value = uiState.nombre,
+                value = uiState.telefono,
                 onValueChange = viewModel::onNombreChange,
                 label = { Text("Numero Telefonico") },
                 modifier = Modifier.fillMaxWidth()
@@ -138,7 +141,6 @@ fun RentPaymentScreen(
 
 
             val opcionesEntrega = listOf("Recoger en algún lugar", "Recibir en la puerta")
-
             opcionesEntrega.forEach { opcion ->
                 Row(
                     modifier = Modifier
@@ -176,12 +178,12 @@ fun RentPaymentScreen(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                var selectedNumber by remember { mutableStateOf("1") }
+
                 var expandedNumber by remember { mutableStateOf(false) }
 
                 Box {
                     OutlinedTextField(
-                        value = selectedNumber,
+                        value = uiState.tiempoCantidad,
                         onValueChange = {},
                         readOnly = true,
                         modifier = Modifier.width(190.dp),
@@ -200,7 +202,7 @@ fun RentPaymentScreen(
                             DropdownMenuItem(
                                 text = { Text(num.toString()) },
                                 onClick = {
-                                    selectedNumber = num.toString()
+                                    viewModel.onTiempoCantidadChange(num.toString())
                                     expandedNumber = false
                                 }
                             )
@@ -208,12 +210,12 @@ fun RentPaymentScreen(
                     }
                 }
 
-                var selectedUnit by remember { mutableStateOf("Días") }
+
                 var expandedUnit by remember { mutableStateOf(false) }
 
                 Box {
                     OutlinedTextField(
-                        value = selectedUnit,
+                        value = uiState.tiempoUnidad,
                         onValueChange = {},
                         readOnly = true,
                         modifier = Modifier.width(190.dp),
@@ -232,7 +234,7 @@ fun RentPaymentScreen(
                             DropdownMenuItem(
                                 text = { Text(unit) },
                                 onClick = {
-                                    selectedUnit = unit
+                                    viewModel.onTiempoUnidadChange(unit)
                                     expandedUnit = false
                                 }
                             )
@@ -240,11 +242,11 @@ fun RentPaymentScreen(
                     }
                 }
             }
-            var selectedUnit by remember { mutableStateOf("Efectivo") }
+
             var expandedUnit by remember { mutableStateOf(false) }
             Box {
                 OutlinedTextField(
-                    value = selectedUnit,
+                    value = uiState.metodoPago,
                     onValueChange = {},
                     readOnly = true,
                     modifier = Modifier.fillMaxWidth(),
@@ -264,7 +266,7 @@ fun RentPaymentScreen(
                         DropdownMenuItem(
                             text = { Text(unit) },
                             onClick = {
-                                selectedUnit = unit
+                                viewModel.onMetodoPagoChange(unit)
                                 expandedUnit = false
                             }
                         )
@@ -296,5 +298,8 @@ fun RentPaymentScreen(
 @Preview(showBackground = true)
 @Composable
 fun RentPaymentScreenPreview() {
-    RentPaymentScreen()
+    RentPaymentScreen(
+        loginController = TODO(),
+        viewModel = TODO()
+    )
 }

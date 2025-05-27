@@ -14,19 +14,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.example.usolo.features.auth.ui.viewmodel.AUTH_STATE
 import com.example.usolo.features.auth.ui.viewmodel.AuthViewModel
-import com.example.usolo.features.auth.ui.viewmodel.FakeAuthViewModel
 import com.example.usolo.features.auth.ui.viewmodel.IDLE_AUTH_STATE
 import com.example.usolo.features.auth.ui.viewmodel.NO_AUTH_STATE
 import com.example.usolo.features.menu.ui.components.TopBar
 import com.example.usolo.features.menu.ui.components.BottomNavigationBar
-import com.example.usolo.features.menu.ui.components.TitleSection
-import com.example.usolo.features.menu.ui.components.SearchBar
 import com.example.usolo.features.menu.ui.components.CategoryRow
 import com.example.usolo.features.menu.ui.components.ProductList
-import com.example.usolo.features.menu.ui.components.UserProfileSection
 
 
 @Composable
