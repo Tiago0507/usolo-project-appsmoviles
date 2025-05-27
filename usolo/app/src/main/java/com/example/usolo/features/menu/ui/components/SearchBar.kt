@@ -21,7 +21,7 @@ import com.example.usolo.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SearchBar() {
+fun SearchBar(modifier: Modifier = Modifier) {
     val query = remember { mutableStateOf("") }
 
     TextField(

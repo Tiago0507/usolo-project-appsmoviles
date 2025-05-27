@@ -16,59 +16,53 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.zIndex // Importar zIndex
+import androidx.compose.ui.zIndex
 import androidx.navigation.NavController
 
 @Composable
-fun TopBar(loginController: NavController) {
+fun TopBar(
+    loginController: NavController,
+    onCartClick: () -> Unit
+) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
+            .statusBarsPadding()
             .background(
-                brush = Brush.horizontalGradient(
-                    colors = listOf(
-                        Color(0xFFF83000),
-                        Color(0xFFFF6600)
-                    )
+                Brush.horizontalGradient(
+                    colors = listOf(Color(0xFFF83000), Color(0xFFFF6600))
                 )
             )
-            .statusBarsPadding()
-            .padding(20.dp)
-            .zIndex(0f)
+            .zIndex(1f)
+            .padding(16.dp)
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
         ) {
-
-            IconButton(onClick = {
-                loginController.navigate("settings")
-            },) {
+            IconButton(onClick = { loginController.navigate("settings") }) {
                 Icon(Icons.Default.Menu, contentDescription = "Menu", tint = Color.White)
             }
-            IconButton(onClick = { /* Acción para el carrito de compras */ }) {
+            IconButton(onClick = {
+                // Puedes controlar esto con una condición si lo necesitas
+                onCartClick()
+            }) {
                 Icon(Icons.Default.ShoppingCart, contentDescription = "Cart", tint = Color.White)
             }
         }
 
-        Spacer(modifier = Modifier.height(4.dp))
+        Spacer(modifier = Modifier.height(12.dp))
 
         Text(
+
             text = "Artículos sin complicaciones",
             color = Color.White,
-            fontSize = 32.sp,
+            fontSize = 24.sp,
             fontWeight = FontWeight.Bold,
-            lineHeight = 40.sp,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(start = 20.dp, top = 20.dp, bottom = 20.dp)
+            modifier = Modifier.fillMaxWidth()
         )
+        Spacer(modifier = Modifier.height(12.dp))
 
-        Spacer(modifier = Modifier.height(8.dp))
-
-        SearchBar()
-
-        Spacer(modifier = Modifier.height(8.dp))
+        SearchBar(modifier = Modifier.fillMaxWidth())
     }
 }

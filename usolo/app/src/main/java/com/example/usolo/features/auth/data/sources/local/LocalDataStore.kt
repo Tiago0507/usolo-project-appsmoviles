@@ -5,7 +5,9 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.runBlocking
 
 object LocalDataSourceProvider{
     private var instance: LocalDataStore? = null
@@ -30,5 +32,27 @@ class LocalDataStore(val dataStore: DataStore<Preferences>) {
 
     fun load(key: String): Flow<String> = dataStore.data.map { prefs ->
         prefs[stringPreferencesKey(key)] ?: ""
+    }
+
+    suspend fun saveProfileId(key: String, profileId: String) {
+        save(key, profileId)
+    }
+
+    fun getProfileId(): Flow<String> {
+        return load("profile_id")
+    }
+
+    suspend fun clearUserData() {
+        dataStore.edit { prefs ->
+            prefs.remove(stringPreferencesKey("profile_id"))
+            prefs.remove(stringPreferencesKey("directus_user_id"))
+            prefs.remove(stringPreferencesKey("accesstoken"))
+        }
+    }
+
+    fun loadTokenBlocking(): String {
+        return runBlocking {
+            load("accesstoken").firstOrNull() ?: ""
+        }
     }
 }
