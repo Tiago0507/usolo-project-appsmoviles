@@ -6,11 +6,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.usolo.features.registration.data.dto.SignUpRequestDTO
 import com.example.usolo.features.registration.data.dto.UserWithProfileDTO
-import com.example.usolo.features.registration.data.repositories.SignUpRepository
+import com.example.usolo.features.registration.data.repositories.SignUpRepositoryImpl
 import kotlinx.coroutines.launch
 
 class SignUpViewModel : ViewModel() {
-    private val userRepository = SignUpRepository()
+    private val userRepository = SignUpRepositoryImpl()
 
     private val _signUpState = MutableLiveData<SignUpState>(SignUpState.Idle)
     val signUpState: LiveData<SignUpState> = _signUpState

@@ -4,19 +4,21 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.usolo.features.menu.data.repository.ListProductRepository
+import com.example.usolo.features.menu.data.repository.ListProductRepositoryImpl
 import com.example.usolo.features.products.data.dto.Category
 import com.example.usolo.features.products.data.dto.ItemStatus
 import com.example.usolo.features.products.data.dto.ProductData
 import com.example.usolo.features.products.data.dto.ProductUpdateDto
 import com.example.usolo.features.products.data.repository.ProductRepository
+import com.example.usolo.features.products.data.repository.impl.ProductRepositoryImpl
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class EditProductViewModel(
-    private val repository: ProductRepository = ProductRepository(),
-    private val listProductRepository: ListProductRepository = ListProductRepository()
+    private val repository: ProductRepository = ProductRepositoryImpl(),
+    private val listProductRepository: ListProductRepository = ListProductRepositoryImpl()
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow<EditProductState>(EditProductState.Idle)

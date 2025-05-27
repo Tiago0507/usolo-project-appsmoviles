@@ -1,4 +1,4 @@
-package com.example.usolo.features.postobject.data.model
+package com.example.usolo.features.postobject.domain.model
 
 data class RentProduct(
     val title: String,
