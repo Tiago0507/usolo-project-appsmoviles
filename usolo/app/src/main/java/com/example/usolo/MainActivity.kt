@@ -37,6 +37,7 @@ import com.example.usolo.features.registration.ui.screens.EmailSignUpScreen
 import com.example.usolo.features.registration.ui.viewmodel.SignUpViewModel
 import com.example.usolo.features.menu.ui.screens.MainMenu
 import com.example.usolo.features.products.ui.screens.EditProductScreen
+import com.example.usolo.features.products.ui.screens.ProductDetailScreen
 import com.example.usolo.features.products.ui.screens.ViewProductsScreen
 import com.example.usolo.features.rental_registration.ui.screens.RentalRegistrationScreen
 import com.example.usolo.features.postobject.ui.screens.PublicObjet
@@ -146,6 +147,13 @@ fun App() {
             val productId = backStackEntry.arguments?.getString("productId")?.toIntOrNull()
             if (productId != null) {
                 EditProductScreen(loginController, productId = productId)
+            }
+        }
+
+        composable("product_detail/{productId}") { backStackEntry ->
+            val productId = backStackEntry.arguments?.getString("productId")?.toIntOrNull()
+            if (productId != null) {
+                ProductDetailScreen(navController = loginController, productId = productId)
             }
         }
 
