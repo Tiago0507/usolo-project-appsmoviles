@@ -1,6 +1,5 @@
 package com.example.usolo
 
-import SettingsScreen
 import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -40,6 +39,7 @@ import com.example.usolo.features.products.ui.screens.EditProductScreen
 import com.example.usolo.features.products.ui.screens.ViewProductsScreen
 import com.example.usolo.features.rental_registration.ui.screens.RentalRegistrationScreen
 import com.example.usolo.features.postobject.ui.screens.PublicObjet
+import com.example.usolo.features.settings.ui.SettingsScreen
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
