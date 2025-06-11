@@ -2,10 +2,15 @@ package com.example.usolo
 
 import SettingsScreen
 import android.content.Context
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInHorizontally
@@ -18,6 +23,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -40,6 +46,9 @@ import com.example.usolo.features.products.ui.screens.EditProductScreen
 import com.example.usolo.features.products.ui.screens.ViewProductsScreen
 import com.example.usolo.features.rental_registration.ui.screens.RentalRegistrationScreen
 import com.example.usolo.features.postobject.ui.screens.PublicObjet
+import com.example.usolo.util.NotificationUtil
+import com.google.firebase.Firebase
+import com.google.firebase.messaging.messaging
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -47,6 +56,7 @@ import kotlinx.coroutines.launch
 val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "AppVariables")
 
 class MainActivity : ComponentActivity() {
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -59,6 +69,16 @@ class MainActivity : ComponentActivity() {
             authRepo.debugAuthData()
         }
 
+        requestPermissions(
+            arrayOf(
+                android.Manifest.permission.POST_NOTIFICATIONS
+            ), 1
+        )
+
+        Firebase.messaging.subscribeToTopic("promo").addOnSuccessListener {
+            Log.e(">>>","Suscrito")
+        }
+
         setContent {
             UsoloTheme {
                 App()
@@ -66,6 +86,7 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
+
 
 @Composable
 fun App() {
@@ -78,6 +99,8 @@ fun App() {
     LaunchedEffect(Unit) {
         authViewModel.getAuthStatus()
     }
+
+
 
     LaunchedEffect(Unit) {
         localDataStore.load("user_id").collect { userId ->
@@ -182,4 +205,6 @@ fun App() {
             PublicObjet(loginController = loginController)
         }
     }
+
+
 }
