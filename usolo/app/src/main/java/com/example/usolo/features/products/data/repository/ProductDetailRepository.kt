@@ -11,5 +11,7 @@ interface ProductDetailRepository {
     suspend fun getProductDetails(itemId: Int, token: String): ProductData?
     suspend fun getProductReviews(itemId: Int, token: String): List<ReviewData>?
     suspend fun getUsersFromReviews(reviews: List<ReviewData>, token: String):List<String>?
+    suspend fun createReview(rating: Float, comment: String, publicationDate: String, itemId: Int, profileId: Int, token: String): Result<ReviewData>
+
 }
 

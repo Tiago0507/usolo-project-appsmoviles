@@ -18,6 +18,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
+import java.time.Instant
 
 class ProductDetailViewModel(
     private val productId: Int,
@@ -32,6 +33,9 @@ class ProductDetailViewModel(
 
     private val _userNames = mutableStateListOf<String>()
     val userNames: List<String> get() = _userNames
+
+    private val _isCreatingReview = MutableStateFlow(false)
+    val isCreatingReview: StateFlow<Boolean> = _isCreatingReview
 
     private val localDataSource = LocalDataSourceProvider.get()
 
@@ -74,6 +78,43 @@ class ProductDetailViewModel(
                 } catch (e: Exception) {
                     Log.e("ProductDetailViewModel", "Error al cargar reviews: ${e.message}")
                 }
+            }
+        }
+    }
+    fun createReview(rating: Float, comment: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            _isCreatingReview.value = true
+
+            try {
+                val token = localDataSource.load("accesstoken").firstOrNull()
+                val profileId = localDataSource.getProfileId().firstOrNull()?.toIntOrNull()
+
+                if (token != null && profileId != null && comment.isNotBlank()) {
+                    val timestamp = Instant.now().toString()
+                    Log.e("ViewModellllllllll", "$timestamp")
+                    val result = productDetailRepository.createReview(
+                        rating = rating,
+                        comment = comment,
+                        publicationDate = timestamp,
+                        itemId = productId,
+                        profileId = profileId,
+                        token = token
+                    )
+
+                    result.onSuccess {
+                        // Recargar las reviews después de crear una nueva
+                        fetchProductReviews()
+                        Log.d("ProductDetailViewModel", "Review creada exitosamente")
+                    }.onFailure { exception ->
+                        Log.e("ProductDetailViewModel", "Error creando review: ${exception.message}")
+                    }
+                } else {
+                    Log.e("ProductDetailViewModel", "Datos insuficientes para crear review")
+                }
+            } catch (e: Exception) {
+                Log.e("ProductDetailViewModel", "Error en createReview: ${e.message}")
+            } finally {
+                _isCreatingReview.value = false
             }
         }
     }

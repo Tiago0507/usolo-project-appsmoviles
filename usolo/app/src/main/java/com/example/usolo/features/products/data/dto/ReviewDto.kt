@@ -17,3 +17,11 @@ data class ReviewData(
 data class DirectusResponseReviews<T>(
     val data: List<T>
 )
+
+data class CreateReviewDto(
+    val rating: Float,
+    val comment: String,
+    val publication_date: String,
+    val profile_id: Int,
+    val item_id: Int
+)

@@ -61,4 +61,10 @@ interface ProductApi {
         @Query("filter[id][_eq]") profileId: Int,
         @Query("fields") fields: String = "user_id.first_name"
     ): DirectusListResponse<UserProfileWithNameDTO>
+
+    @POST("items/review")
+    suspend fun createReview(
+        @Header("Authorization") token: String,
+        @Body reviewDto: CreateReviewDto
+    ): DirectusResponse<ReviewData>
 }
