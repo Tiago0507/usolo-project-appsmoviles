@@ -1,6 +1,7 @@
 package com.example.usolo.features.menu.ui.components
 
 import android.util.Log
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -17,6 +18,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.usolo.features.auth.data.sources.local.LocalDataSourceProvider
@@ -26,7 +28,7 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.flow.firstOrNull
 
 @Composable
-fun ProductList(viewModel: ProductListViewModel = viewModel()) {
+fun ProductList(viewModel: ProductListViewModel = viewModel(), navController: NavController) {
     val products = viewModel.products
     val userNames = viewModel.userNames
 
@@ -38,18 +40,19 @@ fun ProductList(viewModel: ProductListViewModel = viewModel()) {
     ) {
         items(products) { product ->
             val ownerName = userNames[product.profile_id] ?: "Usuario desconocido"
-            ProductCard(product = product, userName = ownerName)
+            ProductCard(product = product, userName = ownerName, navController = navController)
         }
     }
 }
 
 @Composable
-fun ProductCard(product: ProductData, userName: String) {
+fun ProductCard(product: ProductData, userName: String, navController: NavController) {
     val context = LocalContext.current
     val token = rememberToken()
+    // Assuming product.photo is the image ID for Directus
     val imageUrl = "http://10.0.2.2:8055/assets/${product.photo}"
 
-    Log.d("ProductCard", "Image URL: $imageUrl")
+    Log.d("ProductCard", "Image URL: $imageUrl for product ID: ${product.id}")
 
     val imageRequest = ImageRequest.Builder(context)
         .data(imageUrl)
@@ -60,7 +63,10 @@ fun ProductCard(product: ProductData, userName: String) {
     Card(
         modifier = Modifier
             .width(200.dp)
-            .height(300.dp),
+            .height(300.dp)
+            .clickable {
+                navController.navigate("product_detail/${product.id}")
+            },
         colors = CardDefaults.cardColors(
             containerColor = Color.White
         )
