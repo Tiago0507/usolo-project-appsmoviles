@@ -91,7 +91,8 @@ fun App() {
             enterTransition = { slideInVertically(initialOffsetY = { 1000 }) },
             exitTransition = { slideOutVertically(targetOffsetY = { -1000 }) }
         ) {
-            LandingScreen(loginController = loginController)
+            LandingScreen(navController = loginController)
+
         }
 
         composable(
