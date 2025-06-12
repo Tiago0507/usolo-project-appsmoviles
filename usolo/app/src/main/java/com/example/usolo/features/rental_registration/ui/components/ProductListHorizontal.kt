@@ -66,7 +66,7 @@ fun ProductListHorizontal(
                 BaseProductCard(
                     rentalItem = product,
                     token = token,
-                    onClick = { onProductClick(product.id) }
+                    onClick = {  }
                 )
             }
         }

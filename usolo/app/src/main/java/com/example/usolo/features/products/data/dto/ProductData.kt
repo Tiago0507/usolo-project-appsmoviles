@@ -27,10 +27,17 @@ data class ProductData(
     val photo: String,
     val availability: Boolean
 )
+
 data class ReservationData(
     val id: Int,
-    // aquí puedes añadir otros campos que necesites leer
+    val item_id: Int,
+    val profile_id: Int,
+    val start_date: String,
+    val completion_date: String?,
+    val total_price: String,
+    val status_id: Int
 )
+
 // Modelo de status de un producto (activo, inactivo, etc.)
 data class StatusResponse(
     val data: List<ItemStatus>

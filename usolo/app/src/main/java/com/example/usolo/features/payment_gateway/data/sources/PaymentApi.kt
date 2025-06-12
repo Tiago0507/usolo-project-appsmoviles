@@ -15,9 +15,9 @@ interface PaymentApi {
 
     @GET("items/payment_method")
     suspend fun getPaymentMethods(
-        @Header("Authorization") token: String
-    ): PaymentMethodResponse
 
+      @Header("Authorization") token: String
+    ): PaymentMethodResponse
     @POST("items/reservation")
     suspend fun createReservation(
         @Body reservation: CreateReservationDTO,
@@ -29,4 +29,7 @@ interface PaymentApi {
         @Body payment: CreatePaymentDTO,
         @Header("Authorization") token: String
     ): Response<DirectusResponse<PaymentDTO>>
+
+
+
 }

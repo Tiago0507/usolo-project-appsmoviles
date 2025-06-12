@@ -20,6 +20,9 @@ interface RentalRegistrationService {
     suspend fun getMyRentedItems(
         @Header("Authorization") token: String,
         @Query("filter[profile_id][_eq]") profileId: String,
-        @Query("fields") fields: String = "item_id.*"
+        @Query("filter[item_id][_nnull]") notNull: String = "true",
+        @Query("fields") fields: String = "id,start_date,completion_date,total_price,item_id.*"
     ): DirectusResponse<List<ReservationWithItemDTO>>
+
+
 }
