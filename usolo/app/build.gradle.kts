@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     id("com.google.gms.google-services")
+    id("org.jetbrains.kotlin.plugin.serialization") version "1.9.0"
 }
 
 android {
@@ -50,6 +51,7 @@ android {
 
 dependencies {
     implementation(platform("com.google.firebase:firebase-bom:33.15.0"))
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
     implementation("com.google.firebase:firebase-analytics")
     implementation("androidx.core:core-ktx:1.16.0")
     implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")

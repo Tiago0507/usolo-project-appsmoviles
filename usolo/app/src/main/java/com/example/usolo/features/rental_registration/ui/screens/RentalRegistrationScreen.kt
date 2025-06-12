@@ -40,7 +40,10 @@ fun RentalRegistrationScreen(
     }
 
     Scaffold(
-        topBar = { TopBarSimple(navController) }
+        topBar = { TopBarSimple(navController) },
+        bottomBar = {
+            com.example.usolo.features.menu.ui.components.BottomNavigationBar(navController = navController)
+        }
     ) { innerPadding ->
         Column(
             modifier = Modifier
@@ -81,3 +84,4 @@ fun RentalRegistrationScreen(
         }
     }
 }
+
