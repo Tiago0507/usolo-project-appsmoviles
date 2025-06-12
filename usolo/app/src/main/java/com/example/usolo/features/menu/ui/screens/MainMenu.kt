@@ -15,7 +15,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
@@ -27,8 +26,6 @@ import com.example.usolo.features.menu.ui.components.BottomNavigationBar
 import com.example.usolo.features.menu.ui.components.CategoryRow
 import com.example.usolo.features.menu.ui.components.ProductList
 import com.example.usolo.features.menu.ui.components.TopBar
-import com.example.usolo.util.NotificationUtil
-
 
 @Composable
 fun MainMenu(loginController: NavController, viewModel: AuthViewModel = viewModel()) {
@@ -41,7 +38,6 @@ fun MainMenu(loginController: NavController, viewModel: AuthViewModel = viewMode
 
     when (authState.state) {
         NO_AUTH_STATE -> {
-
             loginController.navigate("login") {
                 popUpTo(0) { inclusive = true }
                 launchSingleTop = true
@@ -49,23 +45,22 @@ fun MainMenu(loginController: NavController, viewModel: AuthViewModel = viewMode
         }
 
         IDLE_AUTH_STATE -> {
-
             Box(modifier = Modifier.fillMaxSize()) {
                 CircularProgressIndicator()
             }
         }
 
         AUTH_STATE -> {
-
             Scaffold(
                 topBar = {
                     TopBar(
                         loginController = loginController,
                         onCartClick = { loginController.navigate("rental_registration") }
-
                     )
                 },
-                bottomBar = { BottomNavigationBar() }
+                bottomBar = {
+                    BottomNavigationBar(navController = loginController)
+                }
             ) { innerPadding ->
                 Column(
                     modifier = Modifier
@@ -77,11 +72,8 @@ fun MainMenu(loginController: NavController, viewModel: AuthViewModel = viewMode
                     Spacer(modifier = Modifier.height(16.dp))
                     ProductList(navController = loginController)
                     Spacer(modifier = Modifier.height(16.dp))
-                    // UserProfileSection()
                 }
             }
         }
     }
 }
-
-

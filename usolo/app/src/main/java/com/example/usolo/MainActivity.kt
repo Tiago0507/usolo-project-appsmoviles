@@ -60,6 +60,8 @@ import com.example.usolo.features.settings.ui.SettingsScreen
 
 // Importaciones de dependencias
 import com.example.usolo.features.auth.data.sources.local.LocalDataSourceProvider
+import com.example.usolo.features.history.ui.screens.HistoryScreen
+import com.example.usolo.features.profile.ui.screens.ProfileScreen
 import com.example.usolo.ui.theme.UsoloTheme
 
 
@@ -270,6 +272,22 @@ fun App() {
                     }
                 }
             }
+        }
+
+        composable(
+            "history",
+            enterTransition = NavigationAnimations.Combinations.sideNavigation.enter,
+            exitTransition = NavigationAnimations.Combinations.sideNavigation.exit
+        ) {
+            HistoryScreen(navController = loginController)
+        }
+
+        composable(
+            "profile",
+            enterTransition = NavigationAnimations.Combinations.sideNavigation.enter,
+            exitTransition = NavigationAnimations.Combinations.sideNavigation.exit
+        ) {
+            ProfileScreen(navController = loginController)
         }
     }
 
