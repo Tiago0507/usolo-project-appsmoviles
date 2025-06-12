@@ -47,3 +47,15 @@ data class Category(
     val id: Int,
     val name: String
 )
+
+object ProductHelper {
+    private var tempProduct: ProductData? = null
+
+    fun setCurrentProduct(product: ProductData) {
+        tempProduct = product
+    }
+
+    fun getCurrentProduct(): ProductData? {
+        return tempProduct
+    }
+}

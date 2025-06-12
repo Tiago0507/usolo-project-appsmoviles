@@ -14,7 +14,6 @@ import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -30,12 +29,13 @@ import androidx.datastore.core.DataStore
 import com.example.usolo.features.auth.data.sources.local.LocalDataSourceProvider
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.usolo.features.auth.data.repository.AuthRepository
 import com.example.usolo.features.auth.data.repository.AuthRepositoryImpl
 import com.example.usolo.features.auth.ui.viewmodel.AuthViewModel
 import com.example.usolo.features.registration.ui.screens.EmailSignUpScreen
 import com.example.usolo.features.registration.ui.viewmodel.SignUpViewModel
 import com.example.usolo.features.menu.ui.screens.MainMenu
+import com.example.usolo.features.payment_gateway.ui.screens.PaymentScreen
+import com.example.usolo.features.payment_gateway.ui.viewmodel.PaymentNavigationViewModel
 import com.example.usolo.features.products.ui.screens.EditProductScreen
 import com.example.usolo.features.products.ui.screens.ProductDetailScreen
 import com.example.usolo.features.products.ui.screens.ViewProductsScreen
@@ -188,6 +188,37 @@ fun App() {
             exitTransition = { fadeOut() }
         ) {
             PublicObjet(loginController = loginController)
+        }
+
+        composable(
+            "payment/{productId}",
+            enterTransition = { slideInVertically(initialOffsetY = { 1000 }) },
+            exitTransition = { fadeOut() }
+        ) { backStackEntry ->
+            val productId = backStackEntry.arguments?.getString("productId")?.toIntOrNull()
+            if (productId != null) {
+                val navViewModel: PaymentNavigationViewModel = viewModel()
+                val product by navViewModel.product.collectAsState()
+
+                LaunchedEffect(productId) {
+                    navViewModel.loadProduct(productId)
+                }
+
+                product?.let { productData ->
+                    PaymentScreen(
+                        navController = loginController,
+                        product = productData
+                    )
+                } ?: run {
+                    // Loading o error state
+                    Box(
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        CircularProgressIndicator()
+                    }
+                }
+            }
         }
     }
 }
