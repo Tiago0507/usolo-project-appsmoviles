@@ -41,7 +41,7 @@ val SuccessColor = Color(0xFF4CAF50)
 @Composable
 
 fun ProductDetailScreen(navController: NavController, productId: Int) {
-    val context = LocalContext.current
+
     val viewModel: ProductDetailViewModel = viewModel { ProductDetailViewModel(productId) }
     val product by viewModel.product.collectAsState()
     val reviews = viewModel.reviews
