@@ -10,6 +10,7 @@ import com.example.usolo.features.products.data.dto.ItemStatus
 import com.example.usolo.features.products.data.dto.ProductData
 import com.example.usolo.features.products.data.dto.ProductUpdateDto
 import com.example.usolo.features.products.data.repository.ProductRepository
+import com.example.usolo.features.products.data.sources.DeleteQuery
 import com.example.usolo.features.products.data.sources.ProductApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
@@ -47,20 +48,38 @@ class ProductRepositoryImpl(
     override suspend fun deleteProduct(itemId: Int) {
         try {
             val token = authRepository.getAccessToken() ?: throw Exception("Token no disponible")
+            val bearer = "Bearer $token"
 
-            // Paso 1: Borrar reviews asociados
-            val filter = mapOf("filter[item_id][_eq]" to itemId.toString())
-            val reviewDeleteResponse = productApi.deleteReviewsByProductId(filter, "Bearer $token")
+            // 1) Borrar reviews
+            val deleteReviewsBody = DeleteQuery(
+                query = mapOf("item_id" to mapOf("_eq" to itemId))
+            )
+            val r1 = productApi.deleteReviewsByProductId(deleteReviewsBody, bearer)
+            if (!r1.isSuccessful) throw Exception("No se pudieron borrar las reviews")
 
-            if (!reviewDeleteResponse.isSuccessful) {
-                throw Exception("No se pudieron borrar las reviews")
+            // 2) Obtener IDs de reservas para este item
+            val reservationsResp = productApi.getReservationsByProductId(itemId, bearer)
+            val reservationIds = reservationsResp.data.map { it.id }
+            if (reservationIds.isNotEmpty()) {
+                // 3) Borrar pagos asociados a esas reservas
+                val deletePaymentsBody = DeleteQuery(
+                    query = mapOf("reservation_id" to mapOf("_in" to reservationIds))
+                )
+                val r2 = productApi.deletePaymentsByReservationId(deletePaymentsBody, bearer)
+                if (!r2.isSuccessful) throw Exception("No se pudieron borrar los pagos")
             }
 
-            // Paso 2: Borrar el producto
-            val response = productApi.deleteProduct(itemId, "Bearer $token")
-            if (!response.isSuccessful) {
-                throw Exception("Error al eliminar producto: ${response.errorBody()?.string()}")
-            }
+            // 4) Borrar reservas del item
+            val deleteReservationsBody = DeleteQuery(
+                query = mapOf("item_id" to mapOf("_eq" to itemId))
+            )
+            val r3 = productApi.deleteReservationsByProductId(deleteReservationsBody, bearer)
+            if (!r3.isSuccessful) throw Exception("No se pudieron borrar las reservas")
+
+            // 5) Finalmente, borrar el producto
+            val r4 = productApi.deleteProduct(itemId, bearer)
+            if (!r4.isSuccessful) throw Exception("Error al eliminar producto: ${r4.errorBody()?.string()}")
+
         } catch (e: Exception) {
             Log.e("ProductRepository", "Error en deleteProduct: ${e.message}")
             throw e

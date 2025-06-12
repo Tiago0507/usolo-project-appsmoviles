@@ -7,6 +7,10 @@ import com.example.usolo.features.registration.data.dto.DirectusResponse
 import retrofit2.Response
 import retrofit2.http.*
 
+data class DeleteQuery(
+    val query: Map<String, Map<String, Any>>
+)
+
 interface ProductApi {
 
     @GET("items/item")
@@ -75,5 +79,29 @@ interface ProductApi {
         @Header("Authorization") token: String
     ): Response<Unit>
 
+    // junto a DeleteQuery...
+    @HTTP(method = "DELETE", path = "items/reservation", hasBody = true)
+    suspend fun deleteReservationsByProductId(
+        @Body deleteQuery: DeleteQuery,
+        @Header("Authorization") token: String
+    ): Response<Void>
+
+    @HTTP(method = "DELETE", path = "items/payment", hasBody = true)
+    suspend fun deletePaymentsByReservationId(
+        @Body deleteQuery: DeleteQuery,
+        @Header("Authorization") token: String
+    ): Response<Void>
+
+    @HTTP(method = "DELETE", path = "items/review", hasBody = true)
+    suspend fun deleteReviewsByProductId(
+        @Body deleteQuery: DeleteQuery,
+        @Header("Authorization") token: String
+    ): Response<Void>    // <— aquí cambia a Void
+
+    @GET("items/reservation")
+    suspend fun getReservationsByProductId(
+        @Query("filter[item_id][_eq]") itemId: Int,
+        @Header("Authorization") token: String
+    ): DirectusListResponse<ReservationData>
 
 }
