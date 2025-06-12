@@ -13,6 +13,7 @@ import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.filled.StarBorder
 import androidx.compose.material.icons.filled.StarHalf
 import androidx.compose.material3.*
+import androidx.compose.material3.AlertDialogDefaults.containerColor
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -41,12 +42,14 @@ val SuccessColor = Color(0xFF4CAF50)
 @Composable
 
 fun ProductDetailScreen(navController: NavController, productId: Int) {
-    val context = LocalContext.current
+
     val viewModel: ProductDetailViewModel = viewModel { ProductDetailViewModel(productId) }
     val product by viewModel.product.collectAsState()
     val reviews = viewModel.reviews
     val userNames = viewModel.userNames
     val isCreatingReview by viewModel.isCreatingReview.collectAsState()
+    val context = LocalContext.current
+
 
     var showCreateReviewDialog by remember { mutableStateOf(false) }
 
@@ -123,7 +126,7 @@ fun ProductDetailScreen(navController: NavController, productId: Int) {
         CreateReviewDialog(
             onDismiss = { showCreateReviewDialog = false },
             onCreateReview = { rating, comment ->
-                viewModel.createReview(rating, comment)
+                viewModel.createReview(rating, comment,context)
                 showCreateReviewDialog = false
             },
             isLoading = isCreatingReview

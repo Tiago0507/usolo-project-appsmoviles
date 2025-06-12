@@ -8,6 +8,8 @@ import com.example.usolo.features.auth.data.dto.LoginData
 import com.example.usolo.features.auth.data.dto.LogoutRequest
 import com.example.usolo.features.auth.data.sources.AuthService
 import com.example.usolo.features.auth.data.sources.local.LocalDataSourceProvider
+import com.google.firebase.Firebase
+import com.google.firebase.messaging.messaging
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 import retrofit2.HttpException
@@ -78,7 +80,9 @@ class AuthRepositoryImpl(
                 prefs.remove(stringPreferencesKey("accesstoken"))
                 prefs.remove(stringPreferencesKey("directus_user_id"))
             }
-
+            Firebase.messaging.unsubscribeFromTopic(
+                LocalDataSourceProvider.get().load("user_profile").firstOrNull()
+                .toString())
             Log.d("AUTH_REPO", "Logout exitoso")
             response.isSuccessful
         } catch (e: Exception) {
