@@ -28,6 +28,10 @@ class ProductDetailViewModel(
     private val _product = MutableStateFlow<ProductData?>(null)
     val product: StateFlow<ProductData?> = _product
 
+    private val _category = MutableStateFlow<ProductData?>(null)
+    val category: StateFlow<ProductData?> = _product
+
+
     private val _reviews = mutableStateListOf<ReviewData>()
     val reviews: List<ReviewData> get() = _reviews
 

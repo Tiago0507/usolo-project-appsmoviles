@@ -13,13 +13,7 @@ import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.filled.StarBorder
 import androidx.compose.material.icons.filled.StarHalf
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableFloatStateOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -38,12 +32,15 @@ import com.example.usolo.features.products.data.dto.ReviewData
 import com.example.usolo.features.products.ui.viewmodel.ProductDetailViewModel
 import com.example.usolo.features.utils.UserHelper.getCurrentUserProfileId
 
+val PrimaryColor = Color(0xFFF83000)
+val AccentColor = Color(0xFFFF5722)
+val StarColor = Color(0xFFFFC107)
+val SuccessColor = Color(0xFF4CAF50)
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ProductDetailScreen(
-    navController: NavController,
-    productId: Int
-) {
+
+fun ProductDetailScreen(navController: NavController, productId: Int) {
     val context = LocalContext.current
     val viewModel: ProductDetailViewModel = viewModel { ProductDetailViewModel(productId) }
     val product by viewModel.product.collectAsState()
@@ -56,10 +53,10 @@ fun ProductDetailScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(product?.title ?: "Product Detail") },
+                title = { Text(product?.title ?: "Detalles del producto") },
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Atrás")
                     }
                 }
             )
@@ -67,19 +64,14 @@ fun ProductDetailScreen(
     ) { paddingValues ->
         if (product == null) {
             Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(paddingValues),
+                modifier = Modifier.fillMaxSize().padding(paddingValues),
                 contentAlignment = Alignment.Center
             ) {
                 CircularProgressIndicator()
             }
         } else {
             LazyColumn(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(paddingValues)
-                    .padding(16.dp)
+                modifier = Modifier.fillMaxSize().padding(paddingValues).padding(16.dp)
             ) {
                 item {
                     ProductInfoSection(product!!)
@@ -100,23 +92,19 @@ fun ProductDetailScreen(
                             }
                         },
                         modifier = Modifier.fillMaxWidth()
+                        colors = ButtonDefaults.buttonColors(containerColor = PrimaryColor)
                     ) {
-                        Text("Reservar")
+                        Text("Reservar", color = Color.White)
                     }
                     Spacer(modifier = Modifier.height(16.dp))
-                    Text("Reviews", style = MaterialTheme.typography.headlineSmall)
+                    Text("Reseñas", style = MaterialTheme.typography.headlineSmall)
                     Spacer(modifier = Modifier.height(8.dp))
                 }
                 if (reviews.isEmpty()) {
-                    item {
-                        Text("No reviews yet for this product.")
-                    }
+                    item { Text("Este producto aún no tiene reseñas.") }
                 } else {
                     itemsIndexed(reviews) { index, review ->
-                        ReviewItem(
-                            review = review,
-                            userName = userNames.getOrElse(index) { "Cargando..." }
-                        )
+                        ReviewItem(review, userNames.getOrElse(index) { "Cargando..." })
                         HorizontalDivider()
                     }
                 }
@@ -130,7 +118,7 @@ fun ProductDetailScreen(
             }
         }
     }
-    // Dialog para crear review
+
     if (showCreateReviewDialog) {
         CreateReviewDialog(
             onDismiss = { showCreateReviewDialog = false },
@@ -142,77 +130,52 @@ fun ProductDetailScreen(
         )
     }
 }
-@Composable
-fun CreateReviewSection(
-    onCreateReview: () -> Unit,
-    isLoading: Boolean
-) {
-    Column {
-        Text(
-            "Escribir una reseña",
-            style = MaterialTheme.typography.titleMedium,
-            fontWeight = FontWeight.Bold
-        )
-        Spacer(modifier = Modifier.height(8.dp))
-        Button(
-            onClick = onCreateReview,
-            modifier = Modifier.fillMaxWidth(),
-            enabled = !isLoading
-        ) {
-            if (isLoading) {
-                CircularProgressIndicator(
-                    modifier = Modifier.size(16.dp),
-                    color = MaterialTheme.colorScheme.onPrimary
-                )
-                Spacer(modifier = Modifier.width(8.dp))
-            }
-            Text("Escribir reseña")
-        }
-    }
-}
 
 @Composable
 fun ProductInfoSection(product: ProductData) {
+    val imageUrl = "http://10.0.2.2:8055/assets/${product.photo}"
     Column(modifier = Modifier.fillMaxWidth()) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            val imageUrl = "http://10.0.2.2:8055/assets/${product.photo}"
+        Row(verticalAlignment = Alignment.CenterVertically) {
             Image(
-                painter = rememberAsyncImagePainter(
-                    ImageRequest.Builder(LocalContext.current)
-                        .data(data = imageUrl)
-                        .crossfade(true)
-                        .build()
-                ),
+                painter = rememberAsyncImagePainter(ImageRequest.Builder(LocalContext.current).data(imageUrl).crossfade(true).build()),
                 contentDescription = product.title,
-                modifier = Modifier
-                    .size(100.dp)
-                    .padding(end = 16.dp),
+                modifier = Modifier.size(100.dp).padding(end = 16.dp),
                 contentScale = ContentScale.Crop
             )
             Column(modifier = Modifier.weight(1f)) {
-                Text(
-                    text = product.title,
-                    style = MaterialTheme.typography.titleLarge,
-                    fontWeight = FontWeight.Bold
-                )
-                Spacer(modifier = Modifier.height(8.dp))
+                Text(product.title, fontWeight = FontWeight.Bold, fontSize = 20.sp)
+                Text(product.description, fontWeight = FontWeight.Normal, fontSize = 15.sp)
 
+                Spacer(modifier = Modifier.height(8.dp))
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    Icon(Icons.Filled.AttachMoney, contentDescription = null, tint = Color(0xFF4CAF50))
+                    Icon(Icons.Filled.AttachMoney, contentDescription = null, tint = SuccessColor)
                     Spacer(modifier = Modifier.width(4.dp))
                     Text("$${product.price_per_day}/día", fontSize = 14.sp)
                 }
             }
         }
-
-        Spacer(modifier = Modifier.height(16.dp))
-
     }
 }
 
+@Composable
+fun CreateReviewSection(onCreateReview: () -> Unit, isLoading: Boolean) {
+    Column {
+        Text("Escribir una reseña", fontWeight = FontWeight.Bold)
+        Spacer(modifier = Modifier.height(8.dp))
+        Button(
+            onClick = onCreateReview,
+            modifier = Modifier.fillMaxWidth(),
+            enabled = !isLoading,
+            colors = ButtonDefaults.buttonColors(containerColor = AccentColor)
+        ) {
+            if (isLoading) {
+                CircularProgressIndicator(modifier = Modifier.size(16.dp), color = Color.White)
+                Spacer(modifier = Modifier.width(8.dp))
+            }
+            Text("Escribir reseña", color = Color.White)
+        }
+    }
+}
 
 @Composable
 fun ReviewItem(review: ReviewData, userName: String) {
@@ -225,7 +188,6 @@ fun ReviewItem(review: ReviewData, userName: String) {
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CreateReviewDialog(
     onDismiss: () -> Unit,
@@ -242,10 +204,7 @@ fun CreateReviewDialog(
             Column {
                 Text("Tu valoración")
                 Spacer(modifier = Modifier.height(8.dp))
-                InteractiveRatingBar(
-                    rating = rating,
-                    onRatingChanged = { rating = it }
-                )
+                InteractiveRatingBar(rating = rating, onRatingChanged = { rating = it })
                 Spacer(modifier = Modifier.height(16.dp))
                 Text("Tu opinión")
                 Spacer(modifier = Modifier.height(8.dp))
@@ -253,9 +212,7 @@ fun CreateReviewDialog(
                     value = comment,
                     onValueChange = { comment = it },
                     placeholder = { Text("Escribe una reseña para el producto") },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(120.dp),
+                    modifier = Modifier.fillMaxWidth().height(120.dp),
                     maxLines = 4
                 )
             }
@@ -263,49 +220,33 @@ fun CreateReviewDialog(
         confirmButton = {
             Button(
                 onClick = {
-                    if (rating > 0 && comment.isNotBlank()) {
-                        onCreateReview(rating, comment)
-                    }
+                    if (rating > 0 && comment.isNotBlank()) onCreateReview(rating, comment)
                 },
-                enabled = !isLoading && rating > 0 && comment.isNotBlank()
+                enabled = !isLoading && rating > 0 && comment.isNotBlank(),
+                colors = ButtonDefaults.buttonColors(containerColor = PrimaryColor)
             ) {
-                if (isLoading) {
-                    CircularProgressIndicator(modifier = Modifier.size(16.dp))
-                } else {
-                    Text("Enviar reseña")
-                }
+                if (isLoading) CircularProgressIndicator(modifier = Modifier.size(16.dp), color = Color.White)
+                else Text("Enviar reseña", color = Color.White)
             }
         },
-        dismissButton = {
-            TextButton(onClick = onDismiss) {
-                Text("Cancelar")
-            }
-        }
+        dismissButton = { TextButton(onClick = onDismiss) { Text("Cancelar") } }
     )
 }
 
 @Composable
-fun InteractiveRatingBar(
-    rating: Float,
-    onRatingChanged: (Float) -> Unit,
-    maxRating: Int = 5
-) {
+fun InteractiveRatingBar(rating: Float, onRatingChanged: (Float) -> Unit, maxRating: Int = 5) {
     Row {
         for (i in 1..maxRating) {
             val isFilled = rating >= i
             Icon(
                 imageVector = if (isFilled) Icons.Filled.Star else Icons.Filled.StarBorder,
                 contentDescription = null,
-                tint = if (isFilled) Color.Yellow else Color.Gray,
-                modifier = Modifier
-                    .size(32.dp)
-                    .clickable { onRatingChanged(i.toFloat()) }
+                tint = if (isFilled) StarColor else Color.Gray,
+                modifier = Modifier.size(32.dp).clickable { onRatingChanged(i.toFloat()) }
             )
         }
     }
 }
-
-
 
 @Composable
 fun RatingBar(rating: Float, maxRating: Int = 5) {
@@ -316,14 +257,7 @@ fun RatingBar(rating: Float, maxRating: Int = 5) {
                 rating >= i - 0.5f -> Icons.Filled.StarHalf
                 else -> Icons.Filled.StarBorder
             }
-            Icon(
-                imageVector = icon,
-                contentDescription = null,
-                tint = Color(0xFFFFC107),
-                modifier = Modifier.size(18.dp)
-            )
+            Icon(icon, contentDescription = null, tint = StarColor, modifier = Modifier.size(18.dp))
         }
     }
 }
-
-
