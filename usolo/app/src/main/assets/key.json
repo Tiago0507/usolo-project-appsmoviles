@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "usoloproject",
+  "private_key_id": "05b830862999f1ee04b0fa9671c92aac644c1556",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvwIBADANBgkqhkiG9w0BAQEFAASCBKkwggSlAgEAAoIBAQDR19z2vzl7klPr\nU+2wjVQKxRbeOjja1ZjpoJ0zMlEmzgLkIj7/SalOsMrxEYYi6rfcWFKcfInlqrX6\nxWmJNMtHbt5Io21tg35qiouZYTO4pbvTiIY04peeaueNFA+svvzkcLKdg6R9HrNB\npMDmzZDSWYNy2awg77ygPW+U3ebknHvDFt7Cb6KCr/pzeAqRk1qdFbmvkuBsecwR\nGcKp7nJF96v9vdi/uQUO4Q2BEvamhDuabAMAlIkUevRmw5klYZYuYIvoPCdDM1dz\nlxYFGIs0Exfor5rvH4faWb4O/Yfi9Ncx0yi/SaGPB4Uc+EMfFyGCaUyYKrtHyZM5\nR+A9wQjpAgMBAAECggEAD2uDRmMILnVS4x26X1FNWhLAUtF4tNUCHPXjY1wY1EcK\ndZjyI+iV701Exnj1EEsK+n9Hh84LhJPaNkysLAvT/cJvBWuz+nqRjzLx3fIjfre4\nEQvs38VAYsDklcyB993bf85rw7ElJNgdEE9y6Or1b82p4AZQlKWFSQmmscvqIAWh\nIrkZlMMJG9xCcGeuGFiloZdCA7UnKJhS+2drJ04qgnHfxLNVxVhSZWFeAeUbouNR\nXyxBRAGImMMsZQhSfZYGNrKBtpR/FwAzcIMzJY5ngYG8KbflVRRwpBUotSvm8DBn\nd4Tr3tPgEFp4BXFk+jOcVvWewMZ+FAIIMEAtVBUNsQKBgQD0RuF1UOpBJIxZDn22\nGCxYKjD80u6I/qpORT4WmnVkak5kGQMiBM/AsekVBQ+C0nvIAzfuuiULMJ8syZKI\nyKdnv0pXKBj3iuHep/zkLyhpowOAKm9oMFvZscY2h/nKRIFYPCofV9JNwBR1oL0R\n1AMR0fLzRjxe8MjX5tSTte0hOQKBgQDb6fCYuk6x3EMtQ1lxK9beE4+2nG6bO0I1\nN6/QaIV00XsrK9C+Ec/rA7kcdvvlUd2vjzkbGUFx+ve5wWuW0NX3gquTqlM37teo\nbSkbWzwETuMNDsLo7jucpFMIrQy0h+M0b9Qxdw4HMInNTV0ympPRChg8Sc4MeHx6\niNuMyMQVMQKBgQCIRyrs2jF2Gj+6R11Ww3Gp1g/yXHL7NqgodnTHA3DOjoghS9r1\nlZ2ZsSeJtIMMxwSLd1Ay/OJBteR3hhUb/mV2eb+tlA8puu972lg5rR1soacIT6RL\nif8UGhusvHtcno9SfG47gjEvcyN25C/WzGLSBED3+40eolJKMNsTdQFP8QKBgQDb\nd7CA+w2mOudfuKL+an3YyzTVTXCkwpLkgVqYZncpihWdk/CSfzw8kk6eta/Vv8m5\ndvnKrX2+vnOTkhBJRskCZgnNKGI8o8PddnNbtcVDl2bIlT63L2mWfffP5MOVNzfs\nEN53LxV031/m35pu8g0qxSRCpnVXxLaVoxdYfNQTQQKBgQDvibvmGz+RTtbyuo7F\n0Ls5bFt7JLhG1iWhHLhJAhHwhxKCm33SnIvYoLHBeaMtdD9K7BOe77sHOjBJowqI\npQm8dZnIDbMIAqq57gF5nEMusJrg1dvoD5Gz69knCWzldJob6/ZUmATRmG0W0K+3\nW9Ek/HguFfogxLxT4nj8/9nbfA==\n-----END PRIVATE KEY-----\n",
+  "client_email": "usolo-service@usoloproject.iam.gserviceaccount.com",
+  "client_id": "113180883144776795517",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/usolo-service%40usoloproject.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}

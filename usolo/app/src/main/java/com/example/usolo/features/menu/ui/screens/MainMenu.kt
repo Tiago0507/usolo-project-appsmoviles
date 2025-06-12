@@ -57,8 +57,6 @@ fun MainMenu(loginController: NavController, viewModel: AuthViewModel = viewMode
 
         AUTH_STATE -> {
 
-            NotificationUtil.showNotification(context = LocalContext.current,"NUEVA NOTI","DIAVLO")
-
             Scaffold(
                 topBar = {
                     TopBar(

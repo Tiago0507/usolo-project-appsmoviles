@@ -75,8 +75,10 @@ class MainActivity : ComponentActivity() {
             ), 1
         )
 
-        Firebase.messaging.subscribeToTopic("promo").addOnSuccessListener {
-            Log.e(">>>","Suscrito")
+        val topic = "promo"
+
+        Firebase.messaging.subscribeToTopic(topic).addOnSuccessListener {
+            Log.e(">>>", "Suscrito a $topic")
         }
 
         setContent {

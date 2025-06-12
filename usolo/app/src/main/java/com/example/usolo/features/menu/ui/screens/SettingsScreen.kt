@@ -95,8 +95,7 @@ fun LogoutButton(loginController: NavHostController, viewModel: AuthViewModel = 
                     popUpTo("settings") { inclusive = true }
                     popUpTo("menu") { inclusive = true }
                 }
-            }
-            .padding(horizontal = 16.dp),
+            },
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center
     ) {

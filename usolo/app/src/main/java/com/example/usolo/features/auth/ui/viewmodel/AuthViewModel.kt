@@ -1,14 +1,18 @@
 package com.example.usolo.features.auth.ui.viewmodel
 
+import android.util.Log
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.usolo.fcm.FCMService
 import com.example.usolo.features.auth.data.dto.LoginData
 
 import com.example.usolo.features.auth.data.repository.AuthRepository
 import com.example.usolo.features.auth.data.repository.AuthRepositoryImpl
 import com.example.usolo.features.auth.data.sources.local.LocalDataSourceProvider
+import com.google.firebase.Firebase
+import com.google.firebase.messaging.messaging
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.firstOrNull
@@ -20,6 +24,7 @@ class AuthViewModel(
 
     var authState: MutableStateFlow<AuthState> = MutableStateFlow<AuthState>(AuthState())
     var userId = MutableStateFlow("")
+
 
 
     fun login(email:String, password:String) {
@@ -34,6 +39,10 @@ class AuthViewModel(
                     state = AUTH_STATE,
                     userId = profileId
                 )
+                Firebase.messaging.subscribeToTopic(profileId).addOnSuccessListener {
+                    Log.e("SUB", profileId)
+                }
+
             } else {
                 authState.value = AuthState(
                     state = ERROR_AUTH_STATE,
