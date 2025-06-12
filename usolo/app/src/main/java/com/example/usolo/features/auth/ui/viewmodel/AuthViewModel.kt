@@ -79,6 +79,8 @@ class AuthViewModel(
     }
 }
 
+
+
 data class AuthState(
     var state: String = IDLE_AUTH_STATE,
     var errorMessage: String? = null,

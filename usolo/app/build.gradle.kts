@@ -72,6 +72,7 @@ dependencies {
     implementation(libs.firebase.appdistribution.gradle)
     implementation(libs.transport.api)
     implementation(libs.firebase.messaging)
+    implementation(libs.androidx.core.animation)
     val retrofitVersion = "2.9.0"
 
     implementation("com.squareup.retrofit2:retrofit:$retrofitVersion")
