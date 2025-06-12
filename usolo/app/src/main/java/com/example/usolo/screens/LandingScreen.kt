@@ -106,6 +106,8 @@ fun LandingScreen(navController: NavController) {
                     .height(280.dp)
             )
 
+            Spacer(modifier = Modifier.height(16.dp))
+
             // Producto animado
             Image(
                 painter = painterResource(id = products[currentIndex]),
@@ -139,6 +141,7 @@ fun LandingScreen(navController: NavController) {
                 }
             }
 
+            Spacer(modifier = Modifier.height(16.dp))
 
             // Botón
             Button(
