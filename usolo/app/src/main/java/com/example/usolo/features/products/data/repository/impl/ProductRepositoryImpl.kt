@@ -57,37 +57,33 @@ class ProductRepositoryImpl(
             val r1 = productApi.deleteReviewsByProductId(deleteReviewsBody, bearer)
             if (!r1.isSuccessful) throw Exception("No se pudieron borrar las reviews")
 
-            // 2) Obtener el profileId del usuario actual
-            val myProfileId = authRepository.getProfileId()?.toInt()
-                ?: throw Exception("Perfil no disponible")
+            // 2) Obtener TODAS las reservas de este producto (NO filtrar por profile_id)
+            val reservationsResp = productApi.getReservationsByProductId(
+                itemId = itemId,
+                token = bearer,
+                fields = "id"
+            )
+            val reservationIds = reservationsResp.data.map { it.id }
 
-            // 3) Obtener SOLO las reservas hechas por el usuario actual para este item
-            val reservationsResp = productApi.getReservationsByProductId(itemId, bearer)
-            val myReservations = reservationsResp.data.filter { it.profile_id == myProfileId }
-            val myReservationIds = myReservations.map { it.id }
-
-            // 4) Borrar pagos asociados a esas reservas
-            if (myReservationIds.isNotEmpty()) {
+            // 3) Borrar pagos relacionados con esas reservas
+            if (reservationIds.isNotEmpty()) {
                 val deletePaymentsBody = DeleteQuery(
-                    query = mapOf("reservation_id" to mapOf("_in" to myReservationIds))
+                    query = mapOf("reservation_id" to mapOf("_in" to reservationIds))
                 )
                 val r2 = productApi.deletePaymentsByReservationId(deletePaymentsBody, bearer)
                 if (!r2.isSuccessful) throw Exception("No se pudieron borrar los pagos")
             }
 
-            // 5) Borrar las reservas del usuario actual sobre este item
-            if (myReservationIds.isNotEmpty()) {
+            // 4) Borrar reservas del producto (sin filtrar por profile_id)
+            if (reservationIds.isNotEmpty()) {
                 val deleteReservationsBody = DeleteQuery(
-                    query = mapOf(
-                        "item_id" to mapOf("_eq" to itemId),
-                        "profile_id" to mapOf("_eq" to myProfileId)
-                    )
+                    query = mapOf("item_id" to mapOf("_eq" to itemId))
                 )
                 val r3 = productApi.deleteReservationsByProductId(deleteReservationsBody, bearer)
                 if (!r3.isSuccessful) throw Exception("No se pudieron borrar las reservas")
             }
 
-            // 6) Finalmente, borrar el producto
+            // 5) Finalmente, borrar el producto
             val r4 = productApi.deleteProduct(itemId, bearer)
             if (!r4.isSuccessful) throw Exception("Error al eliminar producto: ${r4.errorBody()?.string()}")
 
@@ -96,6 +92,7 @@ class ProductRepositoryImpl(
             throw e
         }
     }
+
 
 
 
