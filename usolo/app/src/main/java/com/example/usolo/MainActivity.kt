@@ -28,6 +28,7 @@ import com.example.usolo.features.registration.ui.screens.SignUpScreen
 import com.example.usolo.features.registration.ui.screens.EmailSignUpScreen
 import com.example.usolo.features.menu.ui.screens.MainMenu
 import com.example.usolo.features.products.ui.screens.EditProductScreen
+import com.example.usolo.features.products.ui.screens.ProductDetailScreen
 import com.example.usolo.features.products.ui.screens.ViewProductsScreen
 import com.example.usolo.features.rental_registration.ui.screens.RentalRegistrationScreen
 import com.example.usolo.features.postobject.ui.screens.PublicObjet
@@ -144,7 +145,6 @@ fun App() {
         ) {
             ViewProductsScreen(navController = loginController)
         }
-
         composable(
             "edit_product/{productId}",
             enterTransition = NavigationAnimations.Combinations.detailScreen.enter,
@@ -153,6 +153,17 @@ fun App() {
             val productId = backStackEntry.arguments?.getString("productId")?.toIntOrNull()
             if (productId != null) {
                 EditProductScreen(loginController, productId = productId)
+            }
+        }
+
+        composable(
+            "product_detail/{productId}",
+            enterTransition = NavigationAnimations.Combinations.detailScreen.enter,
+            exitTransition = NavigationAnimations.Combinations.detailScreen.exit
+        ) { backStackEntry ->
+            val productId = backStackEntry.arguments?.getString("productId")?.toIntOrNull()
+            if (productId != null) {
+                ProductDetailScreen(navController = loginController, productId = productId)
             }
         }
 
@@ -184,7 +195,6 @@ fun App() {
                 )
             }
         }
-
 
         composable(
             "PublishProduct",
