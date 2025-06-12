@@ -63,7 +63,7 @@ class PaymentRepositoryImpl(
                     completionDate = reservationDto.completion_date,
                     totalPrice = reservationDto.total_price,
                     profileId = reservationDto.profile_id,
-                    itemId = reservationDto.item_id,
+                    itemId = reservationDto.item_id, // sin error
                     statusId = reservationDto.status_id
                 )
                 Result.success(reservation)

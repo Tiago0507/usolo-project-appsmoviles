@@ -15,6 +15,6 @@ data class ReservationDTO(
     val completion_date: String,
     val total_price: Double,
     val profile_id: Int,
-    val item_id: Int,
+    val item_id: Int?,
     val status_id: Int
 )

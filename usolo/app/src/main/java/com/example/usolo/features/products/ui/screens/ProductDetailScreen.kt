@@ -91,7 +91,7 @@ fun ProductDetailScreen(navController: NavController, productId: Int) {
                                 navController.navigate("payment/${product!!.id}")
                             }
                         },
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier.fillMaxWidth(),
                         colors = ButtonDefaults.buttonColors(containerColor = PrimaryColor)
                     ) {
                         Text("Reservar", color = Color.White)
