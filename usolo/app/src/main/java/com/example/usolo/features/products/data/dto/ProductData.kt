@@ -32,11 +32,12 @@ data class ReservationData(
     val id: Int,
     val item_id: Int,
     val profile_id: Int,
-    val start_date: String,
+    val start_date: String?,          // ← antes: String
     val completion_date: String?,
-    val total_price: String,
-    val status_id: Int
+    val total_price: String?,
+    val status_id: Int?
 )
+
 
 // Modelo de status de un producto (activo, inactivo, etc.)
 data class StatusResponse(

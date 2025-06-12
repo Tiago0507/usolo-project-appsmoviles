@@ -102,6 +102,7 @@ interface ProductApi {
     suspend fun getReservationsByProductId(
         @Query("filter[item_id][_eq]") itemId: Int,
         @Header("Authorization") token: String,
+        @Query("filter[profile_id][_nnull]") notNull: Boolean = true,
         @Query("fields") fields: String = "id,profile_id"
     ): DirectusListResponse<ReservationData>
 
