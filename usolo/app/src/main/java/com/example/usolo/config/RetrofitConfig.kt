@@ -24,7 +24,7 @@ object RetrofitConfig {
         .build()
 
     val directusRetrofit: Retrofit = Retrofit.Builder()
-        .baseUrl("http://10.0.0.2:8055")
+        .baseUrl("http://10.0.2.2:8055")
         .client(client)
         .addConverterFactory(MoshiConverterFactory.create(moshi))
         .build()
