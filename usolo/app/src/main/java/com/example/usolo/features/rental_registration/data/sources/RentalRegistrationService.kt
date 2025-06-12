@@ -12,14 +12,14 @@ interface RentalRegistrationService {
     @GET("/items/item")
     suspend fun getMyPublishedItems(
         @Header("Authorization") token: String,
-        @Query("filter[profile_id][_eq]") userId: String,
+        @Query("filter[profile_id][_eq]") profileId: String,
         @Query("fields") fields: String = "*"
     ): DirectusResponse<List<RentalItem>>
 
     @GET("/items/reservation")
     suspend fun getMyRentedItems(
         @Header("Authorization") token: String,
-        @Query("filter[profile_id][_eq]") userId: String,
-        @Query("fields[]") fields: String = "item2.*"
+        @Query("filter[profile_id][_eq]") profileId: String,
+        @Query("fields") fields: String = "item_id.*"
     ): DirectusResponse<List<ReservationWithItemDTO>>
 }

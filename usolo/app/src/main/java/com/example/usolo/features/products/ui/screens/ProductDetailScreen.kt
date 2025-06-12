@@ -1,5 +1,6 @@
 package com.example.usolo.features.products.ui.screens
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -26,8 +27,10 @@ import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import com.example.usolo.features.products.data.dto.ProductData
+import com.example.usolo.features.products.data.dto.ProductHelper
 import com.example.usolo.features.products.data.dto.ReviewData
 import com.example.usolo.features.products.ui.viewmodel.ProductDetailViewModel
+import com.example.usolo.features.utils.UserHelper.getCurrentUserProfileId
 
 val PrimaryColor = Color(0xFFF83000)
 val AccentColor = Color(0xFFFF5722)
@@ -36,7 +39,9 @@ val SuccessColor = Color(0xFF4CAF50)
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
+
 fun ProductDetailScreen(navController: NavController, productId: Int) {
+    val context = LocalContext.current
     val viewModel: ProductDetailViewModel = viewModel { ProductDetailViewModel(productId) }
     val product by viewModel.product.collectAsState()
     val reviews = viewModel.reviews
@@ -72,8 +77,21 @@ fun ProductDetailScreen(navController: NavController, productId: Int) {
                     ProductInfoSection(product!!)
                     Spacer(modifier = Modifier.height(16.dp))
                     Button(
-                        onClick = { /* TODO: Navegar a la pantalla de reserva */ },
-                        modifier = Modifier.fillMaxWidth(),
+                        onClick = {
+
+                            // Verificar que no sea su propio producto
+                            val currentProfileId = getCurrentUserProfileId()
+                            if (product!!.profile_id == currentProfileId) {
+                                // Mostrar toast de error
+
+                                Toast.makeText(context, "No puedes reservar tu propio producto", Toast.LENGTH_SHORT).show()
+                            } else {
+                                // Guardar producto temporalmente y navegar
+                                ProductHelper.setCurrentProduct(product!!)
+                                navController.navigate("payment/${product!!.id}")
+                            }
+                        },
+                        modifier = Modifier.fillMaxWidth()
                         colors = ButtonDefaults.buttonColors(containerColor = PrimaryColor)
                     ) {
                         Text("Reservar", color = Color.White)
