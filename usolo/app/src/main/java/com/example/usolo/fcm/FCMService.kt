@@ -1,5 +1,6 @@
 package com.example.usolo.fcm
 
+import android.content.Context
 import android.util.Log
 import com.example.usolo.util.NotificationUtil
 import com.google.auth.oauth2.AccessToken
@@ -30,8 +31,15 @@ class FCMService : FirebaseMessagingService() {
         super.onNewToken(token)
     }
 
-    fun getAccessToken() : String{
-        val inputStream : InputStream = assets.open(KEY_FILE_NAME)
+    fun getAccessToken(context: Context) : String{
+
+        val assetManager = context.assets
+        Log.e("ASSETMANAGER", assetManager.toString())
+        val inputStream2 = assetManager.open("key.json")
+        Log.e("inputaasasasasa", inputStream2.toString())
+
+
+        val inputStream : InputStream = context.assets.open(KEY_FILE_NAME)
         val googleCredentials = GoogleCredentials
             .fromStream(inputStream)
             .createScoped(listOf("https://www.googleapis.com/auth/firebase.messaging"))
@@ -42,9 +50,8 @@ class FCMService : FirebaseMessagingService() {
     }
 
     override fun onMessageReceived(message: RemoteMessage) {
-        val obj = JSONObject(message.data as Map<*, *>)
-        val json = obj.toString()
-        NotificationUtil.showNotification(this,"Mensaje nuevo",json)
+        val msg = message.data["message"] ?: "Tienes una nueva notificación"
+        NotificationUtil.showNotification(this, "Usolo", msg)
     }
 
     @Throws(IOException::class)

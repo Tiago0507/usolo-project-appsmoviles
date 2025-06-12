@@ -42,6 +42,8 @@ fun ProductDetailScreen(navController: NavController, productId: Int) {
     val reviews = viewModel.reviews
     val userNames = viewModel.userNames
     val isCreatingReview by viewModel.isCreatingReview.collectAsState()
+    val context = LocalContext.current
+
 
     var showCreateReviewDialog by remember { mutableStateOf(false) }
 
@@ -105,7 +107,7 @@ fun ProductDetailScreen(navController: NavController, productId: Int) {
         CreateReviewDialog(
             onDismiss = { showCreateReviewDialog = false },
             onCreateReview = { rating, comment ->
-                viewModel.createReview(rating, comment)
+                viewModel.createReview(rating, comment,context)
                 showCreateReviewDialog = false
             },
             isLoading = isCreatingReview

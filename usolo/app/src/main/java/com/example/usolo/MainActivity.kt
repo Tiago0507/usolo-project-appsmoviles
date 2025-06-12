@@ -60,9 +60,6 @@ import com.example.usolo.features.settings.ui.SettingsScreen
 
 // Importaciones de dependencias
 import com.example.usolo.features.auth.data.sources.local.LocalDataSourceProvider
-import com.example.usolo.features.auth.data.repository.AuthRepositoryImpl
-import com.example.usolo.features.auth.ui.viewmodel.AuthViewModel
-import com.example.usolo.features.registration.ui.viewmodel.SignUpViewModel
 import com.example.usolo.ui.theme.UsoloTheme
 
 
