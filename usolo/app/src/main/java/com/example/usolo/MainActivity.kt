@@ -44,13 +44,13 @@ import com.google.firebase.messaging.messaging
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-
-// Importaciones de tus pantallas
 import com.example.usolo.screens.LandingScreen
 import com.example.usolo.features.screens.LoginScreen
 import com.example.usolo.features.registration.ui.screens.SignUpScreen
 import com.example.usolo.features.registration.ui.screens.EmailSignUpScreen
 import com.example.usolo.features.menu.ui.screens.MainMenu
+import com.example.usolo.features.payment_gateway.ui.screens.PaymentScreen
+import com.example.usolo.features.payment_gateway.ui.viewmodel.PaymentNavigationViewModel
 import com.example.usolo.features.products.ui.screens.EditProductScreen
 import com.example.usolo.features.products.ui.screens.ProductDetailScreen
 import com.example.usolo.features.products.ui.screens.ViewProductsScreen
@@ -239,6 +239,37 @@ fun App() {
             exitTransition = NavigationAnimations.Combinations.authFlow.exit
         ) {
             PublicObjet(loginController = loginController)
+        }
+
+        composable(
+            "payment/{productId}",
+            enterTransition = { slideInVertically(initialOffsetY = { 1000 }) },
+            exitTransition = { fadeOut() }
+        ) { backStackEntry ->
+            val productId = backStackEntry.arguments?.getString("productId")?.toIntOrNull()
+            if (productId != null) {
+                val navViewModel: PaymentNavigationViewModel = viewModel()
+                val product by navViewModel.product.collectAsState()
+
+                LaunchedEffect(productId) {
+                    navViewModel.loadProduct(productId)
+                }
+
+                product?.let { productData ->
+                    PaymentScreen(
+                        navController = loginController,
+                        product = productData
+                    )
+                } ?: run {
+                    // Loading o error state
+                    Box(
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        CircularProgressIndicator()
+                    }
+                }
+            }
         }
     }
 

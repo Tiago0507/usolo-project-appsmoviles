@@ -27,7 +27,10 @@ data class ProductData(
     val photo: String,
     val availability: Boolean
 )
-
+data class ReservationData(
+    val id: Int,
+    // aquí puedes añadir otros campos que necesites leer
+)
 // Modelo de status de un producto (activo, inactivo, etc.)
 data class StatusResponse(
     val data: List<ItemStatus>
@@ -47,3 +50,15 @@ data class Category(
     val id: Int,
     val name: String
 )
+
+object ProductHelper {
+    private var tempProduct: ProductData? = null
+
+    fun setCurrentProduct(product: ProductData) {
+        tempProduct = product
+    }
+
+    fun getCurrentProduct(): ProductData? {
+        return tempProduct
+    }
+}

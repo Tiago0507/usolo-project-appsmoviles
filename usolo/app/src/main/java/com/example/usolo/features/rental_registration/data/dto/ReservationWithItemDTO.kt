@@ -7,6 +7,5 @@ data class ReservationWithItemDTO(
     @Json(name = "start_date") val startDate: String,
     @Json(name = "completion_date") val completionDate: String?,
     @Json(name = "total_price") val totalPrice: String,
-    //val item: RentalItem
-    @Json(name = "item2") val item: RentalItem
+    @Json(name = "item_id") val item: RentalItem
 )
