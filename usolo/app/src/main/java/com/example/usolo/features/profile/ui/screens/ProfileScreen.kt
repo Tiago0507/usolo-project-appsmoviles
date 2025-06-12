@@ -356,14 +356,6 @@ private fun ProfileOptionsSection(onLogoutClick: () -> Unit) {
                 subtitle = "Configurar privacidad de cuenta",
                 onClick = { /* TODO: Implementar privacidad */ }
             )
-
-            ProfileOption(
-                icon = Icons.Default.ExitToApp,
-                title = "Cerrar Sesión",
-                subtitle = "Salir de la aplicación",
-                onClick = onLogoutClick,
-                isDestructive = true
-            )
         }
     }
 }
