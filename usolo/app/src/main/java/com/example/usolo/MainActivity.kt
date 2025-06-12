@@ -28,7 +28,6 @@ import com.example.usolo.features.registration.ui.screens.SignUpScreen
 import com.example.usolo.features.registration.ui.screens.EmailSignUpScreen
 import com.example.usolo.features.menu.ui.screens.MainMenu
 import com.example.usolo.features.products.ui.screens.EditProductScreen
-import com.example.usolo.features.products.ui.screens.ProductDetailScreen
 import com.example.usolo.features.products.ui.screens.ViewProductsScreen
 import com.example.usolo.features.rental_registration.ui.screens.RentalRegistrationScreen
 import com.example.usolo.features.postobject.ui.screens.PublicObjet
@@ -157,22 +156,11 @@ fun App() {
             }
         }
 
-<<<<<<< HEAD
         composable(
             "rental_registration",
             enterTransition = NavigationAnimations.Combinations.sideNavigation.enter,
             exitTransition = NavigationAnimations.Combinations.sideNavigation.exit
         ) {
-=======
-        composable("product_detail/{productId}") { backStackEntry ->
-            val productId = backStackEntry.arguments?.getString("productId")?.toIntOrNull()
-            if (productId != null) {
-                ProductDetailScreen(navController = loginController, productId = productId)
-            }
-        }
-
-        composable("rental_registration") {
->>>>>>> origin/dev
             val localDataStore = LocalDataSourceProvider.get()
             val profileIdFlow = localDataStore.getProfileId()
             val profileId by profileIdFlow.collectAsState(initial = null)
