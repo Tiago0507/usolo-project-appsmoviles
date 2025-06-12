@@ -97,6 +97,9 @@ class AuthRepositoryImpl(
         }
     }
 
+    override suspend fun getProfileId(): String? {
+        return LocalDataSourceProvider.get().getProfileId().firstOrNull()
+    }
 
 
     override suspend fun debugAuthData() {

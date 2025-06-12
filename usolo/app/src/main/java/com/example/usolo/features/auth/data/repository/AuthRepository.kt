@@ -7,4 +7,6 @@ interface AuthRepository {
     suspend fun logout(refreshToken: String? = null): Boolean
     suspend fun getUserNameByProfileId(profileId: Int): String?
     suspend fun debugAuthData()
+    suspend fun getProfileId(): String?
+
 }
