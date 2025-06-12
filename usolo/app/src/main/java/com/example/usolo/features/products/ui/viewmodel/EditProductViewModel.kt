@@ -51,10 +51,16 @@ class EditProductViewModel(
 
     fun deleteProduct(itemId: Int) {
         viewModelScope.launch {
-            repository.deleteProduct(itemId)
-            _uiState.value = EditProductState.Deleted
+            _uiState.value = EditProductState.Loading
+            try {
+                repository.deleteProduct(itemId)
+                _uiState.value = EditProductState.Deleted
+            } catch (e: Exception) {
+                _uiState.value = EditProductState.Error("Error al eliminar producto: ${e.message}")
+            }
         }
     }
+
 
     fun loadStatuses() {
         viewModelScope.launch {

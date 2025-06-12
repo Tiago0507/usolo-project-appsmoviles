@@ -39,6 +39,7 @@ interface ProductApi {
         @Header("Authorization") token: String
     ): Response<Unit>
 
+
     @GET("items/item_status")
     suspend fun getItemStatuses(
         @Header("Authorization") token: String
@@ -67,4 +68,12 @@ interface ProductApi {
         @Header("Authorization") token: String,
         @Body reviewDto: CreateReviewDto
     ): DirectusResponse<ReviewData>
+
+    @DELETE("items/review")
+    suspend fun deleteReviewsByProductId(
+        @QueryMap filter: Map<String, String>,
+        @Header("Authorization") token: String
+    ): Response<Unit>
+
+
 }
